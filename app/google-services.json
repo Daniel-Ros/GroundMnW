@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081802255587",
+    "project_id": "groundgnw",
+    "storage_bucket": "groundgnw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081802255587:android:f36239ab21342d851ae9d6",
+        "android_client_info": {
+          "package_name": "com.rosenberg.uni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081802255587-l5l8rgv759n780i7j92nil74auc6j1rp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYEXtqu2avba1r7zJUK7XKTJgsNG3UP_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081802255587-l5l8rgv759n780i7j92nil74auc6j1rp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
