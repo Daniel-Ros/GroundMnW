@@ -3,7 +3,7 @@ package com.rosenberg.uni.Entities;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User implements Entity {
     private String id;
     private String name;
     private String mail;

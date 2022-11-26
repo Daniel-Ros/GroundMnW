@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             //Setting a dynamic title at runtime. Here, it displays the current time.
             actionBar.setTitle("Dashboard");
         }
-        FloatingActionButton fab = findViewById(R.id.main_fab);
+//        FloatingActionButton fab = findViewById(R.id.main_fab);
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
 //            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        if(fab != null) {
-            fab.setOnClickListener(view -> {
-                FirebaseAuth.getInstance().signOut();
-            });
-        }
+//        if(fab != null) {
+//            fab.setOnClickListener(view -> {
+//                FirebaseAuth.getInstance().signOut();
+//            });
+//        }
     }
 
 }
