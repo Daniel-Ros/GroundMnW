@@ -1,6 +1,5 @@
 package com.rosenberg.uni.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.rosenberg.uni.CarViewFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.R;
 
+
+// tester login
+//mail :dani@live.com
+// password test12
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
@@ -89,7 +91,7 @@ public class LoginFragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.base_fragment, CarViewFragment.class,null).commit();
+                            fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
                         }else{
 //                            Toast.makeText(LoginFragment.this,"wrong",Toast.LENGTH_LONG).show();
                         }

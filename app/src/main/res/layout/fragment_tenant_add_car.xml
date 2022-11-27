@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCarFragment">
+    tools:context=".Tenant.TenantAddCarFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <Spinner
-            android:id="@+id/add_car_make"
+            android:id="@+id/tenant_add_car_make"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="104dp"
@@ -26,10 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/add_car_make"
-            app:layout_constraintEnd_toStartOf="@+id/add_car_make"
+            app:layout_constraintBottom_toBottomOf="@+id/tenant_add_car_make"
+            app:layout_constraintEnd_toStartOf="@+id/tenant_add_car_make"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_car_make"
+            app:layout_constraintTop_toTopOf="@+id/tenant_add_car_make"
             tools:text="make" />
 
         <TextView
@@ -37,14 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/add_car_model"
-            app:layout_constraintEnd_toStartOf="@+id/add_car_model"
+            app:layout_constraintBottom_toBottomOf="@+id/tenant_add_car_model"
+            app:layout_constraintEnd_toStartOf="@+id/tenant_add_car_model"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/add_car_model"
+            app:layout_constraintTop_toTopOf="@+id/tenant_add_car_model"
             tools:text="model" />
 
         <Spinner
-            android:id="@+id/add_car_model"
+            android:id="@+id/tenant_add_car_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -52,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_car_make" />
+            app:layout_constraintTop_toBottomOf="@+id/tenant_add_car_make" />
 
         <TextView
             android:id="@+id/textView3"
@@ -60,13 +60,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:text="mileage"
-            app:layout_constraintBottom_toBottomOf="@+id/add_car_mileage"
-            app:layout_constraintEnd_toStartOf="@+id/add_car_mileage"
-            app:layout_constraintTop_toTopOf="@+id/add_car_mileage"
+            app:layout_constraintBottom_toBottomOf="@+id/tenant_add_car_mileage"
+            app:layout_constraintEnd_toStartOf="@+id/tenant_add_car_mileage"
+            app:layout_constraintTop_toTopOf="@+id/tenant_add_car_mileage"
             app:layout_constraintVertical_bias="0.538" />
 
         <EditText
-            android:id="@+id/add_car_mileage"
+            android:id="@+id/tenant_add_car_mileage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
@@ -75,10 +75,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_car_model" />
+            app:layout_constraintTop_toBottomOf="@+id/tenant_add_car_model" />
 
         <Button
-            android:id="@+id/add_car_done"
+            android:id="@+id/tenant_add_car_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_car_mileage" />
+            app:layout_constraintTop_toBottomOf="@+id/tenant_add_car_mileage" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

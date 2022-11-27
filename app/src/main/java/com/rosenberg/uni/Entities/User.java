@@ -7,19 +7,19 @@ public class User implements Entity {
     private String id;
     private String name;
     private String mail;
-    private String dob;
+    private String born;
     private boolean isSoher; // Do i give my car to not
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String id,String name, String mail, String dob,boolean isSoher) {
+    public User(String id,String name, String mail, String dob,boolean isTenant) {
         this.id = id;
         this.name = name;
         this.mail = mail;
-        this.dob = dob;
-        this.isSoher = isSoher;
+        this.born = dob;
+        this.isSoher = isTenant;
     }
 
     public String getName() {
@@ -38,12 +38,12 @@ public class User implements Entity {
         this.mail = mail;
     }
 
-    public String getDob() {
-        return dob;
+    public String getBorn() {
+        return born;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setBorn(String born) {
+        this.born = born;
     }
 
     public String getId() {
@@ -60,7 +60,7 @@ public class User implements Entity {
         map.put("id", id);
         map.put("name", name);
         map.put("mail", mail);
-        map.put("born", dob);
+        map.put("born", born);
         map.put("isSoher", isSoher);
         return map;
     }

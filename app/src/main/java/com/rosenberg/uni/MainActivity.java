@@ -2,7 +2,6 @@ package com.rosenberg.uni;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -14,10 +13,12 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.rosenberg.uni.Renter.RenterCarViewFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.login.LoginFragment;
+import com.rosenberg.uni.utils.userUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,8 +56,19 @@ public class MainActivity extends AppCompatActivity {
             Log.wtf(TAG,"Got user" + u.getEmail());
             Toast.makeText(MainActivity.this,"Logged In " + u.getEmail(), Toast.LENGTH_LONG).show();
 
-            FragmentManager fm = getSupportFragmentManager();
-            fm.beginTransaction().replace(R.id.base_fragment, CarViewFragment.class,null).commit();
+            while (userUtils.getUser() == null){
+                Log.d("Main activity","stuck here");
+            }
+
+            if(userUtils.getUser().isSoher()){
+                Log.d("MainActivity","Going to tenant");
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
+            }else{
+                Log.d("MainActivity","Going to renter");
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.base_fragment, RenterCarViewFragment.class,null).commit();
+            }
         }
 
 

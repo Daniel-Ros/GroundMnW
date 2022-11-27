@@ -1,16 +1,12 @@
 package com.rosenberg.uni.login;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rosenberg.uni.CarViewFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
 
@@ -81,14 +76,15 @@ public class RegisterFragment extends Fragment {
 
 
         // Init the spinner
-        String [] choises = new String[]{"I want to rent my car","I want to rent a car"};
+        String [] choises = new String[]{"Tenant","Renter"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choises);
         spinner.setAdapter(adapter);
 
 
         btn.setOnClickListener(view -> {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(),password1.getText().toString())
+            mAuth.createUserWithEmailAndPassword(email.getText().toString(),
+                            password1.getText().toString())
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -100,7 +96,7 @@ public class RegisterFragment extends Fragment {
                                     .add(user.getMap())
                                     .addOnSuccessListener(documentReference -> {
                                         FragmentManager fm = getParentFragmentManager();
-                                        fm.beginTransaction().replace(R.id.base_fragment, CarViewFragment.class,null).commit();
+                                        fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
                                     });
                         }else{
 //                            Toast.makeText(RegisterActivity.this,"failed",Toast.LENGTH_LONG).show();
