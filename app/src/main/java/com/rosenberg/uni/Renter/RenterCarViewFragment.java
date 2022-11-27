@@ -56,5 +56,9 @@ public class RenterCarViewFragment extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,carStrings);
         car_view.setAdapter(adapter);
 
+
+        car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
+
+        });
     }
 }

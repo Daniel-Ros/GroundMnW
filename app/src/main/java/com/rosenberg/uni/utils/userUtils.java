@@ -27,16 +27,19 @@ public class userUtils {
 
     public static User getUser() {
         if (u != null) {
+            Log.d("USER UTILS","returning");
             return u;
         }
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").whereEqualTo("userID",fUser.getUid())
+        db.collection("users").whereEqualTo("id",fUser.getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                    Log.d("USER UTILS","Register user " + userList.size());
                     u = userList.get(0);
                 });
+        Log.d("USER UTILS","returning 2");
         return u;
     }
 }

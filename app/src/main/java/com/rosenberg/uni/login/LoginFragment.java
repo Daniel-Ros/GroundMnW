@@ -18,8 +18,12 @@ import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.R;
 
 
-// tester login
-//mail :dani@live.com
+// tester login tenant
+//mail :tenant@live.com
+// password test12
+
+// tester login renter
+//mail :renter@live.com
 // password test12
 /**
  * A simple {@link Fragment} subclass.

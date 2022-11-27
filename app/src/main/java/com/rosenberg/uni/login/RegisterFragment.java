@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
@@ -96,7 +97,10 @@ public class RegisterFragment extends Fragment {
                                     .add(user.getMap())
                                     .addOnSuccessListener(documentReference -> {
                                         FragmentManager fm = getParentFragmentManager();
-                                        fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
+                                        if(spinner.getSelectedItemPosition() == 0)
+                                            fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
+                                        else
+                                            fm.beginTransaction().replace(R.id.base_fragment, RenterCarViewFragment.class,null).commit();
                                     });
                         }else{
 //                            Toast.makeText(RegisterActivity.this,"failed",Toast.LENGTH_LONG).show();
