@@ -47,6 +47,9 @@ public class RenterCarViewFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
+                    for (int i = 0; i < cars.size(); i++) {
+                            cars.get(i).setDocument_ID(queryDocumentSnapshots.getDocuments().get(i).getId());
+                    }
                     Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
 
                     ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));

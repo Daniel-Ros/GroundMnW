@@ -35,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "DEBUG onStart()");
         Log.v("MainActivity", "VERBOSE onStart()");
 
-//        FragmentManager fm = getSupportFragmentManager();
-//
-//        fm.beginTransaction().replace(R.id.base_fragment,CarViewFragment.class,null).commit();
-
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
         {
