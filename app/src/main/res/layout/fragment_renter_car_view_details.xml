@@ -7,7 +7,7 @@
     tools:context=".Renter.RenterCarViewDetailsFragment">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/renter_car_view_details_req_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

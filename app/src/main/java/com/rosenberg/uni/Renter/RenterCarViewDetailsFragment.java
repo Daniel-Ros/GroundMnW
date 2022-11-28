@@ -6,27 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
+import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RenterCarViewDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
 public class RenterCarViewDetailsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+    private static final String ARG_NAME = "CARID";
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String car_id;
 
     public RenterCarViewDetailsFragment() {
         // Required empty public constructor
@@ -36,16 +35,14 @@ public class RenterCarViewDetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param param1 Car Document id
      * @return A new instance of fragment RenterCarViewDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RenterCarViewDetailsFragment newInstance(String param1, String param2) {
+    public static RenterCarViewDetailsFragment newInstance(String param1) {
         RenterCarViewDetailsFragment fragment = new RenterCarViewDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_NAME, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +51,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            car_id = getArguments().getString(ARG_NAME);
         }
     }
 
@@ -70,6 +66,39 @@ public class RenterCarViewDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView make = view.findViewById(R.id.renter_car_view_details_make);
+        TextView model = view.findViewById(R.id.renter_car_view_details_model);
+        TextView mileage = view.findViewById(R.id.renter_car_view_details_mileage);
+        Button req_car = view.findViewById(R.id.renter_car_view_details_req_car);
 
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        fs.collection("cars")
+                .whereEqualTo("Document ID",car_id)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
+                    Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
+
+                    if(cars.size() == 0){
+                        Log.e("RenterCarViewDetails","no Car found with this id");
+                        return;
+                    }
+                    if(cars.size() > 1){
+                        Log.e("RenterCarViewDetails","To many Car found with this id");
+                        return;
+                    }
+
+                    Car c = cars.get(0);
+                    make.setText(c.getMake());
+                    model.setText(c.getModel());
+                    mileage.setText(c.getMileage());
+
+                    req_car.setOnClickListener(v -> {
+                        Log.d("RenterCarViewDetails","car sold");
+                    });
+                })
+                .addOnFailureListener( fail -> {
+                    Log.d("RenterCarViewDetails","problme loading car info" + car_id);
+                });
     }
 }

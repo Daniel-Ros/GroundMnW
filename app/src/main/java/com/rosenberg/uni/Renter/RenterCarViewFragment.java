@@ -20,6 +20,7 @@ import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.Tenant.TenantAddCarFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.utils.userUtils;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import java.util.List;
 
 
 public class RenterCarViewFragment extends Fragment {
+
+    private List<Car> cars;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,22 +49,33 @@ public class RenterCarViewFragment extends Fragment {
         fs.collection("cars")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
+                    cars = queryDocumentSnapshots.toObjects(Car.class);
                     for (int i = 0; i < cars.size(); i++) {
-                            cars.get(i).setDocument_ID(queryDocumentSnapshots.getDocuments().get(i).getId());
+                            cars.get(i).setDocument_ID(queryDocumentSnapshots.getDocuments()
+                                    .get(i)
+                                    .getId());
                     }
                     Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
 
-                    ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
+                    ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
+                            cars.toArray(new Car[0]));
                     car_view.setAdapter(adapter);
                 });
 
-        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,carStrings);
+        ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1,carStrings);
         car_view.setAdapter(adapter);
 
 
         car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
+            FragmentManager fm = getParentFragmentManager();
 
+            Log.d("RenterCarView","sending to this id " + cars.get(i).getDocument_ID());
+            fm.beginTransaction().replace(R.id.base_fragment,
+                    RenterCarViewDetailsFragment.newInstance(cars.get(i).getDocument_ID()),
+                    null)
+                    .addToBackStack("RenterCarView")
+                    .commit();
         });
     }
 }
