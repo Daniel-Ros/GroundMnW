@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     fm.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
                     break;
                 case R.id.nav_view_profile:
+                    //TODO: Amir add view/edit profile
                     Log.d("MainActivity","pressed view profile");
                     break;
             }
