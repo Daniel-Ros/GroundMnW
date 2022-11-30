@@ -94,13 +94,13 @@ public class RegisterFragment extends Fragment {
                             String uid = mAuth.getCurrentUser().getUid();
                             User user = new User(uid,name.getText().toString(),email.getText().toString(),dob.getText().toString(),spinner.getSelectedItemPosition() == 0);
                             db.collection("users")
-                                    .add(user.getMap())
+                                    .add(user)
                                     .addOnSuccessListener(documentReference -> {
                                         FragmentManager fm = getParentFragmentManager();
                                         if(spinner.getSelectedItemPosition() == 0)
-                                            fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
+                                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
                                         else
-                                            fm.beginTransaction().replace(R.id.base_fragment, RenterCarViewFragment.class,null).commit();
+                                            fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class,null).commit();
                                     });
                         }else{
 //                            Toast.makeText(RegisterActivity.this,"failed",Toast.LENGTH_LONG).show();

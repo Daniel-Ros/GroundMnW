@@ -1,9 +1,14 @@
 package com.rosenberg.uni.Entities;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class User implements Entity {
+public class User{
+    @DocumentId
+    private String documentId;
+
     private String id;
     private String name;
     private String mail;
@@ -14,7 +19,11 @@ public class User implements Entity {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String id,String name, String mail, String dob,boolean tenant) {
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public User(String id, String name, String mail, String dob, boolean tenant) {
         this.id = id;
         this.name = name;
         this.mail = mail;
@@ -50,18 +59,17 @@ public class User implements Entity {
         return id;
     }
 
-    public boolean tenant() {
+    public boolean getTenant() {
         return tenant;
     }
 
-
-    public Map<String,Object> getMap(){
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("name", name);
-        map.put("mail", mail);
-        map.put("born", born);
-        map.put("tenant", tenant);
-        return map;
-    }
+//    public Map<String,Object> getMap(){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("id", id);
+//        map.put("name", name);
+//        map.put("mail", mail);
+//        map.put("born", born);
+//        map.put("tenant", tenant);
+//        return map;
+//    }
 }

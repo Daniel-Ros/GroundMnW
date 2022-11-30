@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.base_fragment, TenantCarViewFragment.class,null).commit();
+                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
                         }else{
 //                            Toast.makeText(LoginFragment.this,"wrong",Toast.LENGTH_LONG).show();
                         }
@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment {
 
         RegisterBtn.setOnClickListener(view1 -> {
             FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.base_fragment, RegisterFragment.class,null).commit();
+            fm.beginTransaction().replace(R.id.main_fragment, RegisterFragment.class,null).commit();
         });
     }
 

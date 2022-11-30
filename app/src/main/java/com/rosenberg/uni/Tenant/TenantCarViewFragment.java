@@ -21,7 +21,6 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TenantCarViewFragment extends Fragment {
@@ -39,7 +38,6 @@ public class TenantCarViewFragment extends Fragment {
 
         ListView car_view = view.findViewById(R.id.renter_car_view_list_view);
         Button add_car = view.findViewById(R.id.tenant_car_view_add_car);
-        List<String> carStrings = new ArrayList<>();
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         fs.collection("cars").whereEqualTo("ownerID",userUtils.getUserID())
@@ -50,14 +48,22 @@ public class TenantCarViewFragment extends Fragment {
 
                     ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
                     car_view.setAdapter(adapter);
-                });
 
-        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,carStrings);
-        car_view.setAdapter(adapter);
+                    car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
+                        FragmentManager fm = getParentFragmentManager();
+                        TenantCarViewDetailsFragment fragment = TenantCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId());
+                        fm.beginTransaction().replace(R.id.main_fragment, fragment, null)
+                                .addToBackStack("TenantCarView")
+                                .commit();
+                    });
+
+                });
 
         add_car.setOnClickListener(v -> {
             FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.base_fragment, TenantAddCarFragment.class, null).commit();
+            fm.beginTransaction().replace(R.id.main_fragment, TenantAddCarFragment.class, null)
+                    .addToBackStack("TenantCarView")
+                    .commit();
         });
     }
 }

@@ -14,9 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
 
 import java.util.List;
@@ -24,7 +26,6 @@ import java.util.List;
 public class RenterCarViewDetailsFragment extends Fragment {
 
     private static final String ARG_NAME = "CARID";
-    // TODO: Rename and change types of parameters
     private String car_id;
 
     public RenterCarViewDetailsFragment() {
@@ -73,28 +74,29 @@ public class RenterCarViewDetailsFragment extends Fragment {
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         fs.collection("cars")
-                .whereEqualTo("Document ID",car_id)
+                .document(car_id)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
-                    Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
+                    Car car = queryDocumentSnapshots.toObject(Car.class);
 
-                    if(cars.size() == 0){
-                        Log.e("RenterCarViewDetails","no Car found with this id");
-                        return;
-                    }
-                    if(cars.size() > 1){
-                        Log.e("RenterCarViewDetails","To many Car found with this id");
-                        return;
-                    }
-
-                    Car c = cars.get(0);
-                    make.setText(c.getMake());
-                    model.setText(c.getModel());
-                    mileage.setText(c.getMileage());
+                    make.setText(car.getMake());
+                    model.setText(car.getModel());
+                    mileage.setText(car.getMileage());
 
                     req_car.setOnClickListener(v -> {
-                        Log.d("RenterCarViewDetails","car sold");
+                        fs.collection("users").whereEqualTo("id",
+                                        FirebaseAuth.getInstance().getUid())
+                                .get()
+                                .addOnSuccessListener(queryDocumentSnapshots2 -> {
+                                    List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
+                                    Log.d("USER UTILS","Register user " + userList.size());
+                                    User u = userList.get(0);
+
+                                    fs.collection("cars")
+                                            .document(car_id)
+                                            .collection("request")
+                                            .add(u);
+                                });
                     });
                 })
                 .addOnFailureListener( fail -> {

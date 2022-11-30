@@ -12,16 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
-import com.rosenberg.uni.Tenant.TenantAddCarFragment;
-import com.rosenberg.uni.Tenant.TenantCarViewFragment;
-import com.rosenberg.uni.utils.userUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +46,6 @@ public class RenterCarViewFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     cars = queryDocumentSnapshots.toObjects(Car.class);
-                    for (int i = 0; i < cars.size(); i++) {
-                            cars.get(i).setDocument_ID(queryDocumentSnapshots.getDocuments()
-                                    .get(i)
-                                    .getId());
-                    }
                     Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
 
                     ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
@@ -70,9 +61,9 @@ public class RenterCarViewFragment extends Fragment {
         car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
             FragmentManager fm = getParentFragmentManager();
 
-            Log.d("RenterCarView","sending to this id " + cars.get(i).getDocument_ID());
-            fm.beginTransaction().replace(R.id.base_fragment,
-                    RenterCarViewDetailsFragment.newInstance(cars.get(i).getDocument_ID()),
+            Log.d("RenterCarView","sending to this id " + cars.get(i).getDocumentId());
+            fm.beginTransaction().replace(R.id.main_fragment,
+                    RenterCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId()),
                     null)
                     .addToBackStack("RenterCarView")
                     .commit();
