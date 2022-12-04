@@ -42,7 +42,7 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
             make.setText(cars[position].getMake());
         }
         model.setText(cars[position].getModel());
-        mileage.setText(cars[position].getMileage());
+        mileage.setText(cars[position].getMileage().toString());
 
         return rowView;
     }

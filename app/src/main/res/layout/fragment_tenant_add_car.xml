@@ -58,7 +58,8 @@
                 android:layout_weight="10"
                 android:ems="10"
                 android:hint="Number of  seats"
-                android:inputType="number" />
+                android:inputType="number"
+                android:minHeight="48dp" />
 
             <Spinner
                 android:id="@+id/tenant_add_car_fuel"

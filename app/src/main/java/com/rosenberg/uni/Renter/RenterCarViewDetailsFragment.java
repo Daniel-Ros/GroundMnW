@@ -70,6 +70,13 @@ public class RenterCarViewDetailsFragment extends Fragment {
         TextView make = view.findViewById(R.id.renter_car_view_details_make);
         TextView model = view.findViewById(R.id.renter_car_view_details_model);
         TextView mileage = view.findViewById(R.id.renter_car_view_details_mileage);
+        TextView numOfSeats = view.findViewById(R.id.renter_car_view_details_num_of_seats);
+        TextView fuel = view.findViewById(R.id.renter_car_view_details_fuel);
+        TextView gearbox = view.findViewById(R.id.renter_car_view_details_gearbox);
+        TextView startDate = view.findViewById(R.id.renter_car_view_details_start_date);
+        TextView endDate = view.findViewById(R.id.renter_car_view_details_end_date);
+
+
         Button req_car = view.findViewById(R.id.renter_car_view_details_req_car);
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
@@ -81,7 +88,12 @@ public class RenterCarViewDetailsFragment extends Fragment {
 
                     make.setText(car.getMake());
                     model.setText(car.getModel());
-                    mileage.setText(car.getMileage());
+                    mileage.setText(car.getMileage().toString());
+                    numOfSeats.setText(car.getNumOfSeats().toString());
+                    fuel.setText(car.getFuel());
+                    gearbox.setText(car.getGearbox());
+                    startDate.setText(car.getStartDate());
+                    endDate.setText(car.getEndDate());
 
                     req_car.setOnClickListener(v -> {
                         fs.collection("users").whereEqualTo("id",

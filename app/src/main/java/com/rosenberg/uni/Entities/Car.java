@@ -2,6 +2,8 @@ package com.rosenberg.uni.Entities;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,13 +13,15 @@ public class Car {
 
     private String make;
     private String model;
-    private String mileage;
+    private Integer mileage;
     private String ownerID;
-    private String numOfSeats;
+    private Integer numOfSeats;
     private String fuel;
     private String gearbox;
     private String startDate;
+    private Long startDateStamp;
     private String endDate;
+    private Long endDateStamp;
     private String renterID;
 
     public String getRenterID() {
@@ -31,13 +35,25 @@ public class Car {
     public Car(String make, String model, String mileage, String numOfSeats, String fuel, String gearbox, String startDate, String endDate, String ownerID) {
         this.make = make;
         this.model = model;
-        this.mileage = mileage;
-        this.numOfSeats = numOfSeats;
+        this.mileage = Integer.parseInt(mileage);
+        this.numOfSeats = Integer.parseInt(numOfSeats);
         this.fuel = fuel;
         this.gearbox = gearbox;
         this.startDate = startDate;
         this.endDate = endDate;
         this.ownerID = ownerID;
+
+        String [] splitdate = startDate.split("/");
+        Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
+                Integer.parseInt(splitdate[1]),
+                Integer.parseInt(splitdate[0]));
+        this.startDateStamp = calendar.getTimeInMillis();
+
+        splitdate = endDate.split("/");
+        calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
+                Integer.parseInt(splitdate[1]),
+                Integer.parseInt(splitdate[0]));
+        this.endDateStamp = calendar.getTimeInMillis();
     }
 
 
@@ -49,17 +65,19 @@ public class Car {
         this.documentId = documentId;
     }
 
-    public void setMileage(String mileage) {
-        this.mileage = mileage;
-    }
 
-    public String getNumOfSeats() {
+    public Integer getNumOfSeats() {
         return numOfSeats;
     }
 
-    public void setNumOfSeats(String numOfSeats) {
-        this.numOfSeats = numOfSeats;
+    public Long getStartDateStamp() {
+        return startDateStamp;
     }
+
+    public Long getEndDateStamp() {
+        return endDateStamp;
+    }
+
 
     public String getFuel() {
         return fuel;
@@ -121,7 +139,7 @@ public class Car {
         this.ownerID = ownerID;
     }
 
-    public String getMileage() {
+    public Integer getMileage() {
         return mileage;
     }
 }
