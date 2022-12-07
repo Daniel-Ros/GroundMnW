@@ -71,6 +71,28 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity","open menu");
             switch (item.getItemId()) {
                 case R.id.nav_home:
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+                    db.collection("users").whereEqualTo("id", u.getUid())
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                                if (userList.size() == 0) {
+                                    Log.e("MainActivity","Where is my user? " + u.getUid());
+                                    FirebaseAuth.getInstance().signOut();
+                                    return;
+                                }
+                                User user = userList.get(0);
+                                if (user.getTenant()) {
+                                    Log.d("MainActivity", "Going to tenant");
+                                    FragmentManager fm = getSupportFragmentManager();
+                                    fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+                                } else {
+                                    Log.d("MainActivity", "Going to renter");
+                                    FragmentManager fm = getSupportFragmentManager();
+                                    fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null).commit();
+                                }
+                            });
                     Log.d("MainActivity","pressed home");
                     break;
                 case R.id.nav_about:
