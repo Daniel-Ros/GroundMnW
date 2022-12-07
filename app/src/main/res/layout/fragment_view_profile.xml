@@ -142,6 +142,7 @@
     </TableLayout>
 
     <TableLayout
+        android:id="@+id/tableLayout5"
         android:layout_width="304dp"
         android:layout_height="252dp"
         android:layout_marginStart="16dp"
@@ -175,8 +176,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="456dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout5"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="133dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

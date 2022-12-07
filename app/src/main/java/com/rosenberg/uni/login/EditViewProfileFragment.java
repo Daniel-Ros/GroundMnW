@@ -111,6 +111,7 @@ public class EditViewProfileFragment extends Fragment {
             firstName.setText(user.getFirstName());
             lastName.setText(user.getLastName());
             phoneNumber.setText(user.getPhoneNum());
+            spinnerGender.setEnabled(user.getGender());
             born.setText(user.getBorn());
             city.setText(user.getCity());
             detailsOnUser.setText(user.getWritingOnMe());

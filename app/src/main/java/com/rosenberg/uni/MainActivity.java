@@ -27,6 +27,7 @@ import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.login.LoginFragment;
+import com.rosenberg.uni.login.ViewProfileFragment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -77,12 +78,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_sign_out:
                     FirebaseAuth.getInstance().signOut();
-                    FragmentManager fm = getSupportFragmentManager();
-                    fm.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
+                    FragmentManager fmSignout = getSupportFragmentManager();
+                    fmSignout.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
                     break;
                 case R.id.nav_view_profile:
                     //TODO: Amir add view/edit profile
                     Log.d("MainActivity","pressed view profile");
+                    FragmentManager fmViewProfile = getSupportFragmentManager();
+                    fmViewProfile.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);

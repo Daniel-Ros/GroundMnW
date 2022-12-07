@@ -121,9 +121,6 @@ public class ViewProfileFragment extends Fragment {
             detailsOnUser.setText(user.getWritingOnMe());
         });
 
-        // TODO shall write here listener of button editProfile after edit_view fragment will be done
-//        fs.collection("users").document(user)
-
         // when cliecket on "edit" -> jump to new screen, which the user can edit his profile details
         editProfileBtn.setOnClickListener(v -> {
             FragmentManager fm = getParentFragmentManager();
