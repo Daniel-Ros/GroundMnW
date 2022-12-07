@@ -44,7 +44,7 @@ public class User{
         this.male = gender;
         this.phoneNum = phoneNumber;
         this.city = city;
-        this.writingOnMe = ""; // for now
+        this.writingOnMe = "can write here till 300 digits"; // for now
     }
 
 //    public String getName() {

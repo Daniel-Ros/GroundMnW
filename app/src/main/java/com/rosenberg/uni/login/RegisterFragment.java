@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
@@ -94,8 +97,8 @@ public class RegisterFragment extends Fragment {
 
         // Init the spinner of gender
         String [] choisesGenders = new String[]{"Male","Female"};
-        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesRoles);
-        spinnerRoles.setAdapter(adapterGenders);
+        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesGenders);
+        spinnerGender.setAdapter(adapterGenders);
 
 
 
@@ -116,11 +119,18 @@ public class RegisterFragment extends Fragment {
                             fs.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
+                                        Log.e("ViewProfile", "added to fs new user: "+user.getId());
                                         FragmentManager fm = getParentFragmentManager();
                                         if(spinnerRoles.getSelectedItemPosition() == 0)
                                             fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
                                         else
                                             fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class,null).commit();
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("ViewProfile", "failed add to fs the user: "+user.getId());
+                                        }
                                     });
                         }else{
                             Toast.makeText(getActivity(),"failed",Toast.LENGTH_LONG).show();

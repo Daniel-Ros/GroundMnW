@@ -7,12 +7,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.utils.userUtils;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,11 +85,67 @@ public class EditViewProfileFragment extends Fragment {
 
         Button confirmBtn = view.findViewById(R.id.confirm_button);
 
+        EditText firstName = view.findViewById(R.id.edit_first_name);
+        EditText lastName = view.findViewById(R.id.edit_last_name);
+        EditText born = view.findViewById(R.id.edit_birth);
+        EditText city = view.findViewById(R.id.edit_city);
+        EditText phoneNumber = view.findViewById((R.id.edit_phone_num));
+        Spinner spinnerGender = view.findViewById(R.id.edit_gender);
+        EditText detailsOnUser = view.findViewById(R.id.edit_on_me);
 
+
+        // Init the spinner of gender
+        String [] choisesGenders = new String[]{"Male","Female"};
+        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesGenders);
+        spinnerGender.setAdapter(adapterGenders);
+
+        String uid = userUtils.getUserID();
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+
+        fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+            if (userList.size() == 0){
+                Log.e("EditProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+            }
+            User user = userList.get(0);
+            firstName.setText(user.getFirstName());
+            lastName.setText(user.getLastName());
+            phoneNumber.setText(user.getPhoneNum());
+            born.setText(user.getBorn());
+            city.setText(user.getCity());
+            detailsOnUser.setText(user.getWritingOnMe());
+        });
 
 
 
         confirmBtn.setOnClickListener(v -> {
+
+            fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                if (userList.size() == 0){
+                    Log.e("EditProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+                }
+                User user = userList.get(0);
+                user.setFirstName(firstName.getText().toString());
+                user.setLastName(lastName.getText().toString());
+                user.setPhoneNum(phoneNumber.getText().toString());
+                user.setBorn(born.getText().toString());
+                user.setCity(city.getText().toString());
+                user.setWritingOnMe(detailsOnUser.getText().toString());
+                fs.collection("users").document(user.getDocumentId()).set(user)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.e("EditViewProfile", "updated to fs the edit of user: "+user.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("EditViewProfile", "failed to update to fs the edit of user: "+user.getId());
+                            }
+                        });
+            });
             FragmentManager fm = getParentFragmentManager();
             fm.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
         });

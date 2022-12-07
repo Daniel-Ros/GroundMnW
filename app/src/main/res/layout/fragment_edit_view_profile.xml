@@ -9,11 +9,10 @@
 
     <TableLayout
         android:id="@+id/tableLayout3"
-        android:layout_width="322dp"
-        android:layout_height="230dp"
+        android:layout_width="212dp"
+        android:layout_height="243dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,11 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditFName"
+            <EditText
+                android:id="@+id/edit_first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Name" />
+                android:ems="10"
+                android:hint="first name"
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
         </TableRow>
 
@@ -33,11 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditLName"
+            <EditText
+                android:id="@+id/edit_last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last Name" />
+                android:ems="10"
+                android:hint="last name"
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </TableRow>
 
@@ -45,11 +50,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditPN"
+            <EditText
+                android:id="@+id/edit_phone_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phone" />
+                android:ems="10"
+                android:hint="0501112222"
+                android:inputType="phone"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </TableRow>
 
@@ -57,11 +65,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditGender"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/edit_gender"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gender" />
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         </TableRow>
 
@@ -69,24 +77,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditBirth"
+            <EditText
+                android:id="@+id/edit_birth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Birth" />
-
+                android:ems="10"
+                android:hint="date of birth"
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textEditCity"
+            <EditText
+                android:id="@+id/edit_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City" />
-
+                android:ems="10"
+                android:hint="city"
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
     </TableLayout>
@@ -94,8 +106,8 @@
     <TableLayout
         android:layout_width="330dp"
         android:layout_height="248dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/confirm_button"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout3">
 
@@ -105,8 +117,8 @@
 
             <TextView
                 android:id="@+id/textDetailsOnMe"
-                android:layout_width="282dp"
-                android:layout_height="wrap_content"
+                android:layout_width="296dp"
+                android:layout_height="33dp"
                 android:text="Details On Me <3" />
         </TableRow>
 
