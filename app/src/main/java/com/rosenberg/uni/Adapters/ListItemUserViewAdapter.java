@@ -1,5 +1,6 @@
 package com.rosenberg.uni.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class ListItemUserViewAdapter extends ArrayAdapter {
         this.users = users;
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -33,7 +35,7 @@ public class ListItemUserViewAdapter extends ArrayAdapter {
         TextView name = rowView.findViewById(R.id.list_item_user_name);
         TextView mail = rowView.findViewById(R.id.list_item_user_mail);
 
-        name.setText(users[position].getName());
+        name.setText(users[position].getFirstName()+" "+users[position].getLastName());
         mail.setText(users[position].getMail());
 
         return rowView;

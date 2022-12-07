@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,43 +68,62 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v,savedInstanceState);
 
-        EditText name = v.findViewById(R.id.register_name);
+//        EditText name = v.findViewById(R.id.register_name);
+        EditText firstName = v.findViewById(R.id.register_first_name);
+        EditText lastName = v.findViewById(R.id.register_last_name);
+
         EditText email = v.findViewById(R.id.register_email);
+
+        // TODO: verify pass1 == pass2 - else, dont create the user
         EditText password1 = v.findViewById(R.id.register_password1);
         EditText password2 = v.findViewById(R.id.register_password2);
-        EditText dob = v.findViewById(R.id.register_dob);
-        Spinner spinner = v.findViewById(R.id.register_spinner);
-        Button btn = v.findViewById(R.id.register_button);
+
+        EditText born = v.findViewById(R.id.register_dob);
+        EditText city = v.findViewById(R.id.register_city);
+        Spinner spinnerRoles = v.findViewById(R.id.register_spinner);
+        Spinner spinnerGender = v.findViewById(R.id.register_gender);
+        EditText phoneNumber = v.findViewById((R.id.register_phoneNumber));
+
+        Button registerBtn = v.findViewById(R.id.register_button);
 
 
-        // Init the spinner
-        String [] choises = new String[]{"Tenant","Renter"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choises);
-        spinner.setAdapter(adapter);
+        // Init the spinner of roles
+        String [] choisesRoles = new String[]{"Tenant","Renter"};
+        ArrayAdapter<String> adapterRoles = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesRoles);
+        spinnerRoles.setAdapter(adapterRoles);
+
+        // Init the spinner of gender
+        String [] choisesGenders = new String[]{"Male","Female"};
+        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesRoles);
+        spinnerRoles.setAdapter(adapterGenders);
 
 
-        btn.setOnClickListener(view -> {
+
+        registerBtn.setOnClickListener(view -> {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email.getText().toString(),
                             password1.getText().toString())
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
                             //Toast.makeText(RegisterActivity.this,"made account",Toast.LENGTH_LONG).show();
                             String uid = mAuth.getCurrentUser().getUid();
-                            User user = new User(uid,name.getText().toString(),email.getText().toString(),dob.getText().toString(),spinner.getSelectedItemPosition() == 0);
-                            db.collection("users")
+                            User user = new User(uid,firstName.getText().toString(), lastName.getText().toString(),
+                                    email.getText().toString(),born.getText().toString(),spinnerRoles.getSelectedItemPosition() == 0,
+                                    spinnerGender.getSelectedItemPosition() == 0,
+                                    phoneNumber.getText().toString(), city.getText().toString());
+                            fs.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
                                         FragmentManager fm = getParentFragmentManager();
-                                        if(spinner.getSelectedItemPosition() == 0)
+                                        if(spinnerRoles.getSelectedItemPosition() == 0)
                                             fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
                                         else
                                             fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class,null).commit();
                                     });
                         }else{
-//                            Toast.makeText(RegisterActivity.this,"failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"failed",Toast.LENGTH_LONG).show();
                         }
                     });
         });
