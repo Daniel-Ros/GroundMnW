@@ -7,15 +7,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.R;
+
+import java.util.List;
 
 
 // tester login tenant
@@ -94,10 +102,30 @@ public class LoginFragment extends Fragment {
             mAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString())
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
-                        }else{
-//                            Toast.makeText(LoginFragment.this,"wrong",Toast.LENGTH_LONG).show();
+                            FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseFirestore fs = FirebaseFirestore.getInstance();
+                            fs.collection("users").whereEqualTo("id", u.getUid())
+                                    .get()
+                                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                        List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                                        if (userList.size() == 0) {
+                                            Log.e("MainActivity","Where is my user? " + u.getUid());
+                                            FirebaseAuth.getInstance().signOut();
+                                            return;
+                                        }
+                                        User user = userList.get(0);
+                                        if (user.getTenant()) {
+                                            Log.d("MainActivity", "Going to tenant");
+                                            FragmentManager fm = getParentFragmentManager();
+                                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+                                        } else {
+                                            Log.d("MainActivity", "Going to renter");
+                                            FragmentManager fm = getParentFragmentManager();
+                                            fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null).commit();
+                                        }
+                                    });
+                           }else{
+                            Toast.makeText(getActivity(),"wrong", Toast.LENGTH_LONG).show();
                         }
                     });
         });
