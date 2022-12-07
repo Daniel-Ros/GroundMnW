@@ -175,8 +175,9 @@
         android:layout_height="wrap_content"
         android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout5"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="133dp" />
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

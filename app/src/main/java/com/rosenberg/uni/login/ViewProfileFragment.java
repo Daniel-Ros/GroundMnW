@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.WithLifecycleStateKt;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,10 +130,12 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         View view = getView();
+        Lifecycle.Event onResume = Lifecycle.Event.ON_RESUME;
         assert view != null;
         TextView firstName = view.findViewById(R.id.view_first_name);
         TextView lastName = view.findViewById(R.id.view_last_name);
