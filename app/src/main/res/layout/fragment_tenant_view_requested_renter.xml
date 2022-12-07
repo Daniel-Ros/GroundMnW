@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.ViewProfileFragment">
+    tools:context=".Tenant.TenantViewRequestedRenterFragment">
 
     <TableLayout
-        android:id="@+id/tableLayout2"
+        android:id="@+id/toplayout"
         android:layout_width="207dp"
         android:layout_height="141dp"
         android:layout_marginStart="16dp"
@@ -21,13 +21,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textFName"
+                android:id="@+id/textView4"
                 android:layout_width="107dp"
                 android:layout_height="wrap_content"
                 android:text="First Name" />
 
             <TextView
-                android:id="@+id/view_first_name"
+                android:id="@+id/view_renterProfile_firstN"
                 android:layout_width="96dp"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -38,17 +38,16 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textLName"
+                android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last Name" />
 
             <TextView
-                android:id="@+id/view_last_name"
+                android:id="@+id/view_renterProfile_lastN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
-
         </TableRow>
 
         <TableRow
@@ -56,13 +55,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textRole"
+                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Role" />
 
             <TextView
-                android:id="@+id/view_Role"
+                android:id="@+id/view_renterProfile_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -73,13 +72,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textPhone"
+                android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phone Number" />
 
             <TextView
-                android:id="@+id/view_phone_number"
+                android:id="@+id/view_renterProfile_phoneNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -90,17 +89,16 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textGender"
+                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gender" />
 
             <TextView
-                android:id="@+id/view_gender"
+                android:id="@+id/view_renterProfile_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
-
         </TableRow>
 
         <TableRow
@@ -108,13 +106,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textBirth"
+                android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Birth Date" />
 
             <TextView
-                android:id="@+id/view_Birth"
+                android:id="@+id/view_renterProfile_born"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -125,34 +123,34 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textCity"
+                android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="City" />
 
             <TextView
-                android:id="@+id/view_city"
-                android:layout_width="95dp"
-                android:layout_height="match_parent"
+                android:id="@+id/view_renterProfile_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="TextView" />
         </TableRow>
-
     </TableLayout>
 
     <TableLayout
-        android:id="@+id/tableLayout5"
+        android:id="@+id/bottomlayout"
         android:layout_width="304dp"
         android:layout_height="252dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/toplayout">
+
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/textOnMe"
+                android:id="@+id/textView23"
                 android:layout_width="290dp"
                 android:layout_height="match_parent"
                 android:text="Details On Me :)" />
@@ -160,23 +158,34 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/view_on_me"
+                android:id="@+id/view_renterProfile_onMe"
                 android:layout_width="294dp"
                 android:layout_height="231dp" />
         </TableRow>
     </TableLayout>
 
     <Button
-        android:id="@+id/user_view_edit"
+        android:id="@+id/view_renterProfile_AcceptBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout5"
+        android:layout_marginTop="8dp"
+        android:text="Accept"
+        app:layout_constraintTop_toBottomOf="@+id/bottomlayout"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="133dp" />
+        tools:layout_editor_absoluteX="78dp" />
+
+    <Button
+        android:id="@+id/view_renterProfile_RejectBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="REJECT"
+        app:layout_constraintTop_toBottomOf="@+id/bottomlayout"
+        tools:layout_editor_absoluteX="181dp"
+        tools:layout_editor_absoluteY="435dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

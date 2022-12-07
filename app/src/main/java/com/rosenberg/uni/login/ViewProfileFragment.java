@@ -127,4 +127,50 @@ public class ViewProfileFragment extends Fragment {
             fm.beginTransaction().replace(R.id.main_fragment, EditViewProfileFragment.class, null).commit();
         });
     }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        View view = getView();
+        assert view != null;
+        TextView firstName = view.findViewById(R.id.view_first_name);
+        TextView lastName = view.findViewById(R.id.view_last_name);
+        TextView role = view.findViewById(R.id.view_Role);
+        TextView phoneNum = view.findViewById(R.id.view_phone_number);
+        TextView gender = view.findViewById(R.id.view_gender);
+        TextView birth = view.findViewById(R.id.view_Birth);
+        TextView city = view.findViewById(R.id.view_city);
+        TextView detailsOnUser = view.findViewById(R.id.view_on_me);
+
+        String uid = userUtils.getUserID();
+        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+
+
+        fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+            if (userList.size() == 0){
+                Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+            }
+            User user = userList.get(0);
+            firstName.setText(user.getFirstName());
+            lastName.setText(user.getLastName());
+            String userGender, userRole;
+            if (user.getTenant()){
+                userRole = "Tenant";
+            }else {
+                userRole = "Renter";
+            }
+            role.setText(userRole);
+            if (user.getGender()){
+                userGender = "Male";
+            }else{
+                userGender = "Female";
+            }
+            gender.setText(userGender);
+            phoneNum.setText(user.getPhoneNum());
+            birth.setText(user.getBorn());
+            city.setText(user.getCity());
+            detailsOnUser.setText(user.getWritingOnMe());
+        });
+    }
 }

@@ -63,7 +63,7 @@ public class RenterCarViewFragment extends Fragment {
 
             Log.d("RenterCarView","sending to this id " + cars.get(i).getDocumentId());
             fm.beginTransaction().replace(R.id.main_fragment,
-                    RenterCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId()),
+                            RenterCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId()),
                     null)
                     .addToBackStack("RenterCarView")
                     .commit();

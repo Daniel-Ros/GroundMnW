@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     fmSignout.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
                     break;
                 case R.id.nav_view_profile:
-                    //TODO: Amir add view/edit profile
                     Log.d("MainActivity","pressed view profile");
                     FragmentManager fmViewProfile = getSupportFragmentManager();
                     fmViewProfile.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();

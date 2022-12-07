@@ -36,7 +36,7 @@ public class ListItemUserViewAdapter extends ArrayAdapter {
         TextView mail = rowView.findViewById(R.id.list_item_user_mail);
 
         name.setText(users[position].getFirstName()+" "+users[position].getLastName());
-        mail.setText(users[position].getMail());
+//        mail.setText(users[position].getMail());
 
         return rowView;
     }

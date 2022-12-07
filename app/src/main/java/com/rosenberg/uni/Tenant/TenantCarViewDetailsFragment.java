@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.Renter.RenterCarViewDetailsFragment;
+import com.rosenberg.uni.Renter.RenterCarViewFragment;
+import com.rosenberg.uni.login.RegisterFragment;
 
 import java.util.List;
 
@@ -78,8 +81,15 @@ public class TenantCarViewDetailsFragment extends Fragment {
                     car_view.setAdapter(adapter);
 
                     car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
-                        fs.collection("cars")
-                                .document(car_id).update("renterID",users.get(i).getId());
+
+                        Log.d("RenterCarViewDetails", "user want to see the details on the user: " + users.get(i).getId());
+                        FragmentManager fm = getParentFragmentManager();
+                        fm.beginTransaction().replace(R.id.main_fragment,
+                                TenantViewRequestedRenterFragment.newInstance(users.get(i).getId(), car_id),null)
+                                .commit();
+
+//                        fs.collection("cars")
+//                                .document(car_id).update("renterID",users.get(i).getId());
                     });
                 })
                 .addOnFailureListener(fail -> {
