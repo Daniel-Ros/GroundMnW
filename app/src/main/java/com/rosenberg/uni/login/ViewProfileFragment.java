@@ -14,15 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rosenberg.uni.EditViewProfileFragment;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.

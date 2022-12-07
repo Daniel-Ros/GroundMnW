@@ -1,4 +1,4 @@
-package com.rosenberg.uni;
+package com.rosenberg.uni.login;
 
 import android.os.Bundle;
 
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.rosenberg.uni.login.ViewProfileFragment;
+import com.rosenberg.uni.R;
 
 /**
  * A simple {@link Fragment} subclass.
