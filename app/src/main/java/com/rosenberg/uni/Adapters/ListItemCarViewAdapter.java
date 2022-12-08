@@ -36,6 +36,7 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
         TextView model = rowView.findViewById(R.id.list_item_car_view_model);
         TextView mileage = rowView.findViewById(R.id.list_item_car_view_milage);
         TextView status = rowView.findViewById(R.id.list_item_car_view_status);
+        TextView price = rowView.findViewById(R.id.list_item_car_view_price);
 
         if(userID.equals(cars[position].getRenterID())){
             status.setText("Reserved");
@@ -44,8 +45,8 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
         }
         make.setText(cars[position].getMake());
         model.setText(cars[position].getModel());
-        mileage.setText(cars[position].getMileage().toString());
-
+        mileage.setText(" "+cars[position].getMileage().toString());
+        price.setText(cars[position].getPrice().toString()+"$");
         return rowView;
     }
 }

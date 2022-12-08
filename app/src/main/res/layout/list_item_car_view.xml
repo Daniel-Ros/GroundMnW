@@ -61,6 +61,25 @@
     </TableLayout>
 
     <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Price"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginTop="@dimen/text_margin"/>
+    <TextView
+        android:id="@+id/list_item_car_view_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="TextView"
+        android:gravity="center"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="@dimen/text_margin"/>
+
+    <TextView
         android:id="@+id/list_item_car_view_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

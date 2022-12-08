@@ -1,6 +1,5 @@
 package com.rosenberg.uni.Tenant;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -22,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
-
-import java.util.Calendar;
 
 
 public class TenantAddCarFragment extends Fragment {
@@ -52,6 +48,7 @@ public class TenantAddCarFragment extends Fragment {
         Spinner gearbox = view.findViewById(R.id.tenant_add_car_gearbox);
         EditText start_date = view.findViewById(R.id.tenant_add_car_start_date);
         EditText end_date = view.findViewById(R.id.tenant_add_car_end_date);
+        EditText price = view.findViewById(R.id.tenant_edit_car_price);
         Button done = view.findViewById(R.id.tenant_add_car_done);
 
 
@@ -74,6 +71,7 @@ public class TenantAddCarFragment extends Fragment {
                     gearbox.getSelectedItem().toString(),
                     start_date.getText().toString(),
                     end_date.getText().toString(),
+                    Integer.parseInt(price.getText().toString()),
                     uid);
             fs.collection("cars").add(car).addOnCompleteListener(task -> {
                 FragmentManager fm = getParentFragmentManager();

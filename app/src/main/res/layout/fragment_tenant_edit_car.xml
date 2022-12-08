@@ -61,6 +61,24 @@
                 android:inputType="number"
                 android:minHeight="48dp" />
 
+            <EditText
+                android:id="@+id/tenant_edit_car_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:layout_margin="@dimen/text_margin"
+                android:hint="Price USD"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/editTextNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:ems="10"
+                android:inputType="number" />
+
             <Spinner
                 android:id="@+id/tenant_edit_car_fuel"
                 android:layout_width="match_parent"

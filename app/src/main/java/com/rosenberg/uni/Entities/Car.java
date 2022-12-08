@@ -23,6 +23,7 @@ public class Car {
     private String endDate;
     private Long endDateStamp;
     private String renterID;
+    private Integer price;
 
     public String getRenterID() {
         return renterID;
@@ -32,7 +33,9 @@ public class Car {
 
     }
 
-    public Car(String make, String model, String mileage, String numOfSeats, String fuel, String gearbox, String startDate, String endDate, String ownerID) {
+    public Car(String make, String model, String mileage, String numOfSeats, String fuel,
+               String gearbox, String startDate, String endDate,
+               Integer price, String ownerID) {
         this.make = make;
         this.model = model;
         this.mileage = Integer.parseInt(mileage);
@@ -42,7 +45,7 @@ public class Car {
         this.startDate = startDate;
         this.endDate = endDate;
         this.ownerID = ownerID;
-
+        this.price = price;
         String [] splitdate = startDate.split("/");
         Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
                 Integer.parseInt(splitdate[1]),
@@ -142,4 +145,13 @@ public class Car {
     public Integer getMileage() {
         return mileage;
     }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
 }

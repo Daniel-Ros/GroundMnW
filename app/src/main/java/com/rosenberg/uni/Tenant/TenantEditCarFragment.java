@@ -81,9 +81,9 @@ public class TenantEditCarFragment extends Fragment {
         Spinner gearbox = view.findViewById(R.id.tenant_edit_car_gearbox);
         EditText start_date = view.findViewById(R.id.tenant_edit_car_start_date);
         EditText end_date = view.findViewById(R.id.tenant_edit_car_end_date);
+        EditText price = view.findViewById(R.id.tenant_edit_car_price);
 
         Button done = view.findViewById(R.id.tenant_edit_car_done);
-
 
         ArrayAdapter<String> adapterMake = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,fuels);
         fuel.setAdapter(adapterMake);
@@ -106,7 +106,7 @@ public class TenantEditCarFragment extends Fragment {
                     gearbox.setSelection(car.getGearbox() == "automatic"? 0 : 1);
                     start_date.setText(car.getStartDate());
                     end_date.setText(car.getEndDate());
-
+                    price.setText(car.getPrice());
 
                     done.setOnClickListener(v -> {
                         String uid = userUtils.getUserID();
@@ -120,6 +120,7 @@ public class TenantEditCarFragment extends Fragment {
                                 gearbox.getSelectedItem().toString(),
                                 start_date.getText().toString(),
                                 end_date.getText().toString(),
+                                Integer.parseInt(price.getText().toString()),
                                 uid);
                         fs.collection("cars").document(car_id).set(new_car).addOnCompleteListener(task -> {
                             FragmentManager fm = getParentFragmentManager();
