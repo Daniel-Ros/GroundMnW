@@ -126,13 +126,16 @@ public class ViewProfileFragment extends Fragment {
         // when cliecket on "edit" -> jump to new screen, which the user can edit his profile details
         editProfileBtn.setOnClickListener(v -> {
             FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.main_fragment, EditViewProfileFragment.class, null).commit();
+            fm.beginTransaction().replace(R.id.main_fragment, EditViewProfileFragment.class, null)
+                    .addToBackStack("ViewProfile")
+                    .commit();
         });
     }
 
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.d("Status","StateRestored");
         super.onViewStateRestored(savedInstanceState);
         View view = getView();
         Lifecycle.Event onResume = Lifecycle.Event.ON_RESUME;
@@ -176,5 +179,11 @@ public class ViewProfileFragment extends Fragment {
             city.setText(user.getCity());
             detailsOnUser.setText(user.getWritingOnMe());
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("status","OnResume");
     }
 }

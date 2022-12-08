@@ -1,12 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tenant.TenantCarViewDetailsFragment">
+    tools:context=".Tenant.TenantCarViewDetailsFragment"
+    android:orientation="vertical">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="make"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_make"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="model"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mileage"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_mileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gear box"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_gearbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="fuel type"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_fuel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="number of seats"
+                    android:layout_margin="@dimen/text_margin"/>
+
+                <TextView
+                    android:id="@+id/tenant_car_view_details_num_of_seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_margin="@dimen/text_margin"/>
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:id="@+id/tenant_car_view_details_edit"
+                    android:text="Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    />
+
+                <Button
+                    android:id="@+id/tenant_car_view_details_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:text="Remove"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
     <ListView
         android:id="@+id/tenant_car_view_details_users_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

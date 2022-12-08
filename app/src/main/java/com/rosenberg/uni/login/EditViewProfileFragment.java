@@ -138,6 +138,8 @@ public class EditViewProfileFragment extends Fragment {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.e("EditViewProfile", "updated to fs the edit of user: "+user.getId());
+                                FragmentManager fm = getParentFragmentManager();
+                                fm.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -147,8 +149,7 @@ public class EditViewProfileFragment extends Fragment {
                             }
                         });
             });
-            FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
+
         });
 
     }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
@@ -56,7 +57,12 @@ public class TenantCarViewFragment extends Fragment {
                                 .addToBackStack("TenantCarView")
                                 .commit();
                     });
-
+                    // If we have more then 5 cars, disable this option
+                    if(cars.size() > 5) {
+                        add_car.setOnClickListener(v -> {
+                            Toast.makeText(getActivity(),"Cannot add more then 5 cars",Toast.LENGTH_LONG);
+                        });
+                    }
                 });
 
         add_car.setOnClickListener(v -> {

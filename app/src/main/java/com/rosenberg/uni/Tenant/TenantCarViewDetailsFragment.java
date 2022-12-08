@@ -67,9 +67,57 @@ public class TenantCarViewDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView make = view.findViewById(R.id.tenant_car_view_details_make);
+        TextView model = view.findViewById(R.id.tenant_car_view_details_model);
+        TextView mileage = view.findViewById(R.id.tenant_car_view_details_mileage);
+        TextView numOfSeats = view.findViewById(R.id.tenant_car_view_details_num_of_seats);
+        TextView fuel = view.findViewById(R.id.tenant_car_view_details_fuel);
+        TextView gearbox = view.findViewById(R.id.tenant_car_view_details_gearbox);
+        TextView startDate = view.findViewById(R.id.tenant_car_view_details_start_date);
+        TextView endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
+
+        Button edit = view.findViewById(R.id.tenant_car_view_details_edit);
+        Button remove = view.findViewById(R.id.tenant_car_view_details_remove);
+
         ListView car_view = view.findViewById(R.id.tenant_car_view_details_users_list_view);
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
+
+        fs.collection("cars")
+                .document(car_id)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Car car = queryDocumentSnapshots.toObject(Car.class);
+
+                    make.setText(car.getMake());
+                    model.setText(car.getModel());
+                    mileage.setText(car.getMileage().toString());
+                    numOfSeats.setText(car.getNumOfSeats().toString());
+                    fuel.setText(car.getFuel());
+                    gearbox.setText(car.getGearbox());
+                    startDate.setText(car.getStartDate());
+                    endDate.setText(car.getEndDate());
+
+                    edit.setOnClickListener(view1 -> {
+                        FragmentManager fm = getParentFragmentManager();
+                        fm.beginTransaction().replace(R.id.main_fragment,
+                                        TenantEditCarFragment.newInstance(car_id),null)
+                                .commit();
+                    });
+
+                    remove.setOnClickListener(view1 -> {
+                        fs.collection("cars").document(car_id).delete().addOnSuccessListener(runnable -> {
+                            FragmentManager fm = getParentFragmentManager();
+                            fm.beginTransaction().replace(R.id.main_fragment,
+                                            TenantCarViewFragment.class,null)
+                                    .commit();
+                        });
+                    });
+                })
+                .addOnFailureListener( fail -> {
+                    Log.d("RenterCarViewDetails","problme loading car info" + car_id);
+                });
+
         fs.collection("cars")
                 .document(car_id)
                 .collection("request")
@@ -82,7 +130,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
 
                     car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
 
-                        Log.d("RenterCarViewDetails", "user want to see the details on the user: " + users.get(i).getId());
+                        Log.d("tenantCarViewDetails", "user want to see the details on the user: " + users.get(i).getId());
                         FragmentManager fm = getParentFragmentManager();
                         fm.beginTransaction().replace(R.id.main_fragment,
                                 TenantViewRequestedRenterFragment.newInstance(users.get(i).getId(), car_id),null)
@@ -93,7 +141,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
                     });
                 })
                 .addOnFailureListener(fail -> {
-                    Log.d("RenterCarViewDetails", "problme loading car info" + car_id);
+                    Log.d("tenantCarViewDetails", "problme loading car info" + car_id);
                 });
     }
 }

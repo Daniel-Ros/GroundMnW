@@ -33,7 +33,6 @@ public class ListItemUserViewAdapter extends ArrayAdapter {
         View rowView=inflater.inflate(R.layout.list_item_user_view,null,true);
 
         TextView name = rowView.findViewById(R.id.list_item_user_name);
-        TextView mail = rowView.findViewById(R.id.list_item_user_mail);
 
         name.setText(users[position].getFirstName()+" "+users[position].getLastName());
 //        mail.setText(users[position].getMail());
