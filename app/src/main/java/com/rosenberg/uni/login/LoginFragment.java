@@ -75,12 +75,10 @@ public class LoginFragment extends Fragment {
     }
 
     /**
+     * Called when fragment is inflated,
      * init all texts and buttons for login window
      * @param view - View object of the window (hold the objects of texts inputs that screened)
-     */
-    // TODO - DANIEL add comment here im not sure about
-    /**
-     * @param savedInstanceState - DANIEL HELP
+     * @param savedInstanceState -  last state of this fragment,should be null
      */
     @Override
     public void onViewCreated(@NonNull View loginView, @Nullable Bundle savedInstanceState) {

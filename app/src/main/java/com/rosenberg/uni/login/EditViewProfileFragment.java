@@ -44,8 +44,7 @@ public class EditViewProfileFragment extends Fragment {
      * this fragment using the provided parameters.
      * @return A new instance of fragment EditViewProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EditViewProfileFragment newInstance(String param1, String param2) {
+    public static EditViewProfileFragment newInstance() {
         return new EditViewProfileFragment();
     }
 

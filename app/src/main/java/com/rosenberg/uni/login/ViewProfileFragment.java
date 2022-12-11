@@ -42,8 +42,7 @@ public class ViewProfileFragment extends Fragment {
      * this fragment using the provided parameters.
      * @return A new instance of fragment ViewProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ViewProfileFragment newInstance(String param1, String param2) {
+    public static ViewProfileFragment newInstance() {
         return new ViewProfileFragment();
     }
 
@@ -141,9 +140,6 @@ public class ViewProfileFragment extends Fragment {
         View viewProfileView = getView();
         assert viewProfileView != null; // kinda not possible since we stand on that view?
 
-        // TODO DANIEL note here please
-        Lifecycle.Event onResume = Lifecycle.Event.ON_RESUME;
-
         // init vars of the texts for the window
         TextView firstName = viewProfileView.findViewById(R.id.view_first_name);
         TextView lastName = viewProfileView.findViewById(R.id.view_last_name);
@@ -186,15 +182,5 @@ public class ViewProfileFragment extends Fragment {
             city.setText(user.getCity());
             detailsOnUser.setText(user.getWritingOnMe());
         });
-    }
-
-    // TODO daniel add comment here please
-    /**
-     *
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("status","OnResume");
     }
 }
