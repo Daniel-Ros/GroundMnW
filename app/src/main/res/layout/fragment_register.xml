@@ -57,6 +57,16 @@
             android:layout_margin="@dimen/text_margin"/>
 
         <EditText
+            android:id="@+id/register_password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Repeat Password"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:layout_margin="@dimen/text_margin"/>
+
+        <EditText
             android:id="@+id/register_dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,15 +77,6 @@
             android:layout_margin="@dimen/text_margin"
             android:onClick="showDateDialog" />
 
-        <EditText
-            android:id="@+id/register_password2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Repeat Password"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:layout_margin="@dimen/text_margin"/>
 
         <Spinner
             android:id="@+id/register_spinner"
