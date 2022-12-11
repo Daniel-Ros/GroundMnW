@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,6 +22,7 @@ import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.login.LoginFragment;
 
 import java.util.List;
 
@@ -95,6 +98,11 @@ public class RenterCarViewDetailsFragment extends Fragment {
                     endDate.setText(car.getEndDate());
 
                     req_car.setOnClickListener(v -> {
+                        if(car.getRenterID() == FirebaseAuth.getInstance().getUid()){
+                            Toast.makeText(getContext(),"Carr already requested",Toast.LENGTH_LONG).show();
+                            FragmentManager fm = getParentFragmentManager();
+                            fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
+                        }
                         fs.collection("users").whereEqualTo("id",
                                         FirebaseAuth.getInstance().getUid())
                                 .get()
