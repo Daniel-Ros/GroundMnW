@@ -16,12 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -51,6 +53,7 @@ public class RenterCarViewFragment extends Fragment {
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         fs.collection("cars")
+                .whereIn("RenterID", Arrays.asList(null,FirebaseAuth.getInstance().getUid()))
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     cars = queryDocumentSnapshots.toObjects(Car.class);
