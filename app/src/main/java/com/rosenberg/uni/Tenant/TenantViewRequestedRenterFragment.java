@@ -17,21 +17,24 @@ import android.widget.TextView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.R;
-import com.rosenberg.uni.login.EditViewProfileFragment;
 
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TenantViewRequestedRenterFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * this fragment goal is to show the TENANT
+ *      that clicked on specific renter entry - the profile of the RENTER
+ *      also, provide to TENANT option to accept or reject the request from RENTER
  */
 public class TenantViewRequestedRenterFragment extends Fragment {
 
-    private static final String USER_ID = "USRID";
-    private static final String CAR_ID = "CARID";
-    private String user_id;
-    private String car_id;
+    private static final String USER_ID = null;
+    private static final String CAR_ID = null;
+
+    // both will be used for get the curr car we talk about
+    // and also the renter docId
+    private String userDocId;
+    private String carDocId;
+
     public TenantViewRequestedRenterFragment() {
         // Required empty public constructor
     }
@@ -47,21 +50,30 @@ public class TenantViewRequestedRenterFragment extends Fragment {
     public static TenantViewRequestedRenterFragment newInstance(String userId, String carId) {
         TenantViewRequestedRenterFragment fragment = new TenantViewRequestedRenterFragment();
         Bundle args = new Bundle();
+        // set the ids in args
         args.putString(USER_ID, userId);
         args.putString(CAR_ID, carId);
         fragment.setArguments(args);
         return fragment;
     }
 
+    /**
+     * do default onCreate
+     * also, extract from this obj arguments, the documentsId
+     * @param savedInstanceState last state of this fragment,should be null
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user_id = getArguments().getString(USER_ID);
-            car_id = getArguments().getString(CAR_ID);
+            userDocId = getArguments().getString(USER_ID);
+            carDocId = getArguments().getString(CAR_ID);
         }
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,12 +81,16 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_tenant_view_requested_renter, container, false);
     }
 
+    /**
+     * Called when fragment is inflated,
+     * init all texts and buttons for curr window
+     * @param view - curr view
+     * @param savedInstanceState - last state of this fragment,should be null
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
-        Button rejectRenterBtn = view.findViewById(R.id.view_renterProfile_RejectBtn);
-
+        // init vars of the texts window
         TextView firstName = view.findViewById(R.id.view_renterProfile_firstN);
         TextView lastName = view.findViewById(R.id.view_renterProfile_lastN);
         TextView role = view.findViewById(R.id.view_renterProfile_role);
@@ -84,30 +100,40 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         TextView city = view.findViewById(R.id.view_renterProfile_city);
         TextView detailsOnUser = view.findViewById(R.id.view_renterProfile_onMe);
 
+        // init buttons for window
+        Button acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
+        Button rejectRenterBtn = view.findViewById(R.id.view_renterProfile_RejectBtn);
+
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         FragmentManager fm = getParentFragmentManager();
 
-        fs.collection("users").whereEqualTo("id", user_id).get()
+        // get the renter user data and show it to curr user (tenant)
+        fs.collection("users").whereEqualTo("id", userDocId).get()
                 .addOnSuccessListener(queryDocumentSnapshots ->{
-                    List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                    List<User> userList = queryDocumentSnapshots.toObjects(User.class); // returns list of items
                     User user = userList.get(0);
                     if (userList.size() == 0){
-                        Log.e("TenantViewRenter","Where is my user? its connected to app but cant see its own details from db " + user_id);
+                        Log.e("TenantViewRenter",
+                                "Where is my user? its connected to app but cant see its own details from db " + userDocId);
                     }
-                    firstName.setText(user.getFirstName());
-                    lastName.setText(user.getLastName());
+
+                    // get gender, role
                     String userGender, userRole;
                     if (user.getTenant()){
                         userRole = "Tenant";
                     }else {
                         userRole = "Renter";
                     }
-                    role.setText(userRole);
                     if (user.getGender()){
                         userGender = "Male";
                     }else{
                         userGender = "Female";
                     }
+
+                    // init text boxes
+                    firstName.setText(user.getFirstName());
+                    lastName.setText(user.getLastName());
+                    role.setText(userRole);
                     gender.setText(userGender);
                     phoneNum.setText(user.getPhoneNum());
                     birth.setText(user.getBorn());
@@ -117,7 +143,7 @@ public class TenantViewRequestedRenterFragment extends Fragment {
                     // if accepted renter, shall go back to cars list, this car "deal" is over
                     acceptRenterBtn.setOnClickListener(v -> {
                         fs.collection("cars")
-                                .document(car_id).update("renterID", user.getId());
+                                .document(carDocId).update("renterID", user.getId());
 
                         fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
                     });
@@ -125,9 +151,9 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         // if rejected, shall see more users - maybe would like to accept/reject others
         rejectRenterBtn.setOnClickListener(v -> {
             fs.collection("cars")
-                    .document(car_id).update("renterID", null);
+                    .document(carDocId).update("renterID", null);
 
-            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(car_id)).commit();
+            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(carDocId)).commit();
         });
     }
 }

@@ -25,6 +25,7 @@ import com.rosenberg.uni.utils.userUtils;
 import java.util.List;
 
 /**
+ *  ------------------   HOME of tenant -----------------------
  * this class represents the Home window of the tenant
  * the window shows all the current cars that this tenant offer for renting
  * also the user can add more car offers, but not more than 5 cars in parallel!
@@ -34,7 +35,7 @@ public class TenantCarViewFragment extends Fragment {
     private boolean canAddCar = false; // already more than 5 ongoing offers
 
     /**
-     * we not doing anything more than default at "onCreate" phase
+     * we not doing anything more than default at "onCreateView" phase
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,20 +54,28 @@ public class TenantCarViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // init car row entries
         ListView car_view = view.findViewById(R.id.renter_car_view_list_view);
+        // init add_car button
         Button add_car = view.findViewById(R.id.tenant_car_view_add_car);
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
+
+        // get all cars of current user, we would like to represent this entries on screen!
         fs.collection("cars").whereEqualTo("ownerID",userUtils.getUserID())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
                     Log.d("CAR_VIEW","ADDING CARS" + cars.size());
 
+
+                    // TODO DANIEL WRITE HEREEEEEEEEEEEEEEEEEEEEE COMMENTSSSSSSSSSSSSSSSSSSSS
                     ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
                     car_view.setAdapter(adapter);
 
+                    // TODO MAGIC LINEEEEEEEEEEEEEEEEEEEEEEEEEe --------
                     car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
+
                         FragmentManager fm = getParentFragmentManager();
                         TenantCarViewDetailsFragment fragment = TenantCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId());
                         fm.beginTransaction().replace(R.id.main_fragment, fragment, null)
@@ -85,13 +94,15 @@ public class TenantCarViewFragment extends Fragment {
                 });
 
         add_car.setOnClickListener(v -> {
+            // check if possible to add car
+            // canAddCar == true iff (<=>) user have 4 or less ongoing cars entry
             if(canAddCar) {
                 FragmentManager fm = getParentFragmentManager();
                 fm.beginTransaction().replace(R.id.main_fragment, TenantAddCarFragment.class, null)
                         .addToBackStack("TenantCarView")
                         .commit();
-            }else{
-                Toast.makeText(getActivity().getApplicationContext(),"failed",Toast.LENGTH_LONG).show();
+            }else{ // just msg him failed
+                Toast.makeText(getActivity().getApplicationContext(),"already 5 ongoing car entries",Toast.LENGTH_LONG).show();
             }
         });
     }

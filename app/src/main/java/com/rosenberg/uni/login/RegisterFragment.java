@@ -70,7 +70,8 @@ public class RegisterFragment extends Fragment {
     }
 
     /**
-     *
+     * Called when fragment is inflated,
+     * init all texts and buttons for login window
      * @param view - View object of the window (hold the objects of texts inputs that screened)
      * @param savedInstanceState - last state of this fragment,should be null
      */

@@ -22,9 +22,8 @@ import com.rosenberg.uni.R;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link RenterMyCarDetailsViewFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * this fragment goal is to show the RENTER the data on the car that he is already
+ *      requested and got accepted its TENANT
  */
 public class RenterMyCarDetailsViewFragment extends Fragment {
 

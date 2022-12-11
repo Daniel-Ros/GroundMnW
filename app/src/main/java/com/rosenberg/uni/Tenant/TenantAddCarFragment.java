@@ -21,11 +21,14 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
-
+/**
+ * this class presents the window that provide to tenant user the option to add cars for renting
+ */
 public class TenantAddCarFragment extends Fragment {
 
-    EditText datePicked;
-
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,13 +36,21 @@ public class TenantAddCarFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_tenant_add_car, container, false);
     }
 
+    /**
+     * Called when fragment is inflated,
+     * init all texts and buttons for curr window
+     * @param view - this view object
+     * @param savedInstanceState last state of this fragment,should be null
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] fuels = new String[]{"95", "disele"};
-        String[] gearboxs = new String[]{"automatic", "manuel"};
+        // init options
+        String[] fuels = new String[]{"95", "diesel"};
+        String[] gearboxes = new String[]{"automatic", "manual"};
 
+        // init vars of the texts window
         EditText make = view.findViewById(R.id.tenant_add_car_make);
         EditText model = view.findViewById(R.id.tenant_add_car_model);
         EditText mileage = view.findViewById(R.id.tenant_add_car_mileage);
@@ -49,19 +60,23 @@ public class TenantAddCarFragment extends Fragment {
         EditText start_date = view.findViewById(R.id.tenant_add_car_start_date);
         EditText end_date = view.findViewById(R.id.tenant_add_car_end_date);
         EditText price = view.findViewById(R.id.tenant_edit_car_price);
-        Button done = view.findViewById(R.id.tenant_add_car_done);
 
+        // init buttons for window
+        Button doneBtn = view.findViewById(R.id.tenant_add_car_done);
 
+        // hold all make and model values in one array
         ArrayAdapter<String> adapterMake = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,fuels);
         fuel.setAdapter(adapterMake);
 
-        ArrayAdapter<String> adapterModel = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,gearboxs);
+        ArrayAdapter<String> adapterModel = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,gearboxes);
         gearbox.setAdapter(adapterModel);
 
-        done.setOnClickListener(v -> {
+        doneBtn.setOnClickListener(v -> {
             FirebaseFirestore fs = FirebaseFirestore.getInstance();
             String uid = userUtils.getUserID();
             Log.d("ADD CAR", "uid =" + uid);
+
+            // set input value as car object
             Car car = new Car(
                     make.getText().toString(),
                     model.getText().toString(),
@@ -73,6 +88,8 @@ public class TenantAddCarFragment extends Fragment {
                     end_date.getText().toString(),
                     Integer.parseInt(price.getText().toString()),
                     uid);
+
+            // add car to database
             fs.collection("cars").add(car).addOnCompleteListener(task -> {
                 FragmentManager fm = getParentFragmentManager();
                 fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
