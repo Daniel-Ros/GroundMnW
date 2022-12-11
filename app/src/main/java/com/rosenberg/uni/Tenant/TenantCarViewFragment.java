@@ -24,6 +24,7 @@ import com.rosenberg.uni.utils.userUtils;
 
 import java.util.List;
 
+
 public class TenantCarViewFragment extends Fragment {
     private boolean canAddCar = false;
     @Override

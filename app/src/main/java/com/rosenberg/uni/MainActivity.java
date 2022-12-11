@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
+import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.login.LoginFragment;
 import com.rosenberg.uni.login.ViewProfileFragment;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     Log.d("MainActivity", "Going to renter");
                                     FragmentManager fm = getSupportFragmentManager();
-                                    fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null).commit();
+                                    fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
                                 }
                             });
                     Log.d("MainActivity","pressed home");

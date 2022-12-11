@@ -86,8 +86,8 @@ public class EditViewProfileFragment extends Fragment {
         EditText detailsOnUser = editProfileView.findViewById(R.id.edit_on_me);
 
         // Init the spinner of gender
-        String [] choisesGenders = new String[]{"Male","Female"};
-        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesGenders);
+        String [] choicesGenders = new String[]{"Male","Female"};
+        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choicesGenders);
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window
