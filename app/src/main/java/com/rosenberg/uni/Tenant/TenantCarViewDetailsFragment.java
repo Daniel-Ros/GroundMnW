@@ -47,7 +47,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
     public static TenantCarViewDetailsFragment newInstance(String carData) {
         TenantCarViewDetailsFragment fragment = new TenantCarViewDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(CAR_DATA, carData); // just save at CAR_DATA the data of parm1
+        args.putString(CAR_DATA, carData); // just save at CAR_DATA the data of carData
         fragment.setArguments(args);
         return fragment;
     }

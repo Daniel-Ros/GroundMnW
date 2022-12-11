@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class TenantViewRequestedRenterFragment extends Fragment {
 
-    private static final String USER_ID = null;
-    private static final String CAR_ID = null;
+    private static final String USER_DATA = null;
+    private static final String CAR_DATA = null;
 
     // both will be used for get the curr car we talk about
     // and also the renter docId
@@ -51,8 +51,8 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         TenantViewRequestedRenterFragment fragment = new TenantViewRequestedRenterFragment();
         Bundle args = new Bundle();
         // set the ids in args
-        args.putString(USER_ID, userId);
-        args.putString(CAR_ID, carId);
+        args.putString(USER_DATA, userId);
+        args.putString(CAR_DATA, carId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +66,8 @@ public class TenantViewRequestedRenterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            userDocId = getArguments().getString(USER_ID);
-            carDocId = getArguments().getString(CAR_ID);
+            userDocId = getArguments().getString(USER_DATA);
+            carDocId = getArguments().getString(CAR_DATA);
         }
     }
 
