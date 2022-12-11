@@ -9,7 +9,9 @@ import java.util.Map;
 
 public class Car {
     @DocumentId
-    String documentId;
+    String documentId; // UNIQUE, helpful when we want to get car from db
+                        // and also in place of updating the car via searching it again at db
+                        // we can just update it via docID
 
     private String make;
     private String model;
@@ -19,23 +21,37 @@ public class Car {
     private String fuel;
     private String gearbox;
     private String startDate;
-    private Long startDateStamp;
+    private Long startDateStamp; // number milli Sec, helps for queries, cant query on the string date
     private String endDate;
-    private Long endDateStamp;
-    private String renterID;
+    private Long endDateStamp; // same as above
     private Integer price;
 
-    public String getRenterID() {
-        return renterID;
-    }
+    private String renterID;
 
+    /**
+     * default constructor required for calls to DataSnapshot.getValue(Car.class)
+     */
     public Car(){
 
     }
 
+    /**
+     * constructor - this obj hold all the data of a car
+     * @param make - type, e.g toyota
+     * @param model - e.g corolla 2021
+     * @param mileage - a.k.a "kilometraz", e.g 25000
+     * @param numOfSeats - include driver
+     * @param fuel - type, e.g 95
+     * @param gearbox - type, e.g auto
+     * @param startDate - from time the renter can rent the car
+     * @param endDate - to time the rented have to give back the car
+     * @param price - for the whole renting time
+     * @param ownerID - ownerID equal to User.id -> the car owned by whom
+     */
     public Car(String make, String model, String mileage, String numOfSeats, String fuel,
                String gearbox, String startDate, String endDate,
                Integer price, String ownerID) {
+
         this.make = make;
         this.model = model;
         this.mileage = Integer.parseInt(mileage);
@@ -46,12 +62,17 @@ public class Car {
         this.endDate = endDate;
         this.ownerID = ownerID;
         this.price = price;
+
+        // extract the staring time from string
+        // new Calender(year, month, day)
         String [] splitdate = startDate.split("/");
         Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
                 Integer.parseInt(splitdate[1]),
                 Integer.parseInt(splitdate[0]));
         this.startDateStamp = calendar.getTimeInMillis();
 
+        // extract the end time from string
+        // new Calender(year, month, day)
         splitdate = endDate.split("/");
         calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
                 Integer.parseInt(splitdate[1]),
@@ -114,10 +135,6 @@ public class Car {
         this.endDate = endDate;
     }
 
-    public void setRenterID(String renterID) {
-        this.renterID = renterID;
-    }
-
     public String getMake() {
         return make;
     }
@@ -152,6 +169,13 @@ public class Car {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public void setRenterID(String renterID) {
+        this.renterID = renterID;
+    }
+    public String getRenterID() {
+        return renterID;
     }
 
 }

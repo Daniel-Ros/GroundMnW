@@ -7,35 +7,39 @@ import java.util.Map;
 
 public class User{
     @DocumentId
-    private String documentId;
+    private String documentId; // same as car docID (look there)
 
-    private String id;
-
-    //    private String name;
+    private String id;  // UNIQUE userID
     private String firstName, lastName;
-
     private String mail;
-    private String born; // date
-    private boolean tenant; // Do i give my car to not - am i tenant?
+    private String born; // date of birth
+    private boolean tenant; // true for tenant, false for renter (tenant - "seller")
     private boolean male; // true for male, false for female
     private String phoneNum;
     private String city;
 
     private String writingOnMe; // for the view profile, let every user write something about themselves
 
-    public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
+    /**
+     * Default constructor required for calls to DataSnapshot.getValue(User.class)
+     */
+    public User() {}
 
-    public String getDocumentId() {
-        return documentId;
-    }
-
-
+    /**
+     * constructor - this obj hold all the data of a user
+     * @param id - UNIQUE userID
+     * @param fName - first name
+     * @param lName - last name
+     * @param mail - email is UNIQUE
+     * @param dob - date of birth
+     * @param tenant - boolean, true=tenant, false=renter
+     * @param gender - boolean, true=male, false=female
+     * @param phoneNumber .
+     * @param city .
+     */
     public User(String id, String fName, String lName, String mail, String dob, boolean tenant,
                 boolean gender, String phoneNumber, String city) {
         this.id = id;
-//        this.name = name;
         this.firstName = fName;
         this.lastName = lName;
         this.mail = mail;
@@ -44,16 +48,9 @@ public class User{
         this.male = gender;
         this.phoneNum = phoneNumber;
         this.city = city;
-        this.writingOnMe = "can write here till 300 digits"; // for now
+        this.writingOnMe = "can write here till 300 digits"; // its the default till the user
+                                                                // edits his profile
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public String getFirstName() {
         return firstName;
@@ -126,13 +123,11 @@ public class User{
         this.writingOnMe = writingOnMe;
     }
 
-//    public Map<String,Object> getMap(){
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("id", id);
-//        map.put("name", name);
-//        map.put("mail", mail);
-//        map.put("born", born);
-//        map.put("tenant", tenant);
-//        return map;
-//    }
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String docId) {
+        this.documentId = docId;
+    }
 }
