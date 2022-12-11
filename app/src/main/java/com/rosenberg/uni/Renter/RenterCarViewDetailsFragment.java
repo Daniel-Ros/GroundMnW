@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
@@ -30,6 +32,8 @@ public class RenterCarViewDetailsFragment extends Fragment {
 
     private static final String ARG_NAME = "CARID";
     private String car_id;
+
+    private boolean isCarAlreadyReq = false;
 
     public RenterCarViewDetailsFragment() {
         // Required empty public constructor
@@ -98,28 +102,38 @@ public class RenterCarViewDetailsFragment extends Fragment {
                     endDate.setText(car.getEndDate());
 
                     req_car.setOnClickListener(v -> {
-                        if(car.getRenterID().equals(FirebaseAuth.getInstance().getUid())){
-                            Toast.makeText(getContext(),"Carr already requested",Toast.LENGTH_LONG).show();
-                            FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
-                        }
-                        fs.collection("users").whereEqualTo("id",
-                                        FirebaseAuth.getInstance().getUid())
-                                .get()
-                                .addOnSuccessListener(queryDocumentSnapshots2 -> {
-                                    List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
-                                    Log.d("USER UTILS","Register user " + userList.size());
-                                    User u = userList.get(0);
+                        if (isCarAlreadyReq) {
+                            isCarAlreadyReq = false;
+                            req_car.setText("Request car");
+                            fs.collection("cars").document(car_id)
+                                    .collection("request")
+                                    .whereEqualTo("id", FirebaseAuth.getInstance().getUid())
+                                    .get()
+                                    .addOnSuccessListener(queryDocumentSnapshots1 -> {
+                                        for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots1)
+                                            queryDocumentSnapshot.getReference().delete();
+                                    });
+                        } else {
+                            isCarAlreadyReq = true;
+                            req_car.setText("Cancel Request");
+                            fs.collection("users").whereEqualTo("id",
+                                            FirebaseAuth.getInstance().getUid())
+                                    .get()
+                                    .addOnSuccessListener(queryDocumentSnapshots2 -> {
+                                        List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
+                                        Log.d("USER UTILS", "Register user " + userList.size());
+                                        User u = userList.get(0);
 
-                                    fs.collection("cars")
-                                            .document(car_id)
-                                            .collection("request")
-                                            .add(u);
-                                });
+                                        fs.collection("cars")
+                                                .document(car_id)
+                                                .collection("request")
+                                                .add(u);
+                                    });
+                        }
                     });
                 })
-                .addOnFailureListener( fail -> {
-                    Log.d("RenterCarViewDetails","problme loading car info" + car_id);
+                .addOnFailureListener(fail -> {
+                    Log.d("RenterCarViewDetails", "problme loading car info" + car_id);
                 });
     }
 }
