@@ -25,7 +25,7 @@ import com.rosenberg.uni.utils.userUtils;
 import java.util.List;
 
 public class TenantCarViewFragment extends Fragment {
-
+    private boolean canAddCar = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,18 +58,25 @@ public class TenantCarViewFragment extends Fragment {
                                 .commit();
                     });
                     // If we have more then 5 cars, disable this option
-                    if(cars.size() > 5) {
-                        add_car.setOnClickListener(v -> {
-                            Toast.makeText(getActivity(),"Cannot add more then 5 cars",Toast.LENGTH_LONG);
-                        });
+                    if(cars.size() >= 5) {
+                        canAddCar = false;
+                        add_car.setText("max 5 cars");
+                    }
+                    else{
+                        //other wise, enable it again
+                        canAddCar = true;
                     }
                 });
 
         add_car.setOnClickListener(v -> {
-            FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.main_fragment, TenantAddCarFragment.class, null)
-                    .addToBackStack("TenantCarView")
-                    .commit();
+            if(canAddCar) {
+                FragmentManager fm = getParentFragmentManager();
+                fm.beginTransaction().replace(R.id.main_fragment, TenantAddCarFragment.class, null)
+                        .addToBackStack("TenantCarView")
+                        .commit();
+            }else{
+                Toast.makeText(getActivity().getApplicationContext(),"failed",Toast.LENGTH_LONG).show();
+            }
         });
     }
 }
