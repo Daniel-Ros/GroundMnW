@@ -78,21 +78,22 @@ public class LoginFragment extends Fragment {
     /**
      * Called when fragment is inflated,
      * init all texts and buttons for login window
-     * @param loginView - View object of the window (hold the objects of texts inputs that screened)
+     * @param view - View object of the window (hold the objects of texts inputs that screened)
      * @param savedInstanceState -  last state of this fragment,should be null
      */
     @Override
-    public void onViewCreated(@NonNull View loginView, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(loginView, savedInstanceState); // start with default process
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState); // start with default process
 
         // init vars of the texts and buttons of the window
-        EditText email = loginView.findViewById(R.id.login_email);
-        EditText password = loginView.findViewById(R.id.login_password);
-        Button loginBtn = loginView.findViewById(R.id.login_button);
-        Button RegisterBtn = loginView.findViewById(R.id.login_btn_register);
+        EditText email = view.findViewById(R.id.login_email);
+        EditText password = view.findViewById(R.id.login_password);
+        Button loginBtn = view.findViewById(R.id.login_button);
+        Button RegisterBtn = view.findViewById(R.id.login_btn_register);
 
         // logic process - verify user details, then log him if match.
-        loginBtn.setOnClickListener(v -> {
+        // currentView == view from above
+        loginBtn.setOnClickListener(currentView -> {
             FirebaseAuth fsAuth = FirebaseAuth.getInstance(); // Firebase Authorization
             // try to sign in with email & password
             fsAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString())

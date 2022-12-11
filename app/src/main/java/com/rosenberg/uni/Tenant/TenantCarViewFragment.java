@@ -24,9 +24,18 @@ import com.rosenberg.uni.utils.userUtils;
 
 import java.util.List;
 
-
+/**
+ * this class represents the Home window of the tenant
+ * the window shows all the current cars that this tenant offer for renting
+ * also the user can add more car offers, but not more than 5 cars in parallel!
+ */
 public class TenantCarViewFragment extends Fragment {
-    private boolean canAddCar = false;
+
+    private boolean canAddCar = false; // already more than 5 ongoing offers
+
+    /**
+     * we not doing anything more than default at "onCreate" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,6 +43,12 @@ public class TenantCarViewFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_tenant_car_view, container, false);
     }
 
+    /**
+    * Called when fragment is inflated,
+    * init all texts and buttons for login window
+    * @param view - View object of the window (hold the objects of texts inputs that screened)
+    * @param savedInstanceState -  last state of this fragment,should be null
+    */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -47,7 +47,7 @@ public class RegisterFragment extends Fragment {
      * this fragment using the provided parameters.
      * @return A new instance of fragment RegisterFragment.
      */
-    public static RegisterFragment newInstance(String param1, String param2) {
+    public static RegisterFragment newInstance() {
         return new RegisterFragment();
     }
 
@@ -71,24 +71,24 @@ public class RegisterFragment extends Fragment {
 
     /**
      *
-     * @param registerView - View object of the window (hold the objects of texts inputs that screened)
+     * @param view - View object of the window (hold the objects of texts inputs that screened)
      * @param savedInstanceState - last state of this fragment,should be null
      */
     @Override
-    public void onViewCreated(@NonNull View registerView, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(registerView,savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
 
         // init vars of the texts for the window
-        EditText firstName = registerView.findViewById(R.id.register_first_name);
-        EditText lastName = registerView.findViewById(R.id.register_last_name);
-        EditText email = registerView.findViewById(R.id.register_email);
-        EditText firstPassword = registerView.findViewById(R.id.register_password1);
-        EditText verifyPassword = registerView.findViewById(R.id.register_password2);
-        EditText born = registerView.findViewById(R.id.register_dob);
-        EditText city = registerView.findViewById(R.id.register_city);
-        Spinner spinnerRoles = registerView.findViewById(R.id.register_spinner);
-        Spinner spinnerGender = registerView.findViewById(R.id.register_gender);
-        EditText phoneNumber = registerView.findViewById((R.id.register_phoneNumber));
+        EditText firstName = view.findViewById(R.id.register_first_name);
+        EditText lastName = view.findViewById(R.id.register_last_name);
+        EditText email = view.findViewById(R.id.register_email);
+        EditText firstPassword = view.findViewById(R.id.register_password1);
+        EditText verifyPassword = view.findViewById(R.id.register_password2);
+        EditText born = view.findViewById(R.id.register_dob);
+        EditText city = view.findViewById(R.id.register_city);
+        Spinner spinnerRoles = view.findViewById(R.id.register_spinner);
+        Spinner spinnerGender = view.findViewById(R.id.register_gender);
+        EditText phoneNumber = view.findViewById((R.id.register_phoneNumber));
 
         // Init the spinner of roles
         String [] choicesRoles = new String[]{"Tenant","Renter"};
@@ -103,9 +103,10 @@ public class RegisterFragment extends Fragment {
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window
-        Button registerBtn = registerView.findViewById(R.id.register_button);
+        Button registerBtn = view.findViewById(R.id.register_button);
 
-        registerBtn.setOnClickListener(view -> {
+        // currentView == view from above
+        registerBtn.setOnClickListener(currentView -> {
 
             if (!firstPassword.getText().toString().equals(verifyPassword.getText().toString())){
                 // password !=? verifyPassword

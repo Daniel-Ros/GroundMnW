@@ -68,22 +68,22 @@ public class EditViewProfileFragment extends Fragment {
 
     /**
      * initialize all fields and buttons for edit_view_profile window
-     * @param editProfileView - view object
+     * @param view - view object
      * @param savedInstanceState .
      */
     @Override
-    public void onViewCreated(@NonNull View editProfileView, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(editProfileView, savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // init vars of the texts for the window
         // edit text - user is writing here a text
-        EditText firstName = editProfileView.findViewById(R.id.edit_first_name);
-        EditText lastName = editProfileView.findViewById(R.id.edit_last_name);
-        EditText born = editProfileView.findViewById(R.id.edit_birth);
-        EditText city = editProfileView.findViewById(R.id.edit_city);
-        EditText phoneNumber = editProfileView.findViewById((R.id.edit_phone_num));
-        Spinner spinnerGender = editProfileView.findViewById(R.id.edit_gender);
-        EditText detailsOnUser = editProfileView.findViewById(R.id.edit_on_me);
+        EditText firstName = view.findViewById(R.id.edit_first_name);
+        EditText lastName = view.findViewById(R.id.edit_last_name);
+        EditText born = view.findViewById(R.id.edit_birth);
+        EditText city = view.findViewById(R.id.edit_city);
+        EditText phoneNumber = view.findViewById((R.id.edit_phone_num));
+        Spinner spinnerGender = view.findViewById(R.id.edit_gender);
+        EditText detailsOnUser = view.findViewById(R.id.edit_on_me);
 
         // Init the spinner of gender
         String [] choicesGenders = new String[]{"Male","Female"};
@@ -91,7 +91,7 @@ public class EditViewProfileFragment extends Fragment {
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window
-        Button confirmBtn = editProfileView.findViewById(R.id.confirm_button);
+        Button confirmBtn = view.findViewById(R.id.confirm_button);
 
         String uid = userUtils.getUserID(); // current userID
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
@@ -117,7 +117,8 @@ public class EditViewProfileFragment extends Fragment {
 
 
         // user want to save his edited data
-        confirmBtn.setOnClickListener(v -> {
+        // currentView == view from above
+        confirmBtn.setOnClickListener(currentView -> {
             // get to the user doc at the database and edit his data
             fs.collection("users").whereEqualTo("id", uid)
                     .get()

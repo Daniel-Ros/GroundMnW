@@ -120,7 +120,8 @@ public class ViewProfileFragment extends Fragment {
         });
 
         // when cliecked on "edit" -> jump to new screen, which the user can edit his profile details
-        editProfileBtn.setOnClickListener(v -> {
+        // currentView == view from above
+        editProfileBtn.setOnClickListener(currentView -> {
             FragmentManager fm = getParentFragmentManager();
             fm.beginTransaction().replace(R.id.main_fragment, EditViewProfileFragment.class, null)
                     .addToBackStack("ViewProfile")

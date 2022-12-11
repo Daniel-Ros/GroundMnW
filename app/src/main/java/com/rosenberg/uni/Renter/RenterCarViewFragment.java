@@ -48,7 +48,7 @@ public class RenterCarViewFragment extends Fragment {
         EditText end = view.findViewById(R.id.renter_car_view_end_date);
         Button filter = view.findViewById(R.id.renter_car_view_filter);
 
-        ListView car_view = view.findViewById(R.id.renter_car_view_list_view);
+        ListView carsView = view.findViewById(R.id.renter_car_view_list_view);
         List<String> carStrings = new ArrayList<>();
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
@@ -61,7 +61,7 @@ public class RenterCarViewFragment extends Fragment {
 
                     ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
                             cars.toArray(new Car[0]));
-                    car_view.setAdapter(adapter);
+                    carsView.setAdapter(adapter);
                 });
 
         filter.setOnClickListener(v -> {
@@ -100,16 +100,15 @@ public class RenterCarViewFragment extends Fragment {
 
                         ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
                                 cars.toArray(new Car[0]));
-                        car_view.setAdapter(adapter);
+                        carsView.setAdapter(adapter);
                     });
         });
 
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_list_item_1,carStrings);
-        car_view.setAdapter(adapter);
+        carsView.setAdapter(adapter);
 
-
-        car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
+        carsView.setOnItemClickListener((adapterView, view1, i, l) -> {
             FragmentManager fm = getParentFragmentManager();
 
             Log.d("RenterCarView","sending to this id " + cars.get(i).getDocumentId());
