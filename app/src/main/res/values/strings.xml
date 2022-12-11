@@ -25,6 +25,4 @@
     <!-- Actuall mine -->
     <string name="open_main_menu">Open main menu</string>
     <string name="close_main_menu">Close main menu</string>
-
-    <string name="USERS">Call to users at database</string>
 </resources>

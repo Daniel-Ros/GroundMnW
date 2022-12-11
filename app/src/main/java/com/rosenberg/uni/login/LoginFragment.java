@@ -37,6 +37,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * this class is the code that works with the fragment_login.xml Window
+ * represents login window - the first window that the user see of the app
  */
 public class LoginFragment extends Fragment {
 
@@ -139,7 +142,9 @@ public class LoginFragment extends Fragment {
         RegisterBtn.setOnClickListener(view1 -> {
             // user clicked on register, move him to register window
             FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.main_fragment, RegisterFragment.class,null).commit();
+            fm.beginTransaction().replace(R.id.main_fragment, RegisterFragment.class,null)
+                    .addToBackStack("LoginFragment")
+                    .commit();
         });
     }
 

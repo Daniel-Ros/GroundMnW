@@ -27,6 +27,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  * Use the {@link ViewProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * this class is the code that works with the fragment_view_profile.xml Window
+ * here the user can see his own details
  */
 public class ViewProfileFragment extends Fragment {
 
@@ -63,7 +66,7 @@ public class ViewProfileFragment extends Fragment {
     }
 
     /**
-     *
+     * initialize all fields and buttons for profile view window
      * @param viewProfileView - View object of the window (hold the objects of texts inputs that screened)
      * @param savedInstanceState -
      */
@@ -84,30 +87,32 @@ public class ViewProfileFragment extends Fragment {
         // init buttons for the window
         Button editProfileBtn = viewProfileView.findViewById(R.id.user_view_edit);
 
-        String uid = userUtils.getUserID();
+        String uid = userUtils.getUserID(); // current userID
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
-
+        // get from FS the data of the current user via its id (UNIQUE)
         fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
             if (userList.size() == 0){
                 Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
             }
             User user = userList.get(0);
-            firstName.setText(user.getFirstName());
-            lastName.setText(user.getLastName());
+
+            // init texts via user details
             String userGender, userRole;
             if (user.getTenant()){
                 userRole = "Tenant";
             }else {
                 userRole = "Renter";
             }
-            role.setText(userRole);
             if (user.getGender()){
                 userGender = "Male";
             }else{
                 userGender = "Female";
             }
+            firstName.setText(user.getFirstName());
+            lastName.setText(user.getLastName());
+            role.setText(userRole);
             gender.setText(userGender);
             phoneNum.setText(user.getPhoneNum());
             birth.setText(user.getBorn());
@@ -115,7 +120,7 @@ public class ViewProfileFragment extends Fragment {
             detailsOnUser.setText(user.getWritingOnMe());
         });
 
-        // when cliecket on "edit" -> jump to new screen, which the user can edit his profile details
+        // when cliecked on "edit" -> jump to new screen, which the user can edit his profile details
         editProfileBtn.setOnClickListener(v -> {
             FragmentManager fm = getParentFragmentManager();
             fm.beginTransaction().replace(R.id.main_fragment, EditViewProfileFragment.class, null)
@@ -124,47 +129,57 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
-
+    /**
+     * when u go back to this window, its "restored"
+     * we want the details on the user a.k.a profile - will be updated via the current edits
+     * @param savedInstanceState .
+     */
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         Log.d("Status","StateRestored");
         super.onViewStateRestored(savedInstanceState);
-        View view = getView();
-        Lifecycle.Event onResume = Lifecycle.Event.ON_RESUME;
-        assert view != null;
-        TextView firstName = view.findViewById(R.id.view_first_name);
-        TextView lastName = view.findViewById(R.id.view_last_name);
-        TextView role = view.findViewById(R.id.view_Role);
-        TextView phoneNum = view.findViewById(R.id.view_phone_number);
-        TextView gender = view.findViewById(R.id.view_gender);
-        TextView birth = view.findViewById(R.id.view_Birth);
-        TextView city = view.findViewById(R.id.view_city);
-        TextView detailsOnUser = view.findViewById(R.id.view_on_me);
+        View viewProfileView = getView();
+        assert viewProfileView != null; // kinda not possible since we stand on that view?
 
-        String uid = userUtils.getUserID();
+        // TODO DANIEL note here please
+        Lifecycle.Event onResume = Lifecycle.Event.ON_RESUME;
+
+        // init vars of the texts for the window
+        TextView firstName = viewProfileView.findViewById(R.id.view_first_name);
+        TextView lastName = viewProfileView.findViewById(R.id.view_last_name);
+        TextView role = viewProfileView.findViewById(R.id.view_Role);
+        TextView phoneNum = viewProfileView.findViewById(R.id.view_phone_number);
+        TextView gender = viewProfileView.findViewById(R.id.view_gender);
+        TextView birth = viewProfileView.findViewById(R.id.view_Birth);
+        TextView city = viewProfileView.findViewById(R.id.view_city);
+        TextView detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
+
+        String uid = userUtils.getUserID(); // current userID
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
-
+        // get from FS the data of the current user via its id (UNIQUE)
         fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
             List<User> userList = queryDocumentSnapshots.toObjects(User.class);
             if (userList.size() == 0){
                 Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
             }
             User user = userList.get(0);
-            firstName.setText(user.getFirstName());
-            lastName.setText(user.getLastName());
+
+            // init texts via user details
             String userGender, userRole;
             if (user.getTenant()){
                 userRole = "Tenant";
             }else {
                 userRole = "Renter";
             }
-            role.setText(userRole);
             if (user.getGender()){
                 userGender = "Male";
             }else{
                 userGender = "Female";
             }
+            firstName.setText(user.getFirstName());
+            lastName.setText(user.getLastName());
+            role.setText(userRole);
             gender.setText(userGender);
             phoneNum.setText(user.getPhoneNum());
             birth.setText(user.getBorn());
@@ -173,6 +188,10 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
+    // TODO daniel add comment here please
+    /**
+     *
+     */
     @Override
     public void onResume() {
         super.onResume();

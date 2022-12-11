@@ -29,17 +29,11 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  * Use the {@link EditViewProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * this class is the code that works with the fragment_edit_profile.xml Window
+ * here the user can edit his own profile details
  */
 public class EditViewProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public EditViewProfileFragment() {
         // Required empty public constructor
@@ -48,30 +42,24 @@ public class EditViewProfileFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment EditViewProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static EditViewProfileFragment newInstance(String param1, String param2) {
-        EditViewProfileFragment fragment = new EditViewProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new EditViewProfileFragment();
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,33 +67,44 @@ public class EditViewProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_edit_view_profile, container, false);
     }
 
+    /**
+     * initialize all fields and buttons for edit_view_profile window
+     * @param editProfileView - view object
+     * @param savedInstanceState .
+     */
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull View editProfileView, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(editProfileView, savedInstanceState);
 
-        Button confirmBtn = view.findViewById(R.id.confirm_button);
-
-        EditText firstName = view.findViewById(R.id.edit_first_name);
-        EditText lastName = view.findViewById(R.id.edit_last_name);
-        EditText born = view.findViewById(R.id.edit_birth);
-        EditText city = view.findViewById(R.id.edit_city);
-        EditText phoneNumber = view.findViewById((R.id.edit_phone_num));
-        Spinner spinnerGender = view.findViewById(R.id.edit_gender);
-        EditText detailsOnUser = view.findViewById(R.id.edit_on_me);
-
+        // init vars of the texts for the window
+        // edit text - user is writing here a text
+        EditText firstName = editProfileView.findViewById(R.id.edit_first_name);
+        EditText lastName = editProfileView.findViewById(R.id.edit_last_name);
+        EditText born = editProfileView.findViewById(R.id.edit_birth);
+        EditText city = editProfileView.findViewById(R.id.edit_city);
+        EditText phoneNumber = editProfileView.findViewById((R.id.edit_phone_num));
+        Spinner spinnerGender = editProfileView.findViewById(R.id.edit_gender);
+        EditText detailsOnUser = editProfileView.findViewById(R.id.edit_on_me);
 
         // Init the spinner of gender
         String [] choisesGenders = new String[]{"Male","Female"};
         ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesGenders);
         spinnerGender.setAdapter(adapterGenders);
 
-        String uid = userUtils.getUserID();
+        // init buttons for the window
+        Button confirmBtn = editProfileView.findViewById(R.id.confirm_button);
+
+        String uid = userUtils.getUserID(); // current userID
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
+        // initialize the data in the fields of the EDITTEXT
+        // as the current data of the users
+        // this way the user dont have to write over again all his details but only EDIT
         fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
             List<User> userList = queryDocumentSnapshots.toObjects(User.class);
             if (userList.size() == 0){
-                Log.e("EditProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+                Log.e("EditProfile",
+                        "Where is my user? its connected to app but cant see its own details from db " + uid);
             }
             User user = userList.get(0);
             firstName.setText(user.getFirstName());
@@ -118,14 +117,19 @@ public class EditViewProfileFragment extends Fragment {
         });
 
 
-
+        // user want to save his edited data
         confirmBtn.setOnClickListener(v -> {
-
-            fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            // get to the user doc at the database and edit his data
+            fs.collection("users").whereEqualTo("id", uid)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
                 List<User> userList = queryDocumentSnapshots.toObjects(User.class);
                 if (userList.size() == 0){
-                    Log.e("EditProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+                    Log.e("EditProfile",
+                            "Where is my user? its connected to app but cant see its own details from db " + uid);
                 }
+
+                // edit the data on a obj
                 User user = userList.get(0);
                 user.setFirstName(firstName.getText().toString());
                 user.setLastName(lastName.getText().toString());
@@ -133,6 +137,8 @@ public class EditViewProfileFragment extends Fragment {
                 user.setBorn(born.getText().toString());
                 user.setCity(city.getText().toString());
                 user.setWritingOnMe(detailsOnUser.getText().toString());
+
+                // now can edit the user at the fs
                 fs.collection("users").document(user.getDocumentId()).set(user)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -151,6 +157,5 @@ public class EditViewProfileFragment extends Fragment {
             });
 
         });
-
     }
 }

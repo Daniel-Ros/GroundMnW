@@ -30,6 +30,10 @@ import com.rosenberg.uni.R;
  * A simple {@link Fragment} subclass.
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * this class is the code that works with the fragment_register.xml Window
+ * responsible about taking the data from the user registration and open new User at the database
+ * also, the code verify that password, phonenumber is legit
  */
 public class RegisterFragment extends Fragment {
 
@@ -109,6 +113,12 @@ public class RegisterFragment extends Fragment {
                 return;
             }
 
+            if (firstPassword.getText().toString().length() < 6 || firstPassword.getText().toString().length() > 16){
+                // password length must be at least 6 digits but not more than 14
+                // msg user about that
+                Toast.makeText(getActivity(), "passwords shall be 6~14 digits", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             if (phoneNumber.getText().toString().charAt(0) != '0' || phoneNumber.getText().toString().charAt(5) != '5'
                     || phoneNumber.getText().toString().length() != 10){
@@ -141,11 +151,14 @@ public class RegisterFragment extends Fragment {
                                     .addOnSuccessListener(documentReference -> {
                                         Log.e("ViewProfile", "added to fs new user: "+user.getId());
                                         FragmentManager fm = getParentFragmentManager();
+
                                         // move user to his home window via his role
                                         if(spinnerRoles.getSelectedItemPosition() == 0)
-                                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
+                                            fm.beginTransaction().replace(R.id.main_fragment,
+                                                    TenantCarViewFragment.class,null).commit();
                                         else
-                                            fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class,null).commit();
+                                            fm.beginTransaction().replace(R.id.main_fragment,
+                                                    RenterCarViewFragment.class,null).commit();
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
