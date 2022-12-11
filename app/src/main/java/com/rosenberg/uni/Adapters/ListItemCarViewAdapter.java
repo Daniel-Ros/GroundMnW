@@ -36,16 +36,22 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
         TextView mileage = rowView.findViewById(R.id.list_item_car_view_milage);
         TextView status = rowView.findViewById(R.id.list_item_car_view_status);
         TextView price = rowView.findViewById(R.id.list_item_car_view_price);
+        TextView start_date= rowView.findViewById(R.id.list_item_car_view_start_date);
+        TextView end_date = rowView.findViewById(R.id.list_item_car_view_end_date);
 
         if(userID.equals(cars[position].getRenterID())){
             status.setText("Reserved");
         }else{
             status.setText("Active");
         }
+
         make.setText(cars[position].getMake());
         model.setText(cars[position].getModel());
         mileage.setText(" "+cars[position].getMileage().toString());
         price.setText(cars[position].getPrice().toString()+"$");
+        start_date.setText(cars[position].getStartDate() + "-");
+        end_date.setText(cars[position].getEndDate());
+
         return rowView;
     }
 }
