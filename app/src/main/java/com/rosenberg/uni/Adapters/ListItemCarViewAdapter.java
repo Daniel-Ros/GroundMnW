@@ -46,7 +46,7 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
         TextView start_date= rowView.findViewById(R.id.list_item_car_view_start_date);
         TextView end_date = rowView.findViewById(R.id.list_item_car_view_end_date);
 
-        if(userID.equals(cars[position].getRenterID())){
+        if(cars[position].getRenterID() != null){
             status.setText("Reserved");
         }else{
             status.setText("Active");

@@ -101,6 +101,18 @@ public class RenterCarViewDetailsFragment extends Fragment {
                     startDate.setText(car.getStartDate());
                     endDate.setText(car.getEndDate());
 
+
+                    fs.collection("cars").document(car_id)
+                            .collection("request")
+                            .whereEqualTo("id", FirebaseAuth.getInstance().getUid())
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots1 -> {
+                                if(queryDocumentSnapshots1.size() > 0) {
+                                    isCarAlreadyReq = true;
+                                    req_car.setText("Cancel Request");
+                                }
+                            });
+
                     req_car.setOnClickListener(v -> {
                         if (isCarAlreadyReq) {
                             isCarAlreadyReq = false;
