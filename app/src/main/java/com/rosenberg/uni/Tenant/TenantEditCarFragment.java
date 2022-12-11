@@ -42,7 +42,6 @@ public class TenantEditCarFragment extends Fragment {
      * @param param1 car id
      * @return A new instance of fragment TenantEditCarFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TenantEditCarFragment newInstance(String param1) {
         TenantEditCarFragment fragment = new TenantEditCarFragment();
         Bundle args = new Bundle();

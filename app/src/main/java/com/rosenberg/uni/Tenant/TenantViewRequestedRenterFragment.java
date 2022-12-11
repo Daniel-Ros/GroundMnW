@@ -44,7 +44,6 @@ public class TenantViewRequestedRenterFragment extends Fragment {
      * @param carId - the id of car that renter would like to request
      * @return A new instance of fragment TenantViewRequestedRenterFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TenantViewRequestedRenterFragment newInstance(String userId, String carId) {
         TenantViewRequestedRenterFragment fragment = new TenantViewRequestedRenterFragment();
         Bundle args = new Bundle();

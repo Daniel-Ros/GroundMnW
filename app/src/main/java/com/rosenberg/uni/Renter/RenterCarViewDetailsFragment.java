@@ -39,7 +39,6 @@ public class RenterCarViewDetailsFragment extends Fragment {
      * @param param1 Car Document id
      * @return A new instance of fragment RenterCarViewDetailsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RenterCarViewDetailsFragment newInstance(String param1) {
         RenterCarViewDetailsFragment fragment = new RenterCarViewDetailsFragment();
         Bundle args = new Bundle();
