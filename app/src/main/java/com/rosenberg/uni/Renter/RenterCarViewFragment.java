@@ -53,7 +53,7 @@ public class RenterCarViewFragment extends Fragment {
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         fs.collection("cars")
-                .whereIn("RenterID", Arrays.asList(null,FirebaseAuth.getInstance().getUid()))
+//                .whereIn("RenterID", Arrays.asList(null,FirebaseAuth.getInstance().getUid()))
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     cars = queryDocumentSnapshots.toObjects(Car.class);

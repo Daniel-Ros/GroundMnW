@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
+import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.R;
 
@@ -127,7 +128,7 @@ public class LoginFragment extends Fragment {
                                             Log.d("MainActivity", "Going to renter");
                                             FragmentManager fm = getParentFragmentManager();
                                             fm.beginTransaction().replace(R.id.main_fragment,
-                                                    RenterCarViewFragment.class, null).commit();
+                                                    RenterMyAcceptedCarsFragment.class, null).commit();
                                         }
                                     });
                            } else{ // incorrect sign in details

@@ -62,7 +62,7 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_renter_car_view_details, container, false);
+        return inflater.inflate(R.layout.fragment_renter_my_car_details_view, container, false);
     }
 
     @Override
