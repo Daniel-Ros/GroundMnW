@@ -28,6 +28,11 @@ import com.rosenberg.uni.login.LoginFragment;
 
 import java.util.List;
 
+/**
+ * this class represents window for specific car for the renter
+ * the window shows all the details on specific car and provide option to request the car or
+ * delete such request.
+ */
 public class RenterCarViewDetailsFragment extends Fragment {
 
     private static final String ARG_NAME = "CARID";
@@ -54,6 +59,10 @@ public class RenterCarViewDetailsFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * do default onCreate with initializing carDocId
+     * @param savedInstanceState last state of this fragment,should be null
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +71,9 @@ public class RenterCarViewDetailsFragment extends Fragment {
         }
     }
 
+    /**
+     * default "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,10 +81,17 @@ public class RenterCarViewDetailsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_renter_car_view_details, container, false);
     }
 
+    /**
+     * Called when fragment is inflated,
+     * init all texts and buttons for curr window
+     * @param view - this view object
+     * @param savedInstanceState -  last state of this fragment,should be null
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // init text vars
         TextView make = view.findViewById(R.id.renter_car_view_details_make);
         TextView model = view.findViewById(R.id.renter_car_view_details_model);
         TextView mileage = view.findViewById(R.id.renter_car_view_details_mileage);
@@ -82,16 +101,16 @@ public class RenterCarViewDetailsFragment extends Fragment {
         TextView startDate = view.findViewById(R.id.renter_car_view_details_start_date);
         TextView endDate = view.findViewById(R.id.renter_car_view_details_end_date);
 
-
+        // init button
         Button req_car = view.findViewById(R.id.renter_car_view_details_req_car);
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
         fs.collection("cars")
                 .document(car_id)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addOnSuccessListener(queryDocumentSnapshots -> { // get specific car
                     Car car = queryDocumentSnapshots.toObject(Car.class);
-
+                    // update text to information from database
                     make.setText(car.getMake());
                     model.setText(car.getModel());
                     mileage.setText(car.getMileage().toString());
@@ -108,13 +127,16 @@ public class RenterCarViewDetailsFragment extends Fragment {
                             .get()
                             .addOnSuccessListener(queryDocumentSnapshots1 -> {
                                 if(queryDocumentSnapshots1.size() > 0) {
+                                    // The user already requested the car
                                     isCarAlreadyReq = true;
                                     req_car.setText("Cancel Request");
                                 }
                             });
 
+                    // init request and cancel request button action
                     req_car.setOnClickListener(v -> {
                         if (isCarAlreadyReq) {
+                            // car already requested- cancel request
                             isCarAlreadyReq = false;
                             req_car.setText("Request car");
                             fs.collection("cars").document(car_id)
@@ -126,6 +148,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
                                             queryDocumentSnapshot.getReference().delete();
                                     });
                         } else {
+                            // request car
                             isCarAlreadyReq = true;
                             req_car.setText("Cancel Request");
                             fs.collection("users").whereEqualTo("id",
@@ -135,7 +158,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
                                         List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
                                         Log.d("USER UTILS", "Register user " + userList.size());
                                         User u = userList.get(0);
-
+                                        // add request to database
                                         fs.collection("cars")
                                                 .document(car_id)
                                                 .collection("request")
@@ -145,7 +168,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
                     });
                 })
                 .addOnFailureListener(fail -> {
-                    Log.d("RenterCarViewDetails", "problme loading car info" + car_id);
+                    Log.d("RenterCarViewDetails", "problem loading car info" + car_id);
                 });
     }
 }
