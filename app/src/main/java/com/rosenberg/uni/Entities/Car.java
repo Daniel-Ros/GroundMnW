@@ -44,7 +44,7 @@ public class Car {
      * @param fuel - type, e.g 95
      * @param gearbox - type, e.g auto
      * @param startDate - from time the renter can rent the car
-     * @param endDate - to time the rented have to give back the car
+     * @param endDate - to time the renter have to give back the car
      * @param price - for the whole renting time
      * @param ownerID - ownerID equal to User.id -> the car owned by whom
      */
@@ -63,7 +63,7 @@ public class Car {
         this.ownerID = ownerID;
         this.price = price;
 
-        // extract the staring time from string
+        // extract the starting time from string
         // new Calender(year, month, day)
         String [] splitdate = startDate.split("/");
         Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),

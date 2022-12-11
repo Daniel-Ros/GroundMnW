@@ -33,7 +33,7 @@ import com.rosenberg.uni.R;
  *
  * this class is the code that works with the fragment_register.xml Window
  * responsible about taking the data from the user registration and open new User at the database
- * also, the code verify that password, phonenumber is legit
+ * also, the code verify that password, phone number are legit
  */
 public class RegisterFragment extends Fragment {
 
@@ -71,7 +71,7 @@ public class RegisterFragment extends Fragment {
     /**
      *
      * @param registerView - View object of the window (hold the objects of texts inputs that screened)
-     * @param savedInstanceState -
+     * @param savedInstanceState - last state of this fragment,should be null
      */
     @Override
     public void onViewCreated(@NonNull View registerView, @Nullable Bundle savedInstanceState) {
@@ -90,15 +90,15 @@ public class RegisterFragment extends Fragment {
         EditText phoneNumber = registerView.findViewById((R.id.register_phoneNumber));
 
         // Init the spinner of roles
-        String [] choisesRoles = new String[]{"Tenant","Renter"};
+        String [] choicesRoles = new String[]{"Tenant","Renter"};
         ArrayAdapter<String> adapterRoles = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item,choisesRoles);
+                android.R.layout.simple_spinner_item,choicesRoles);
         spinnerRoles.setAdapter(adapterRoles);
 
         // Init the spinner of gender
-        String [] choisesGenders = new String[]{"Male","Female"};
+        String [] choicesGenders = new String[]{"Male","Female"};
         ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item,choisesGenders);
+                android.R.layout.simple_spinner_item,choicesGenders);
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window

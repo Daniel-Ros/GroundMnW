@@ -26,6 +26,13 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
         this.cars = cars;
     }
 
+    /**
+     * Get view with details for car in index `position`
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
