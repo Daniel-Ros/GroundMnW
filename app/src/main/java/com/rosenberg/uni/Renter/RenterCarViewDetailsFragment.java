@@ -98,7 +98,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
                     endDate.setText(car.getEndDate());
 
                     req_car.setOnClickListener(v -> {
-                        if(car.getRenterID() == FirebaseAuth.getInstance().getUid()){
+                        if(car.getRenterID().equals(FirebaseAuth.getInstance().getUid())){
                             Toast.makeText(getContext(),"Carr already requested",Toast.LENGTH_LONG).show();
                             FragmentManager fm = getParentFragmentManager();
                             fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
