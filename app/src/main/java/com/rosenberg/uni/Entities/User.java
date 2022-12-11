@@ -48,7 +48,7 @@ public class User{
         this.male = gender;
         this.phoneNum = phoneNumber;
         this.city = city;
-        this.writingOnMe = "can write here till 300 digits"; // its the default till the user
+        this.writingOnMe = "hello MnW im new user ^^"; // its the default till the user
                                                                 // edits his profile
     }
 

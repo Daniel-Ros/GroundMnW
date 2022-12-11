@@ -40,26 +40,23 @@ public class RegisterFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment RegisterFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RegisterFragment newInstance(String param1, String param2) {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new RegisterFragment();
     }
 
+    /**
+     * we not doing anything more than default at "onCreate" phase
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,56 +68,75 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v,savedInstanceState);
 
-//        EditText name = v.findViewById(R.id.register_name);
+        // init vars of the texts for the window
         EditText firstName = v.findViewById(R.id.register_first_name);
         EditText lastName = v.findViewById(R.id.register_last_name);
-
         EditText email = v.findViewById(R.id.register_email);
-
-        // TODO: verify pass1 == pass2 - else, dont create the user
-        EditText password1 = v.findViewById(R.id.register_password1);
-        EditText password2 = v.findViewById(R.id.register_password2);
-
+        EditText firstPassword = v.findViewById(R.id.register_password1);
+        EditText verifyPassword = v.findViewById(R.id.register_password2);
         EditText born = v.findViewById(R.id.register_dob);
         EditText city = v.findViewById(R.id.register_city);
         Spinner spinnerRoles = v.findViewById(R.id.register_spinner);
         Spinner spinnerGender = v.findViewById(R.id.register_gender);
         EditText phoneNumber = v.findViewById((R.id.register_phoneNumber));
 
-        Button registerBtn = v.findViewById(R.id.register_button);
-
-
         // Init the spinner of roles
         String [] choisesRoles = new String[]{"Tenant","Renter"};
-        ArrayAdapter<String> adapterRoles = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesRoles);
+        ArrayAdapter<String> adapterRoles = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,choisesRoles);
         spinnerRoles.setAdapter(adapterRoles);
 
         // Init the spinner of gender
         String [] choisesGenders = new String[]{"Male","Female"};
-        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,choisesGenders);
+        ArrayAdapter<String> adapterGenders = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,choisesGenders);
         spinnerGender.setAdapter(adapterGenders);
 
-
+        // init buttons for the window
+        Button registerBtn = v.findViewById(R.id.register_button);
 
         registerBtn.setOnClickListener(view -> {
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(),
-                            password1.getText().toString())
+
+            if (!firstPassword.getText().toString().equals(verifyPassword.getText().toString())){
+                // password !=? verifyPassword
+                // msg user about that
+                Toast.makeText(getActivity(), "passwords is not the same", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+
+            if (phoneNumber.getText().toString().charAt(0) != '0' || phoneNumber.getText().toString().charAt(5) != '5'
+                    || phoneNumber.getText().toString().length() != 10){
+                // phone number not start with '05...' then its for sure not phone num
+                // same if the length of the phone number is more not 10 digits
+                // msg user about it
+                Toast.makeText(getActivity(), "phone number is not legit", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            FirebaseAuth fsAuth = FirebaseAuth.getInstance(); // Firebase Authorization
+            // can create user - data is reasonable
+            fsAuth.createUserWithEmailAndPassword(email.getText().toString(),
+                            firstPassword.getText().toString())
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            FirebaseFirestore fs = FirebaseFirestore.getInstance();
 
-                            //Toast.makeText(RegisterActivity.this,"made account",Toast.LENGTH_LONG).show();
-                            String uid = mAuth.getCurrentUser().getUid();
+                            String uid = fsAuth.getCurrentUser().getUid();
+                            // create user obj with all the input registration
                             User user = new User(uid,firstName.getText().toString(), lastName.getText().toString(),
-                                    email.getText().toString(),born.getText().toString(),spinnerRoles.getSelectedItemPosition() == 0,
+                                    email.getText().toString(),born.getText().toString(),
+                                    spinnerRoles.getSelectedItemPosition() == 0,
                                     spinnerGender.getSelectedItemPosition() == 0,
                                     phoneNumber.getText().toString(), city.getText().toString());
+
+                            // add user to database
+                            FirebaseFirestore fs = FirebaseFirestore.getInstance();
                             fs.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
                                         Log.e("ViewProfile", "added to fs new user: "+user.getId());
                                         FragmentManager fm = getParentFragmentManager();
+                                        // move user to his home window via his role
                                         if(spinnerRoles.getSelectedItemPosition() == 0)
                                             fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class,null).commit();
                                         else

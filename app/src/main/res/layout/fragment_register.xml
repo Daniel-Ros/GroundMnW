@@ -64,7 +64,8 @@
             android:hint="Date Of Birth"
             android:inputType="date"
             android:minHeight="48dp"
-            android:layout_margin="@dimen/text_margin"/>
+            android:layout_margin="@dimen/text_margin"
+            android:onClick="showDateDialog" />
 
         <EditText
             android:id="@+id/register_password2"

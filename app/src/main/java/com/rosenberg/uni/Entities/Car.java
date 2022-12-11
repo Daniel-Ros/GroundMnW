@@ -16,7 +16,7 @@ public class Car {
     private String make;
     private String model;
     private Integer mileage;
-    private String ownerID;
+    private String ownerID;  // UNIQUE, userId
     private Integer numOfSeats;
     private String fuel;
     private String gearbox;
@@ -26,7 +26,7 @@ public class Car {
     private Long endDateStamp; // same as above
     private Integer price;
 
-    private String renterID;
+    private String renterID; // UNIQUE, userId - but for the renter of the car
 
     /**
      * default constructor required for calls to DataSnapshot.getValue(Car.class)
