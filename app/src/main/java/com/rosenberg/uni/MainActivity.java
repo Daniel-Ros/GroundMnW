@@ -33,12 +33,18 @@ import com.rosenberg.uni.login.ViewProfileFragment;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle drawerToggle;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
 
+    /**
+     * blocks the event in the case the side bar was dealt
+     * @param item The menu that is being processed
+     * @return true if event was dealt, false otherwise
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
@@ -47,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * create UI
+     * check if user logged in, if not open login fragment
+     * if yes, open relevant home fragment according to user type
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,23 +84,24 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity","open menu");
             switch (item.getItemId()) {
                 case R.id.nav_home:
+                    // check type of user
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
                     db.collection("users").whereEqualTo("id", u.getUid())
                             .get()
-                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                            .addOnSuccessListener(queryDocumentSnapshots -> { // get all users with the same ID
                                 List<User> userList = queryDocumentSnapshots.toObjects(User.class);
-                                if (userList.size() == 0) {
+                                if (userList.size() == 0) { // user not found
                                     Log.e("MainActivity","Where is my user? " + u.getUid());
                                     FirebaseAuth.getInstance().signOut();
                                     return;
                                 }
                                 User user = userList.get(0);
-                                if (user.getTenant()) {
+                                if (user.getTenant()) { // send tenant to his Cars For Rent View
                                     Log.d("MainActivity", "Going to tenant");
                                     FragmentManager fm = getSupportFragmentManager();
                                     fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-                                } else {
+                                } else { // send renter to his Accepted Cars View
                                     Log.d("MainActivity", "Going to renter");
                                     FragmentManager fm = getSupportFragmentManager();
                                     fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
@@ -97,14 +110,17 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("MainActivity","pressed home");
                     break;
                 case R.id.nav_about:
+                    // TODO add information about us
                     Log.d("MainActivity","pressed about");
                     break;
                 case R.id.nav_sign_out:
+                    // sign out and return to login screen
                     FirebaseAuth.getInstance().signOut();
                     FragmentManager fmSignout = getSupportFragmentManager();
                     fmSignout.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
                     break;
                 case R.id.nav_view_profile:
+                    // show profile of the user
                     Log.d("MainActivity","pressed view profile");
                     FragmentManager fmViewProfile = getSupportFragmentManager();
                     fmViewProfile.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
@@ -114,30 +130,34 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+        // disconnected from user
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
-        } else {
+        }
+        // connected to user
+        else {
             FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
             Log.d(TAG, "Got user" + u.getEmail());
             Toast.makeText(MainActivity.this, "Logged In " + u.getEmail(), Toast.LENGTH_LONG).show();
 
+            // get full data about user
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users").whereEqualTo("id", u.getUid())
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         List<User> userList = queryDocumentSnapshots.toObjects(User.class);
-                        if (userList.size() == 0) {
+                        if (userList.size() == 0) { // user not found in database
                             Log.e("MainActivity","Where is my user? " + u.getUid());
                             FirebaseAuth.getInstance().signOut();
                             return;
                         }
                         User user = userList.get(0);
-                        if (user.getTenant()) {
+                        if (user.getTenant()) {// send tenant to his Cars For Rent View
                             Log.d("MainActivity", "Going to tenant");
                             FragmentManager fm = getSupportFragmentManager();
                             fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-                        } else {
+                        } else { // send renter to his Accepted Cars View
                             Log.d("MainActivity", "Going to renter");
                             FragmentManager fm = getSupportFragmentManager();
                             fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null).commit();
@@ -146,6 +166,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * pick date for registration
+     * @param view
+     */
     public void showDateDialog(View view) {
         EditText datePicked = (EditText) view;   // Store the dialog to be picked
         DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
