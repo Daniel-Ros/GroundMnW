@@ -124,6 +124,9 @@ public class TenantViewRequestedRenterFragment extends Fragment {
                 });
         // if rejected, shall see more users - maybe would like to accept/reject others
         rejectRenterBtn.setOnClickListener(v -> {
+            fs.collection("cars")
+                    .document(car_id).update("renterID", null);
+
             fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(car_id)).commit();
         });
     }

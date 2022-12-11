@@ -122,7 +122,7 @@ public class RegisterFragment extends Fragment {
                 return;
             }
 
-            if (phoneNumber.getText().toString().charAt(0) != '0' || phoneNumber.getText().toString().charAt(5) != '5'
+            if (phoneNumber.getText().toString().startsWith("05")
                     || phoneNumber.getText().toString().length() != 10){
                 // phone number not start with '05...' then its for sure not phone num
                 // same if the length of the phone number is more not 10 digits
