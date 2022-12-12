@@ -84,7 +84,8 @@
                 android:ems="10"
                 android:hint="date of birth"
                 android:inputType="textPersonName"
-                tools:ignore="TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck"
+                android:onClick="showDateDialog" />
         </TableRow>
 
         <TableRow
