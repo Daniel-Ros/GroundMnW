@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class TenantViewRequestedRenterFragment extends Fragment {
 
-    private static final String USER_DATA = null;
-    private static final String CAR_DATA = null;
+    private static final String USER_DATA = "USER_DATA";
+    private static final String CAR_DATA = "CAR_DATA";
 
     // both will be used for get the curr car we talk about
     // and also the renter docId

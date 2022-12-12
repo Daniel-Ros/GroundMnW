@@ -28,7 +28,7 @@ import com.rosenberg.uni.utils.userUtils;
  */
 public class TenantEditCarFragment extends Fragment {
 
-    private static final String CAR_DATA = null;
+    private static final String CAR_DATA = "CAR_DATA";
     private String carDocId;
 
     public TenantEditCarFragment() {

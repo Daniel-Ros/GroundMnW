@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * blocks the event in the case the side bar was dealt
+     *
      * @param item The menu that is being processed
      * @return true if event was dealt, false otherwise
      */
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
      * create UI
      * check if user logged in, if not open login fragment
      * if yes, open relevant home fragment according to user type
+     *
      * @param savedInstanceState
      */
     @Override
@@ -64,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("MainActivity","mic check");
+        Log.d("MainActivity", "mic check");
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             //Setting a dynamic title at runtime. Here, it displays the current time.
             actionBar.setTitle("Dashboard");
         }
-        drawerLayout  = findViewById(R.id.main_drawer);
+        drawerLayout = findViewById(R.id.main_drawer);
         navigationView = findViewById(R.id.main_nav);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_main_menu, R.string.close_main_menu);
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(item -> {
-            Log.d("MainActivity","open menu");
+            Log.d("MainActivity", "open menu");
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     // check type of user
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             .addOnSuccessListener(queryDocumentSnapshots -> { // get all users with the same ID
                                 List<User> userList = queryDocumentSnapshots.toObjects(User.class);
                                 if (userList.size() == 0) { // user not found
-                                    Log.e("MainActivity","Where is my user? " + u.getUid());
+                                    Log.e("MainActivity", "Where is my user? " + u.getUid());
                                     FirebaseAuth.getInstance().signOut();
                                     return;
                                 }
@@ -107,23 +109,28 @@ public class MainActivity extends AppCompatActivity {
                                     fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
                                 }
                             });
-                    Log.d("MainActivity","pressed home");
+                    Log.d("MainActivity", "pressed home");
                     break;
                 case R.id.nav_about:
                     // TODO add information about us
-                    Log.d("MainActivity","pressed about");
+                    Log.d("MainActivity", "pressed about");
                     break;
                 case R.id.nav_sign_out:
                     // sign out and return to login screen
                     FirebaseAuth.getInstance().signOut();
                     FragmentManager fmSignout = getSupportFragmentManager();
-                    fmSignout.beginTransaction().replace(R.id.main_fragment, LoginFragment.class, null).commit();
+                    fmSignout.beginTransaction()
+                            .replace(R.id.main_fragment, LoginFragment.class, null)
+                            .commit();
                     break;
                 case R.id.nav_view_profile:
                     // show profile of the user
-                    Log.d("MainActivity","pressed view profile");
+                    Log.d("MainActivity", "pressed view profile");
                     FragmentManager fmViewProfile = getSupportFragmentManager();
-                    fmViewProfile.beginTransaction().replace(R.id.main_fragment, ViewProfileFragment.class, null).commit();
+                    fmViewProfile.beginTransaction()
+                            .addToBackStack("Home")
+                            .replace(R.id.main_fragment, ViewProfileFragment.class, null)
+                            .commit();
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -148,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         List<User> userList = queryDocumentSnapshots.toObjects(User.class);
                         if (userList.size() == 0) { // user not found in database
-                            Log.e("MainActivity","Where is my user? " + u.getUid());
+                            Log.e("MainActivity", "Where is my user? " + u.getUid());
                             FirebaseAuth.getInstance().signOut();
                             return;
                         }
@@ -160,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         } else { // send renter to his Accepted Cars View
                             Log.d("MainActivity", "Going to renter");
                             FragmentManager fm = getSupportFragmentManager();
-                            fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null).commit();
+                            fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
                         }
                     });
         }
@@ -168,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * pick date for registration
+     *
      * @param view
      */
     public void showDateDialog(View view) {

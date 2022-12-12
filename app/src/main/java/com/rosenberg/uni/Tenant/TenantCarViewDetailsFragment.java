@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class TenantCarViewDetailsFragment extends Fragment {
 
-    private static final String CAR_DATA = null; // get input from user
+    private static final String CAR_DATA = "CAR_DATA"; // get input from user
     private String carDocId;  // gets it as input from constructing
 
     public TenantCarViewDetailsFragment() {
