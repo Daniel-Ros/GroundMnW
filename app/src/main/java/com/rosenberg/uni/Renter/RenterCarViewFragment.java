@@ -102,11 +102,18 @@ public class RenterCarViewFragment extends Fragment {
             fs.collection("cars")
                     .whereLessThan("endDateStamp",end_date_stamp)
                     .whereGreaterThan("endDateStamp",start_date_stamp)
-//                    .whereEqualTo("renterID", null) // show only cars that are not reserved TODO uncomment
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         cars = queryDocumentSnapshots.toObjects(Car.class);
                         Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
+
+
+                        // we are doing this because we cant mnake compund queries
+                        for (int i = 0; i < cars.size(); i++) {
+                            if(cars.get(i).getRenterID() != null){
+                                cars.remove(i--);
+                            }
+                        }
                         // show relevant cars
                         ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
                                 cars.toArray(new Car[0]));

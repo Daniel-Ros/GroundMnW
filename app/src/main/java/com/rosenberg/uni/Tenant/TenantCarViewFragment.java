@@ -75,7 +75,6 @@ public class TenantCarViewFragment extends Fragment {
 
                     // TODO MAGIC LINEEEEEEEEEEEEEEEEEEEEEEEEEe --------
                     car_view.setOnItemClickListener((adapterView, view1, i, l) -> {
-
                         FragmentManager fm = getParentFragmentManager();
                         TenantCarViewDetailsFragment fragment = TenantCarViewDetailsFragment.newInstance(cars.get(i).getDocumentId());
                         fm.beginTransaction().replace(R.id.main_fragment, fragment, null)
