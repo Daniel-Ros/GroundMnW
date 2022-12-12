@@ -10,12 +10,14 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
             android:text="name" />
 
         <TextView
             android:id="@+id/list_item_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
             android:text="TextView" />
     </TableRow>
 
