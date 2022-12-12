@@ -150,12 +150,14 @@ public class TenantCarViewDetailsFragment extends Fragment {
                     List<User> users = queryDocumentSnapshots.toObjects(User.class);
 
 
-                    // TODO DANIELLLLLLLLLLLLLLLLLLLL
+                    // Create the adapter and pass to it the list of users
                     ArrayAdapter adapter = new ListItemUserViewAdapter(getActivity(), users.toArray(new User[0]));
                     carView.setAdapter(adapter);
 
+
+                    // take the adapter view ,  view, position and on click lisener of the item
+                    // we only use the poision to pass it to the next fragment
                     carView.setOnItemClickListener((adapterView, view1, i, l) -> {
-                    // TODO DANIEL HELPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
                         Log.d("tenantCarViewDetails",
                                 "user want to see the details on the user: " + users.get(i).getId());
                         FragmentManager fm = getParentFragmentManager();
