@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Renter.RenterCarViewDetailsFragment;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Renter.RenterMyCarDetailsViewFragment;
@@ -16,14 +18,11 @@ import java.util.List;
 
 public class RenterFunctions {
 
-    private User user;
     private final FirebaseFirestore _fs;
-    private final FirebaseAuth _fsAuth;
     private List<Car> cars;
 
     public RenterFunctions() {
         _fs = FirebaseFirestore.getInstance();
-        _fsAuth = FirebaseAuth.getInstance();
     }
 
     /**
@@ -45,6 +44,86 @@ public class RenterFunctions {
                     Log.d("RenterMyCarDetailsView","problem loading car info" + carDocId);
                 });
 
+    }
+
+    /**
+     * would like to show the details of car
+     * so get the car data from fs
+     * @param carDocId document string unique
+     * @param renterFragment obj
+     */
+    public void getSpecificCar(String carDocId, RenterCarViewDetailsFragment renterFragment){
+        _fs.collection("cars")
+                .document(carDocId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Car car = queryDocumentSnapshots.toObject(Car.class);
+
+                    renterFragment.show(car);
+                })
+                .addOnFailureListener( fail -> {
+                    Log.d("RenterCarViewDetails","problem loading car info" + carDocId);
+                });
+
+    }
+
+    /**
+     * put request for car_id from uid at fs
+     * @param car_id UNIQUE car id
+     * @param uid UNIQUE user id
+     */
+    public void sendRequest(String car_id, String uid) {
+        _fs.collection("users").whereEqualTo("id",
+                        uid)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots2 -> {
+                    List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
+                    Log.d("USER UTILS", "Register user " + userList.size());
+                    User u = userList.get(0);
+                    // add request to database
+                    _fs.collection("cars")
+                            .document(car_id)
+                            .collection("request")
+                            .add(u);
+            }).addOnFailureListener(fail -> {
+                    Log.d("RenterCarViewDetails", "problem pushing request info of car: " + car_id);
+                });;
+    }
+
+    /**
+     * car already requested - cancel request
+     * @param car_id UNIQUE car id
+     * @param uid UNIQUE user id
+     * @param renterFragment obj
+     */
+    public void cancelRequests(String car_id, String uid, RenterCarViewDetailsFragment renterFragment) {
+        _fs.collection("cars").document(car_id)
+                .collection("request")
+                .whereEqualTo("id", uid)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots1 -> {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots1)
+                        queryDocumentSnapshot.getReference().delete();
+                }).addOnFailureListener(fail -> {
+                    Log.d("RenterCarViewDetails", "problem loading car info" + car_id);
+                });;
+    }
+
+    /**
+     * checkAllRequests of specific user for a car
+     * (we dont want to "spam" the system with alot of requests)
+     * @param car_id UNIQUE car id
+     * @param uid UNIQUE user id
+     * @param renterFragment obj
+     */
+    public void checkAllRequests(String car_id, String uid, RenterCarViewDetailsFragment renterFragment) {
+        _fs.collection("cars").document(car_id)
+                .collection("request")
+                .whereEqualTo("id", uid)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots1 -> {
+                    renterFragment.takeRequestLength(queryDocumentSnapshots1.size());
+                });
     }
 
     /**
@@ -109,6 +188,7 @@ public class RenterFunctions {
                     renterFragment.refreshCars(cars);
                 });
     }
+
     /**
      * take strings presents filter DATE and return it as parsed LONG milis
      * @param start date

@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
 
 import java.util.List;
@@ -32,7 +33,18 @@ public class RenterCarViewDetailsFragment extends Fragment {
     private static final String ARG_NAME = "CARID";
     private String car_id;
 
-    private boolean isCarAlreadyReq = false;
+    public boolean isCarAlreadyReq = false;
+    RenterFunctions rf;
+
+    TextView make;
+    TextView model;
+    TextView mileage;
+    TextView numOfSeats;
+    TextView fuel;
+    TextView gearbox;
+    TextView startDate;
+    TextView endDate;
+    Button req_car;
 
     public RenterCarViewDetailsFragment() {
         // Required empty public constructor
@@ -71,6 +83,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rf = new RenterFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_renter_car_view_details, container, false);
     }
@@ -86,82 +99,101 @@ public class RenterCarViewDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // init text vars
-        TextView make = view.findViewById(R.id.renter_car_view_details_make);
-        TextView model = view.findViewById(R.id.renter_car_view_details_model);
-        TextView mileage = view.findViewById(R.id.renter_car_view_details_mileage);
-        TextView numOfSeats = view.findViewById(R.id.renter_car_view_details_num_of_seats);
-        TextView fuel = view.findViewById(R.id.renter_car_view_details_fuel);
-        TextView gearbox = view.findViewById(R.id.renter_car_view_details_gearbox);
-        TextView startDate = view.findViewById(R.id.renter_car_view_details_start_date);
-        TextView endDate = view.findViewById(R.id.renter_car_view_details_end_date);
+        make = view.findViewById(R.id.renter_car_view_details_make);
+        model = view.findViewById(R.id.renter_car_view_details_model);
+        mileage = view.findViewById(R.id.renter_car_view_details_mileage);
+        numOfSeats = view.findViewById(R.id.renter_car_view_details_num_of_seats);
+        fuel = view.findViewById(R.id.renter_car_view_details_fuel);
+        gearbox = view.findViewById(R.id.renter_car_view_details_gearbox);
+        startDate = view.findViewById(R.id.renter_car_view_details_start_date);
+        endDate = view.findViewById(R.id.renter_car_view_details_end_date);
 
         // init button
-        Button req_car = view.findViewById(R.id.renter_car_view_details_req_car);
+        req_car = view.findViewById(R.id.renter_car_view_details_req_car);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-        fs.collection("cars")
-                .document(car_id)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> { // get specific car
-                    Car car = queryDocumentSnapshots.toObject(Car.class);
-                    // update text to information from database
-                    make.setText(car.getMake());
-                    model.setText(car.getModel());
-                    mileage.setText(car.getMileage().toString());
-                    numOfSeats.setText(car.getNumOfSeats().toString());
-                    fuel.setText(car.getFuel());
-                    gearbox.setText(car.getGearbox());
-                    startDate.setText(car.getStartDate());
-                    endDate.setText(car.getEndDate());
+        // get curr data on car to show it
+        rf.getSpecificCar(car_id, this);
 
-                    fs.collection("cars").document(car_id)
-                            .collection("request")
-                            .whereEqualTo("id", FirebaseAuth.getInstance().getUid())
-                            .get()
-                            .addOnSuccessListener(queryDocumentSnapshots1 -> {
-                                if(queryDocumentSnapshots1.size() > 0) {
-                                    // The user already requested the car
-                                    isCarAlreadyReq = true;
-                                    req_car.setText("Cancel Request");
-                                }
-                            });
+        // we shall init the name of the req_car button (cancel/not cancel)
+        rf.checkAllRequests(car_id, FirebaseAuth.getInstance().getUid(), this);
 
-                    // init request and cancel request button action
-                    req_car.setOnClickListener(v -> {
-                        if (isCarAlreadyReq) {
-                            // car already requested- cancel request
-                            isCarAlreadyReq = false;
-                            req_car.setText("Request car");
-                            fs.collection("cars").document(car_id)
-                                    .collection("request")
-                                    .whereEqualTo("id", FirebaseAuth.getInstance().getUid())
-                                    .get()
-                                    .addOnSuccessListener(queryDocumentSnapshots1 -> {
-                                        for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots1)
-                                            queryDocumentSnapshot.getReference().delete();
-                                    });
-                        } else {
-                            // request car
-                            isCarAlreadyReq = true;
-                            req_car.setText("Cancel Request");
-                            fs.collection("users").whereEqualTo("id",
-                                            FirebaseAuth.getInstance().getUid())
-                                    .get()
-                                    .addOnSuccessListener(queryDocumentSnapshots2 -> {
-                                        List<User> userList = queryDocumentSnapshots2.toObjects(User.class);
-                                        Log.d("USER UTILS", "Register user " + userList.size());
-                                        User u = userList.get(0);
-                                        // add request to database
-                                        fs.collection("cars")
-                                                .document(car_id)
-                                                .collection("request")
-                                                .add(u);
-                                    });
-                        }
-                    });
-                })
-                .addOnFailureListener(fail -> {
-                    Log.d("RenterCarViewDetails", "problem loading car info" + car_id);
-                });
+        // init request and cancel request button action
+        req_car.setOnClickListener(v -> {
+
+            if (isCarAlreadyReq) {
+                // car already requested- cancel request
+                rf.cancelRequests(car_id, FirebaseAuth.getInstance().getUid(), this);
+                isCarAlreadyReq = false;
+                req_car.setText("Request car");
+            } else {
+                // request car
+                isCarAlreadyReq = true;
+                req_car.setText("Cancel Request");
+                rf.sendRequest(car_id, FirebaseAuth.getInstance().getUid());
+
+            }
+        });
+    }
+
+    /**
+     * present the details on car
+     * @param car to show
+     */
+    public void show(Car car) {
+        // update text to information from database
+        make.setText(car.getMake());
+        model.setText(car.getModel());
+        mileage.setText(car.getMileage().toString());
+        numOfSeats.setText(car.getNumOfSeats().toString());
+        fuel.setText(car.getFuel());
+        gearbox.setText(car.getGearbox());
+        startDate.setText(car.getStartDate());
+        endDate.setText(car.getEndDate());
+    }
+
+    /**
+     * get report on how many request there is right now on car from curr user:
+     *  0 requests - user can request
+     *  more than 0 - user already requested
+     * @param size - how many requests
+     */
+    public void takeRequestLength(int size) {
+        if(size > 0) {
+            // The user already requested the car
+            isCarAlreadyReq = true;
+            req_car.setText("Cancel Request");
+        }else {
+            req_car.setText("Request car");
+        }
     }
 }
+
+
+
+//        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//                fs.collection("cars")
+//                .document(car_id)
+//                .get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> { // get specific car
+//                Car car = queryDocumentSnapshots.toObject(Car.class);
+//        // update text to information from database
+//        make.setText(car.getMake());
+//        model.setText(car.getModel());
+//        mileage.setText(car.getMileage().toString());
+//        numOfSeats.setText(car.getNumOfSeats().toString());
+//        fuel.setText(car.getFuel());
+//        gearbox.setText(car.getGearbox());
+//        startDate.setText(car.getStartDate());
+//        endDate.setText(car.getEndDate());
+
+//                    fs.collection("cars").document(car_id)
+//                            .collection("request")
+//                            .whereEqualTo("id", FirebaseAuth.getInstance().getUid())
+//                            .get()
+//                            .addOnSuccessListener(queryDocumentSnapshots1 -> {
+//                            if(queryDocumentSnapshots1.size() > 0) {
+//                            // The user already requested the car
+//                            isCarAlreadyReq = true;
+//                            req_car.setText("Cancel Request");
+//                            }
+//                            });

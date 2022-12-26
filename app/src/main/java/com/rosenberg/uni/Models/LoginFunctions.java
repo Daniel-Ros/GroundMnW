@@ -6,12 +6,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Login.EditViewProfileFragment;
 import com.rosenberg.uni.Login.LoginFragment;
 import com.rosenberg.uni.Login.RegisterFragment;
 import com.rosenberg.uni.Login.ViewProfileFragment;
@@ -132,6 +135,93 @@ public class LoginFunctions {
     }
 
     /**
+     * get from FS specific user data
+     * @param uid UNIQUE key for fs
+     * @param viewProfileFragment obj
+     */
+    public void getUserDetails(String uid, ViewProfileFragment viewProfileFragment) {
+        _fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
+            if (userList.size() == 0) {
+                Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
+            }
+            user = userList.get(0);
+        });
+        viewProfileFragment.show(user);
+    }
+
+    /**
+     * get from FS specific user data
+     * @param uid UNIQUE key for fs
+     * @param editProfileFragment obj
+     */
+    public void getUserDetails(String uid, EditViewProfileFragment editProfileFragment) {
+
+        _fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
+            if (userList.size() == 0) {
+                Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
+            }
+            user = userList.get(0);
+        });
+        editProfileFragment.show(user);
+    }
+
+    /**
+     * update user fields at database
+     * @param uid UNIQUE userId
+     * @param firstName .
+     * @param lastName .
+     * @param phoneNumber .
+     * @param born date
+     * @param city .
+     * @param detailsOnUser free text (string)
+     * @param editViewProfileFragment obj
+     */
+    public void confirmEditPressed(String uid, String firstName, String lastName, String phoneNumber, String born,
+                                   String city, String detailsOnUser,
+                                   EditViewProfileFragment editViewProfileFragment) {
+
+
+        // get to the user doc at the database and edit his data
+        _fs.collection("users").whereEqualTo("id", uid)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                    if (userList.size() == 0) {
+                        Log.e("EditProfile",
+                                "Where is my user? its connected to app but cant see its own details from db " + uid);
+                    }
+
+                    // edit the data on a obj
+                    user = userList.get(0);
+                    user.setFirstName(firstName);
+                    user.setLastName(lastName);
+                    user.setPhoneNum(phoneNumber);
+                    user.setBorn(born);
+                    user.setCity(city);
+                    user.setWritingOnMe(detailsOnUser);
+
+                    // now can edit the user at the fs
+                    _fs.collection("users").document(user.getDocumentId()).set(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.e("EditViewProfile", "updated to fs the edit of user: "+user.getId());
+                                    editViewProfileFragment.successfullEdit();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("EditViewProfile", "failed to update to fs the edit of user: "+user.getId());
+                                    editViewProfileFragment.failureEdit();
+                                }
+                            });
+                });
+    }
+
+    /**
      * call to fsAuth and log via details
      * @return the loged user obj
      */
@@ -171,19 +261,4 @@ public class LoginFunctions {
         return  phoneNumber.startsWith("05") && phoneNumber.length() == 10;
     }
 
-    /**
-     * get from FS specific user data
-     * @param uid UNIQUE key for fs
-     * @param viewProfileFragment obj
-     */
-    public void getUserDetails(String uid, ViewProfileFragment viewProfileFragment) {
-        _fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
-            if (userList.size() == 0) {
-                Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
-            }
-            user = userList.get(0);
-        });
-        viewProfileFragment.show(user);
-    }
 }
