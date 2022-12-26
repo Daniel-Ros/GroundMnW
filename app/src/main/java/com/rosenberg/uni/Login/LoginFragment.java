@@ -7,14 +7,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.LoginFunctions;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 
 
 // tester login tenant
@@ -33,6 +38,9 @@ import com.rosenberg.uni.R;
  * represents login window - the first window that the user see of the app
  */
 public class LoginFragment extends Fragment {
+
+    LoginFunctions lf;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -61,6 +69,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        lf = new LoginFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
@@ -84,8 +93,7 @@ public class LoginFragment extends Fragment {
         // logic process - verify user details, then log him if match.
         loginBtn.setOnClickListener(currentView -> {
 
-            LoginFunctions lf = new LoginFunctions();
-            lf.loginPressed(getParentFragmentManager(), getActivity(), email.getText().toString(), password.getText().toString());
+            lf.loginPressed(email.getText().toString(), password.getText().toString(), this);
 
         });
 
@@ -96,6 +104,32 @@ public class LoginFragment extends Fragment {
                     .addToBackStack("LoginFragment")
                     .commit();
         });
+    }
+
+    /**
+     * transact the user to another window since he loged
+     * @param user - obj
+     */
+    public void userLoggedSuccessfully(User user) {
+        // move to Home window via role of user (tenant - renter)
+        FragmentManager fm = getParentFragmentManager();
+        if (user.getTenant()) { // getTenant == isTenant (bug of fb cant denote funcs as "is..")
+            Log.d("MainActivity", "Going to tenant");
+            fm.beginTransaction().replace(R.id.main_fragment,
+                    TenantCarViewFragment.class, null).commit();
+        } else {
+            Log.d("MainActivity", "Going to renter");
+            fm.beginTransaction().replace(R.id.main_fragment,
+                    RenterMyAcceptedCarsFragment.class, null).commit();
+        }
+    }
+
+    /**
+     * user failed to login
+     */
+    public void failureSignIn() {
+        // show 'wrong' for few secs to user
+        Toast.makeText(getActivity(),"wrong email or password", Toast.LENGTH_LONG).show();
     }
 }
 

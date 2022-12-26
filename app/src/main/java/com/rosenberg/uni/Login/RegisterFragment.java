@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.rosenberg.uni.Models.LoginFunctions;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
+import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +31,8 @@ import com.rosenberg.uni.R;
  * also, the code verify that password, phone number are legit
  */
 public class RegisterFragment extends Fragment {
+
+    LoginFunctions lf;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -55,6 +61,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        lf = new LoginFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
@@ -99,13 +106,59 @@ public class RegisterFragment extends Fragment {
         // currentView == view from above
         registerBtn.setOnClickListener(currentView -> {
 
-            LoginFunctions lf = new LoginFunctions();
-            lf.registerPressed(getParentFragmentManager(), getActivity(), firstName.getText().toString(),
-                    lastName.getText().toString(), email.getText().toString(), firstPassword.getText().toString(),
+            lf.registerPressed(firstName.getText().toString(), lastName.getText().toString(),
+                    email.getText().toString(), firstPassword.getText().toString(),
                     verifyPassword.getText().toString(), born.getText().toString(), city.getText().toString(),
                     phoneNumber.getText().toString(), spinnerRoles.getSelectedItemPosition() == 0,
-                    spinnerGender.getSelectedItemPosition() == 0);
+                    spinnerGender.getSelectedItemPosition() == 0, this);
         });
+    }
+
+    /**
+     * password !=? verifyPassword
+     * msg user about that
+     */
+    public void distinctPsw() {
+        Toast.makeText(getActivity(), "passwords is not the same", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * password length must be at least 6 digits but not more than 14
+     * msg user about that
+     */
+    public void notLegitPsw() {
+        Toast.makeText(getActivity(), "passwords shall be 6~14 digits", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * phone number not start with '05...' then its for sure not phone num
+     * same if the length of the phone number is more not 10 digits
+     * msg user about it
+     */
+    public void notLegitPhoneNum() {
+        Toast.makeText(getActivity(), "phone number is not legit", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * couldnt register the user to the db
+     */
+    public void failedToRegister() {
+        Toast.makeText(getActivity(),"failed",Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * opened new user
+     * move user to his home window via his role
+     */
+    public void successRegister(Boolean role) {
+        FragmentManager fm = getParentFragmentManager();
+        if(role) { // true - tenant
+            fm.beginTransaction().replace(R.id.main_fragment,
+                    TenantCarViewFragment.class, null).commit();
+        } else { // false - renter
+            fm.beginTransaction().replace(R.id.main_fragment,
+                    RenterMyAcceptedCarsFragment.class, null).commit();
+        }
     }
 }
 

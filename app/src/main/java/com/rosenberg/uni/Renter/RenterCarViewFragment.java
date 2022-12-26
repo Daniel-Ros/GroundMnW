@@ -37,10 +37,12 @@ public class RenterCarViewFragment extends Fragment {
 
     public List<Car> cars;
     public ListView carsView;
+    RenterFunctions rf;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rf = new RenterFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_renter_car_view, container, false);
     }
@@ -63,21 +65,16 @@ public class RenterCarViewFragment extends Fragment {
         carsView = view.findViewById(R.id.renter_car_view_list_view);
         List<String> carStrings = new ArrayList<>();
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-        fs.collection("cars")
-                .whereEqualTo("renterID", null) // show only cars that are not reserved
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    cars = queryDocumentSnapshots.toObjects(Car.class);
-                    Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
-                    refreshCars(cars, carsView);
-                });
+        // show all the Active cars to req
+        rf.showAllCars(null, this);
+
         // filtering process
         filter.setOnClickListener(v -> {
 
-            RenterFunctions rf = new RenterFunctions();
             rf.filterSearch(start.getText().toString(), end.getText().toString(), this);
         });
+
+
 
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_list_item_1, carStrings);
@@ -96,12 +93,26 @@ public class RenterCarViewFragment extends Fragment {
         });
     }
 
-    public void refreshCars(List<Car> c, ListView carsView){
+    /**
+     * put all cars on view
+     * @param c list of Cars
+     */
+    public void refreshCars(List<Car> c){
         cars = c;
         ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
                 cars.toArray(new Car[0]));
         carsView.setAdapter(adapter);
     }
+
+//        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//        fs.collection("cars")
+//                .whereEqualTo("renterID", null) // show only cars that are not reserved
+//                .get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//                    cars = queryDocumentSnapshots.toObjects(Car.class);
+//                    Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
+//                    refreshCars(cars);
+//        });
 
 
 //            long start_date_stamp,end_date_stamp;

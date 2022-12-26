@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Models.LoginFunctions;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
@@ -30,6 +31,16 @@ import java.util.List;
  * here the user can see his own details
  */
 public class ViewProfileFragment extends Fragment {
+
+    LoginFunctions lf;
+    TextView firstName;
+    TextView lastName;
+    TextView role;
+    TextView phoneNum;
+    TextView gender;
+    TextView birth;
+    TextView city;
+    TextView detailsOnUser;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -58,6 +69,7 @@ public class ViewProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        lf = new LoginFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
@@ -72,50 +84,21 @@ public class ViewProfileFragment extends Fragment {
         super.onViewCreated(viewProfileView, savedInstanceState);
 
         // init vars of the texts for the window
-        TextView firstName = viewProfileView.findViewById(R.id.view_first_name);
-        TextView lastName = viewProfileView.findViewById(R.id.view_last_name);
-        TextView role = viewProfileView.findViewById(R.id.view_Role);
-        TextView phoneNum = viewProfileView.findViewById(R.id.view_phone_number);
-        TextView gender = viewProfileView.findViewById(R.id.view_gender);
-        TextView birth = viewProfileView.findViewById(R.id.view_Birth);
-        TextView city = viewProfileView.findViewById(R.id.view_city);
-        TextView detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
+        firstName = viewProfileView.findViewById(R.id.view_first_name);
+        lastName = viewProfileView.findViewById(R.id.view_last_name);
+        role = viewProfileView.findViewById(R.id.view_Role);
+        phoneNum = viewProfileView.findViewById(R.id.view_phone_number);
+        gender = viewProfileView.findViewById(R.id.view_gender);
+        birth = viewProfileView.findViewById(R.id.view_Birth);
+        city = viewProfileView.findViewById(R.id.view_city);
+        detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
 
         // init buttons for the window
         Button editProfileBtn = viewProfileView.findViewById(R.id.user_view_edit);
 
         String uid = userUtils.getUserID(); // current userID
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-
         // get from FS the data of the current user via its id (UNIQUE)
-        fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
-            if (userList.size() == 0){
-                Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
-            }
-            User user = userList.get(0);
-
-            // init texts via user details
-                String userGender, userRole;
-                if (user.getTenant()){
-                    userRole = "Tenant";
-                }else {
-                    userRole = "Renter";
-                }
-                if (user.getGender()){
-                    userGender = "Male";
-                }else{
-                    userGender = "Female";
-                }
-                firstName.setText(user.getFirstName());
-                lastName.setText(user.getLastName());
-                role.setText(userRole);
-                gender.setText(userGender);
-                phoneNum.setText(user.getPhoneNum());
-                birth.setText(user.getBorn());
-                city.setText(user.getCity());
-                detailsOnUser.setText(user.getWritingOnMe());
-        });
+        lf.getUserDetails(uid, this);
 
         // when cliecked on "edit" -> jump to new screen, which the user can edit his profile details
         // currentView == view from above
@@ -140,46 +123,73 @@ public class ViewProfileFragment extends Fragment {
         assert viewProfileView != null; // kinda not possible since we stand on that view?
 
         // init vars of the texts for the window
-        TextView firstName = viewProfileView.findViewById(R.id.view_first_name);
-        TextView lastName = viewProfileView.findViewById(R.id.view_last_name);
-        TextView role = viewProfileView.findViewById(R.id.view_Role);
-        TextView phoneNum = viewProfileView.findViewById(R.id.view_phone_number);
-        TextView gender = viewProfileView.findViewById(R.id.view_gender);
-        TextView birth = viewProfileView.findViewById(R.id.view_Birth);
-        TextView city = viewProfileView.findViewById(R.id.view_city);
-        TextView detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
+        firstName = viewProfileView.findViewById(R.id.view_first_name);
+        lastName = viewProfileView.findViewById(R.id.view_last_name);
+        role = viewProfileView.findViewById(R.id.view_Role);
+        phoneNum = viewProfileView.findViewById(R.id.view_phone_number);
+        gender = viewProfileView.findViewById(R.id.view_gender);
+        birth = viewProfileView.findViewById(R.id.view_Birth);
+        city = viewProfileView.findViewById(R.id.view_city);
+        detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
 
         String uid = userUtils.getUserID(); // current userID
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        lf.getUserDetails(uid, this);
+    }
 
-        // get from FS the data of the current user via its id (UNIQUE)
-        fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<User> userList = queryDocumentSnapshots.toObjects(User.class);
-            if (userList.size() == 0){
-                Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
-            }
-            User user = userList.get(0);
-
-            // init texts via user details
-            String userGender, userRole;
-            if (user.getTenant()){
-                userRole = "Tenant";
-            }else {
-                userRole = "Renter";
-            }
-            if (user.getGender()){
-                userGender = "Male";
-            }else{
-                userGender = "Female";
-            }
-            firstName.setText(user.getFirstName());
-            lastName.setText(user.getLastName());
-            role.setText(userRole);
-            gender.setText(userGender);
-            phoneNum.setText(user.getPhoneNum());
-            birth.setText(user.getBorn());
-            city.setText(user.getCity());
-            detailsOnUser.setText(user.getWritingOnMe());
-        });
+    /**
+     * gets user obj and screen its details
+     * @param user obj
+     */
+    public void show(User user) {
+        // init texts via user details
+        String userGender, userRole;
+        if (user.getTenant()){
+            userRole = "Tenant";
+        }else {
+            userRole = "Renter";
+        }
+        if (user.getGender()){
+            userGender = "Male";
+        }else{
+            userGender = "Female";
+        }
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        role.setText(userRole);
+        gender.setText(userGender);
+        phoneNum.setText(user.getPhoneNum());
+        birth.setText(user.getBorn());
+        city.setText(user.getCity());
+        detailsOnUser.setText(user.getWritingOnMe());
     }
 }
+
+//// get from FS the data of the current user via its id (UNIQUE)
+//        fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+//                List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+//        if (userList.size() == 0){
+//        Log.e("ViewProfile","Where is my user? its connected to app but cant see its own details from db " + uid);
+//        }
+//        User user = userList.get(0);
+//
+//        // init texts via user details
+//        String userGender, userRole;
+//        if (user.getTenant()){
+//        userRole = "Tenant";
+//        }else {
+//        userRole = "Renter";
+//        }
+//        if (user.getGender()){
+//        userGender = "Male";
+//        }else{
+//        userGender = "Female";
+//        }
+//        firstName.setText(user.getFirstName());
+//        lastName.setText(user.getLastName());
+//        role.setText(userRole);
+//        gender.setText(userGender);
+//        phoneNum.setText(user.getPhoneNum());
+//        birth.setText(user.getBorn());
+//        city.setText(user.getCity());
+//        detailsOnUser.setText(user.getWritingOnMe());
+//        });

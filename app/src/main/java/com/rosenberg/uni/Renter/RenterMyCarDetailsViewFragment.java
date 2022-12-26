@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
 
 /**
@@ -24,6 +25,15 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
 
     private static final String CAR_DATA = "CARID";
     private String carDocId;
+    public RenterFunctions rf;
+    TextView make;
+    TextView model;
+    TextView mileage;
+    TextView numOfSeats;
+    TextView fuel;
+    TextView gearbox;
+    TextView startDate;
+    TextView endDate;
 
     public RenterMyCarDetailsViewFragment() {
         // Required empty public constructor
@@ -62,6 +72,7 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rf = new RenterFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_renter_my_car_details_view, container, false);
     }
@@ -75,38 +86,34 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // init vars of the texts window
-        TextView make = view.findViewById(R.id.renter_my_car_view_details_make);
-        TextView model = view.findViewById(R.id.renter_my_car_view_details_model);
-        TextView mileage = view.findViewById(R.id.renter_my_car_view_details_mileage);
-        TextView numOfSeats = view.findViewById(R.id.renter_my_car_view_details_num_of_seats);
-        TextView fuel = view.findViewById(R.id.renter_my_car_view_details_fuel);
-        TextView gearbox = view.findViewById(R.id.renter_my_car_view_details_gearbox);
-        TextView startDate = view.findViewById(R.id.renter_my_car_view_details_start_date);
-        TextView endDate = view.findViewById(R.id.renter_my_car_view_details_end_date);
+        make = view.findViewById(R.id.renter_my_car_view_details_make);
+        model = view.findViewById(R.id.renter_my_car_view_details_model);
+        mileage = view.findViewById(R.id.renter_my_car_view_details_mileage);
+        numOfSeats = view.findViewById(R.id.renter_my_car_view_details_num_of_seats);
+        fuel = view.findViewById(R.id.renter_my_car_view_details_fuel);
+        gearbox = view.findViewById(R.id.renter_my_car_view_details_gearbox);
+        startDate = view.findViewById(R.id.renter_my_car_view_details_start_date);
+        endDate = view.findViewById(R.id.renter_my_car_view_details_end_date);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        // get details on my specific car
+        // and then show it
+        rf.getSpecificCar(carDocId, this);
+    }
 
-        // would like to show the details of the car that the renter clicked on
-        fs.collection("cars")
-                .document(carDocId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Car car = queryDocumentSnapshots.toObject(Car.class);
-
-                    // init text boxes
-                    make.setText(car.getMake());
-                    model.setText(car.getModel());
-                    mileage.setText(car.getMileage().toString());
-                    numOfSeats.setText(car.getNumOfSeats().toString());
-                    fuel.setText(car.getFuel());
-                    gearbox.setText(car.getGearbox());
-                    startDate.setText(car.getStartDate());
-                    endDate.setText(car.getEndDate());
-                })
-                .addOnFailureListener( fail -> {
-                    Log.d("RenterMyCarDetailsView","problem loading car info" + carDocId);
-                });
+    /**
+     * would like to show the details of the car that the renter clicked on
+     * @param myCar my car
+     */
+    public void show(Car myCar) {
+        // init text boxes
+        make.setText(myCar.getMake());
+        model.setText(myCar.getModel());
+        mileage.setText(myCar.getMileage().toString());
+        numOfSeats.setText(myCar.getNumOfSeats().toString());
+        fuel.setText(myCar.getFuel());
+        gearbox.setText(myCar.getGearbox());
+        startDate.setText(myCar.getStartDate());
+        endDate.setText(myCar.getEndDate());
     }
 }

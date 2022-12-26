@@ -6,21 +6,20 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Login.LoginFragment;
+import com.rosenberg.uni.Login.RegisterFragment;
+import com.rosenberg.uni.Login.ViewProfileFragment;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 
 public class LoginFunctions {
 
@@ -37,10 +36,9 @@ public class LoginFunctions {
      * logic process - verify user details, then log him if match.
      * @param email - input from user
      * @param psw - password from user
-     * @param parentFm - FragmentManger (helps to move between windows)
-     * @param activity - help for pop up messages
+     * @param loginFragment - as named
      */
-    public void loginPressed(FragmentManager parentFm, FragmentActivity activity, String email, String psw){
+    public void loginPressed(String email, String psw, LoginFragment loginFragment){
 
         this.logTheUserIn(email, psw).addOnCompleteListener(signInTask -> { // after the sign in try^
 
@@ -63,27 +61,16 @@ public class LoginFunctions {
 
                             User user = userList.get(0); // take user
 
-                            // move to Home window via role of user (tenant - renter)
-                            if (user.getTenant()) { // getTenant == isTenant (bug of fb cant denote funcs as "is..")
-                                Log.d("MainActivity", "Going to tenant");
-                                parentFm.beginTransaction().replace(R.id.main_fragment,
-                                        TenantCarViewFragment.class, null).commit();
-                            } else {
-                                Log.d("MainActivity", "Going to renter");
-                                parentFm.beginTransaction().replace(R.id.main_fragment,
-                                        RenterMyAcceptedCarsFragment.class, null).commit();
-                            }
+                            loginFragment.userLoggedSuccessfully(user);
+
                         });
             } else{ // incorrect sign in details
-                // show 'wrong' for few secs to user
-                Toast.makeText(activity,"wrong", Toast.LENGTH_LONG).show();
+                loginFragment.failureSignIn();
             }});
     }
 
     /**
      * execute the registeration process
-     * @param parentFm fragmentManager
-     * @param activity curr..
      * @param firstName of user
      * @param lastName of user
      * @param email of user
@@ -94,27 +81,26 @@ public class LoginFunctions {
      * @param phoneNumber of user
      * @param role true-tenant, false-renter
      * @param gender of user true-male, false-female
+     * @param registerFragment obj
      */
-    public void registerPressed(FragmentManager parentFm, FragmentActivity activity, String firstName, String lastName,
-                                String email, String firstPassword, String verifyPassword, String born, String city,
-                                String phoneNumber, boolean role, boolean gender){
+    public void registerPressed(String firstName, String lastName, String email, String firstPassword,
+                                String verifyPassword, String born, String city,
+                                String phoneNumber, boolean role, boolean gender,
+                                RegisterFragment registerFragment){
         if (!samePsw(firstPassword, verifyPassword)){
             // password !=? verifyPassword
             // msg user about that
-            Toast.makeText(activity, "passwords is not the same", Toast.LENGTH_LONG).show();
+            registerFragment.distinctPsw();
             return;
         }
         else if (!legitPsw(firstPassword)){
             // password length must be at least 6 digits but not more than 14
             // msg user about that
-            Toast.makeText(activity, "passwords shall be 6~14 digits", Toast.LENGTH_LONG).show();
+            registerFragment.notLegitPsw();
             return;
         }
         else if (!legitPhoneNumber(phoneNumber)){
-            // phone number not start with '05...' then its for sure not phone num
-            // same if the length of the phone number is more not 10 digits
-            // msg user about it
-            Toast.makeText(activity, "phone number is not legit", Toast.LENGTH_LONG).show();
+            registerFragment.notLegitPhoneNum();
             return;
         }
 
@@ -131,14 +117,7 @@ public class LoginFunctions {
                         .addOnSuccessListener(documentReference -> {
                             Log.e("ViewProfile", "added to fs new user: "+user.getId());
 
-                            // move user to his home window via his role
-                            if(role) { // true - tenant
-                                parentFm.beginTransaction().replace(R.id.main_fragment,
-                                        TenantCarViewFragment.class, null).commit();
-                            } else { // false - renter
-                                parentFm.beginTransaction().replace(R.id.main_fragment,
-                                        RenterMyAcceptedCarsFragment.class, null).commit();
-                            }
+                            registerFragment.successRegister(role);
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -147,7 +126,7 @@ public class LoginFunctions {
                             }
                         });
             }else{
-                Toast.makeText(activity,"failed",Toast.LENGTH_LONG).show();
+                registerFragment.failedToRegister();
             }
         });
     }
@@ -192,4 +171,19 @@ public class LoginFunctions {
         return  phoneNumber.startsWith("05") && phoneNumber.length() == 10;
     }
 
+    /**
+     * get from FS specific user data
+     * @param uid UNIQUE key for fs
+     * @param viewProfileFragment obj
+     */
+    public void getUserDetails(String uid, ViewProfileFragment viewProfileFragment) {
+        _fs.collection("users").whereEqualTo("id", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> userList = queryDocumentSnapshots.toObjects(User.class); // return list of users
+            if (userList.size() == 0) {
+                Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
+            }
+            user = userList.get(0);
+        });
+        viewProfileFragment.show(user);
+    }
 }

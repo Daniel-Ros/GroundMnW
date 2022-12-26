@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.Tenant.TenantAddCarFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewDetailsFragment;
@@ -36,8 +37,10 @@ import java.util.List;
  */
 public class RenterMyAcceptedCarsFragment extends Fragment {
 
-    boolean canAddCar; // if more or less than 5 cars already in rent time
-
+    public boolean canAddCar; // if more or less than 5 cars already in rent time
+    public ListView carsView;
+    RenterFunctions rf;
+    Button searchCar;
 
     public RenterMyAcceptedCarsFragment() {
         // Required empty public constructor
@@ -67,6 +70,7 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rf = new RenterFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_renter_my_accepted_cars, container, false);
     }
@@ -81,39 +85,10 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // create list view and search button for new cars
-        ListView carsView = view.findViewById(R.id.renter_my_accepted_cars_list_view);
-        Button searchCar = view.findViewById(R.id.renter_my_accepted_cars_search);
+        carsView = view.findViewById(R.id.renter_my_accepted_cars_list_view);
+        searchCar = view.findViewById(R.id.renter_my_accepted_cars_search);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-        fs.collection("cars").whereEqualTo("renterID", userUtils.getUserID())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> { // get cars with U_ID as RenterID
-                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
-                    Log.d("RENTER ACCEPTED CARS","SHOWING MY CARS" + cars.size());
-
-                    // If we have more then 5 cars, disable this option
-                    if(cars.size() >= 5) {
-                        canAddCar = false;
-                        searchCar.setText("max 5 cars");
-                    }
-                    else{
-                        //other wise, enable it again
-                        canAddCar = true;
-                    }
-                    // show cars in our format
-                    ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
-                    carsView.setAdapter(adapter);
-
-                    carsView.setOnItemClickListener((adapterView, view1, i, l) -> {
-                        FragmentManager fm = getParentFragmentManager();
-                        RenterMyCarDetailsViewFragment fragment = RenterMyCarDetailsViewFragment.newInstance(cars.get(i).getDocumentId());
-                        // show details about car
-                        fm.beginTransaction().replace(R.id.main_fragment, fragment, null)
-                                .addToBackStack("RenterMyAcceptedCars")
-                                .commit();
-                    });
-                });
-
+        rf.initMyCars(userUtils.getUserID(), this);
 
         // search button
         searchCar.setOnClickListener(v -> {
@@ -131,4 +106,65 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
 
 
     }
+
+    /**
+     * get all cars and presents them
+     * @param cars - list of Car objects
+     */
+    public void show(List<Car> cars) {
+
+        // If we have more then 5 cars, disable this option
+        if(cars.size() >= 5) {
+            canAddCar = false;
+            searchCar.setText("max 5 cars");
+        }
+        else{
+            //other wise, enable it again
+            canAddCar = true;
+        }
+
+        // show cars in our format
+        ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
+        carsView.setAdapter(adapter);
+
+        carsView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            RenterMyCarDetailsViewFragment fragment = RenterMyCarDetailsViewFragment.newInstance(cars.get(i).getDocumentId());
+            // show details about car
+            getParentFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment, null)
+                    .addToBackStack("RenterMyAcceptedCars")
+                    .commit();
+        });
+
+    }
+
+
+//        fs.collection("cars").whereEqualTo("renterID", userUtils.getUserID())
+//                .get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> { // get cars with U_ID as RenterID
+//                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
+//                    Log.d("RENTER ACCEPTED CARS","SHOWING MY CARS" + cars.size());
+//
+//                    // If we have more then 5 cars, disable this option
+//                    if(cars.size() >= 5) {
+//                        canAddCar = false;
+//                        searchCar.setText("max 5 cars");
+//                    }
+//                    else{
+//                        //other wise, enable it again
+//                        canAddCar = true;
+//                    }
+//                    // show cars in our format
+//                    ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),cars.toArray(new Car[0]));
+//                    carsView.setAdapter(adapter);
+//
+//                    carsView.setOnItemClickListener((adapterView, view1, i, l) -> {
+//                        FragmentManager fm = getParentFragmentManager();
+//                        RenterMyCarDetailsViewFragment fragment = RenterMyCarDetailsViewFragment.newInstance(cars.get(i).getDocumentId());
+//                        // show details about car
+//                        fm.beginTransaction().replace(R.id.main_fragment, fragment, null)
+//                                .addToBackStack("RenterMyAcceptedCars")
+//                                .commit();
+//                    });
+//                });
+
 }
