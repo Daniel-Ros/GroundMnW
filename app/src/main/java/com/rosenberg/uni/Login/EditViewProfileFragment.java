@@ -1,4 +1,4 @@
-package com.rosenberg.uni.login;
+package com.rosenberg.uni.Login;
 
 import android.os.Bundle;
 

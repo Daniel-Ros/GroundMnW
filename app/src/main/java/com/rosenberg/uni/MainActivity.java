@@ -24,11 +24,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
-import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
-import com.rosenberg.uni.login.LoginFragment;
-import com.rosenberg.uni.login.ViewProfileFragment;
+import com.rosenberg.uni.Login.LoginFragment;
+import com.rosenberg.uni.Login.ViewProfileFragment;
 
 import java.util.Calendar;
 import java.util.List;

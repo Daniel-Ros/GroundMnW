@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
 
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ import java.util.List;
  */
 public class RenterCarViewFragment extends Fragment {
 
-    private List<Car> cars;
+    public List<Car> cars;
+    public ListView carsView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +60,7 @@ public class RenterCarViewFragment extends Fragment {
         Button filter = view.findViewById(R.id.renter_car_view_filter);
 
         // list of cars to rent
-        ListView carsView = view.findViewById(R.id.renter_car_view_list_view);
+        carsView = view.findViewById(R.id.renter_car_view_list_view);
         List<String> carStrings = new ArrayList<>();
 
         FirebaseFirestore fs = FirebaseFirestore.getInstance();
@@ -68,61 +70,17 @@ public class RenterCarViewFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     cars = queryDocumentSnapshots.toObjects(Car.class);
                     Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
-
-                    ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
-                            cars.toArray(new Car[0]));
-                    carsView.setAdapter(adapter);
+                    refreshCars(cars, carsView);
                 });
         // filtering process
         filter.setOnClickListener(v -> {
-            long start_date_stamp,end_date_stamp;
-            if(start.getText().toString().isEmpty()){ // get start date for filtering
-                start_date_stamp =0;
-                Calendar calendar = new GregorianCalendar(0,1,1);
-                start_date_stamp = calendar.getTimeInMillis();
-            }else{ // parse start date for filtering
-                String [] splitdate = start.getText().toString().split("/");
-                Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
-                        Integer.parseInt(splitdate[1]),
-                        Integer.parseInt(splitdate[0]));
-                start_date_stamp = calendar.getTimeInMillis();
-            }
 
-            if(end.getText().toString().isEmpty()){ // get end date for filtering
-                Calendar calendar = new GregorianCalendar(3000,1,1);
-                end_date_stamp = calendar.getTimeInMillis();
-            }else{ // parse end date for filtering
-                String [] splitdate = end.getText().toString().split("/");
-                Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
-                        Integer.parseInt(splitdate[1]),
-                        Integer.parseInt(splitdate[0]));
-                end_date_stamp = calendar.getTimeInMillis();
-            }
-            // get only cars with end-of-rent time between start and end date
-            fs.collection("cars")
-                    .whereLessThan("endDateStamp",end_date_stamp)
-                    .whereGreaterThan("endDateStamp",start_date_stamp)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        cars = queryDocumentSnapshots.toObjects(Car.class);
-                        Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
-
-
-                        // we are doing this because we cant mnake compund queries
-                        for (int i = 0; i < cars.size(); i++) {
-                            if(cars.get(i).getRenterID() != null){
-                                cars.remove(i--);
-                            }
-                        }
-                        // show relevant cars
-                        ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
-                                cars.toArray(new Car[0]));
-                        carsView.setAdapter(adapter);
-                    });
+            RenterFunctions rf = new RenterFunctions();
+            rf.filterSearch(start.getText().toString(), end.getText().toString(), this);
         });
 
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1,carStrings);
+                android.R.layout.simple_list_item_1, carStrings);
         carsView.setAdapter(adapter);
 
         // car in index i selected
@@ -137,4 +95,60 @@ public class RenterCarViewFragment extends Fragment {
                     .commit();
         });
     }
+
+    public void refreshCars(List<Car> c, ListView carsView){
+        cars = c;
+        ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
+                cars.toArray(new Car[0]));
+        carsView.setAdapter(adapter);
+    }
+
+
+//            long start_date_stamp,end_date_stamp;
+//            if(start.getText().toString().isEmpty()){ // get start date for filtering
+//                start_date_stamp =0;
+//                Calendar calendar = new GregorianCalendar(0,1,1);
+//                start_date_stamp = calendar.getTimeInMillis();
+//            }else{ // parse start date for filtering
+//                String [] splitdate = start.getText().toString().split("/");
+//                Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
+//                        Integer.parseInt(splitdate[1]),
+//                        Integer.parseInt(splitdate[0]));
+//                start_date_stamp = calendar.getTimeInMillis();
+//            }
+//
+//            if(end.getText().toString().isEmpty()){ // get end date for filtering
+//                Calendar calendar = new GregorianCalendar(3000,1,1);
+//                end_date_stamp = calendar.getTimeInMillis();
+//            }else{ // parse end date for filtering
+//                String [] splitdate = end.getText().toString().split("/");
+//                Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
+//                        Integer.parseInt(splitdate[1]),
+//                        Integer.parseInt(splitdate[0]));
+//                end_date_stamp = calendar.getTimeInMillis();
+//            }
+//            // get only cars with end-of-rent time between start and end date
+//            fs.collection("cars")
+//                    .whereLessThan("endDateStamp",end_date_stamp)
+//                    .whereGreaterThan("endDateStamp",start_date_stamp)
+//                    .get()
+//                    .addOnSuccessListener(queryDocumentSnapshots -> {
+//                        cars = queryDocumentSnapshots.toObjects(Car.class);
+//                        Log.d("CAR_VIEW Renter","ADDING CARS" + cars.size());
+//
+//
+//                        // we are doing this because we cant mnake compund queries
+//                        for (int i = 0; i < cars.size(); i++) {
+//                            if(cars.get(i).getRenterID() != null){
+//                                cars.remove(i--);
+//                            }
+//                        }
+//                        // show relevant cars
+////                        ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),
+////                                cars.toArray(new Car[0]));
+////                        carsView.setAdapter(adapter);
+//                        refreshCars(cars, carsView);
+//
+//                    });
+
 }

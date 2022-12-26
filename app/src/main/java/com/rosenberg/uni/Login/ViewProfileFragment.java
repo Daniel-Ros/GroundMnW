@@ -1,4 +1,4 @@
-package com.rosenberg.uni.login;
+package com.rosenberg.uni.Login;
 
 import android.os.Bundle;
 
@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.WithLifecycleStateKt;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,25 +96,25 @@ public class ViewProfileFragment extends Fragment {
             User user = userList.get(0);
 
             // init texts via user details
-            String userGender, userRole;
-            if (user.getTenant()){
-                userRole = "Tenant";
-            }else {
-                userRole = "Renter";
-            }
-            if (user.getGender()){
-                userGender = "Male";
-            }else{
-                userGender = "Female";
-            }
-            firstName.setText(user.getFirstName());
-            lastName.setText(user.getLastName());
-            role.setText(userRole);
-            gender.setText(userGender);
-            phoneNum.setText(user.getPhoneNum());
-            birth.setText(user.getBorn());
-            city.setText(user.getCity());
-            detailsOnUser.setText(user.getWritingOnMe());
+                String userGender, userRole;
+                if (user.getTenant()){
+                    userRole = "Tenant";
+                }else {
+                    userRole = "Renter";
+                }
+                if (user.getGender()){
+                    userGender = "Male";
+                }else{
+                    userGender = "Female";
+                }
+                firstName.setText(user.getFirstName());
+                lastName.setText(user.getLastName());
+                role.setText(userRole);
+                gender.setText(userGender);
+                phoneNum.setText(user.getPhoneNum());
+                birth.setText(user.getBorn());
+                city.setText(user.getCity());
+                detailsOnUser.setText(user.getWritingOnMe());
         });
 
         // when cliecked on "edit" -> jump to new screen, which the user can edit his profile details
