@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
@@ -30,6 +31,20 @@ public class TenantEditCarFragment extends Fragment {
 
     private static final String CAR_DATA = "CAR_DATA";
     private String carDocId;
+
+    TenantFunctions tf;
+
+    // init vars of the texts window
+    EditText make;
+    EditText model;
+    EditText mileage;
+    EditText numSeats;
+    Spinner fuel;
+    Spinner gearbox;
+    EditText start_date;
+    EditText end_date;
+    EditText price;
+
 
     public TenantEditCarFragment() {
         // Required empty public constructor
@@ -68,6 +83,7 @@ public class TenantEditCarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tf = new TenantFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tenant_edit_car, container, false);
     }
@@ -87,15 +103,15 @@ public class TenantEditCarFragment extends Fragment {
         String[] gearboxs = new String[]{"automatic", "manuel"};
 
         // init vars of the texts window
-        EditText make = view.findViewById(R.id.tenant_edit_car_make);
-        EditText model = view.findViewById(R.id.tenant_edit_car_model);
-        EditText mileage = view.findViewById(R.id.tenant_edit_car_mileage);
-        EditText numSeats = view.findViewById(R.id.tenant_edit_car_num_of_seats);
-        Spinner fuel = view.findViewById(R.id.tenant_edit_car_fuel);
-        Spinner gearbox = view.findViewById(R.id.tenant_edit_car_gearbox);
-        EditText start_date = view.findViewById(R.id.tenant_edit_car_start_date);
-        EditText end_date = view.findViewById(R.id.tenant_edit_car_end_date);
-        EditText price = view.findViewById(R.id.tenant_edit_car_price);
+        make = view.findViewById(R.id.tenant_edit_car_make);
+        model = view.findViewById(R.id.tenant_edit_car_model);
+        mileage = view.findViewById(R.id.tenant_edit_car_mileage);
+        numSeats = view.findViewById(R.id.tenant_edit_car_num_of_seats);
+        fuel = view.findViewById(R.id.tenant_edit_car_fuel);
+        gearbox = view.findViewById(R.id.tenant_edit_car_gearbox);
+        start_date = view.findViewById(R.id.tenant_edit_car_start_date);
+        end_date = view.findViewById(R.id.tenant_edit_car_end_date);
+        price = view.findViewById(R.id.tenant_edit_car_price);
 
         // init buttons for window
         Button doneBtn = view.findViewById(R.id.tenant_edit_car_done);
@@ -107,51 +123,87 @@ public class TenantEditCarFragment extends Fragment {
         ArrayAdapter<String> adapterModel = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,gearboxs);
         gearbox.setAdapter(adapterModel);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-        fs.collection("cars")
-                .document(carDocId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Car currCar = queryDocumentSnapshots.toObject(Car.class);
+        // data on car from fs
+        tf.getSpecificCar(carDocId, this);
 
-                    // get curr car data from the database and show it to user
-                    // (this way user shall edit only the relevant and not type all over again)
-                    make.setText(currCar.getMake());
-                    model.setText(currCar.getModel());
-                    mileage.setText(currCar.getMileage().toString());
-                    numSeats.setText(currCar.getNumOfSeats().toString());
-                    fuel.setSelection(currCar.getFuel() == "95"? 0 : 1);
-                    gearbox.setSelection(currCar.getGearbox() == "automatic"? 0 : 1);
-                    start_date.setText(currCar.getStartDate());
-                    end_date.setText(currCar.getEndDate());
-                    price.setText(currCar.getPrice());
+        // user ended to edit the car data
+        doneBtn.setOnClickListener(v -> {
+            String uid = userUtils.getUserID();
+            Log.d("ADD CAR", "uid =" + uid);
 
-                    doneBtn.setOnClickListener(v -> {
-                        String uid = userUtils.getUserID();
-                        Log.d("ADD CAR", "uid =" + uid);
+            // save on Car obj all the input data from user
+            Car new_car = new Car(
+                    make.getText().toString(),
+                    model.getText().toString(),
+                    mileage.getText().toString(),
+                    numSeats.getText().toString(),
+                    fuel.getSelectedItem().toString(),
+                    gearbox.getSelectedItem().toString(),
+                    start_date.getText().toString(),
+                    end_date.getText().toString(),
+                    Integer.parseInt(price.getText().toString()),
+                    uid);
 
-                        // save on Car obj all the input data from user
-                        Car new_car = new Car(
-                                make.getText().toString(),
-                                model.getText().toString(),
-                                mileage.getText().toString(),
-                                numSeats.getText().toString(),
-                                fuel.getSelectedItem().toString(),
-                                gearbox.getSelectedItem().toString(),
-                                start_date.getText().toString(),
-                                end_date.getText().toString(),
-                                Integer.parseInt(price.getText().toString()),
-                                uid);
+            tf.uploadMyCarData(carDocId, new_car, this);
+        });
+    }
 
-                        // put the car data at the same car obj at fs (via carDocId)
-                        fs.collection("cars").document(carDocId).set(new_car).addOnCompleteListener(task -> {
-                            FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-                        });
-                    });
-                })
-                .addOnFailureListener( fail -> {
-                    Log.d("RenterCarViewDetails","problme loading car info" + carDocId);
-                });
+    /**
+     * show car details
+     * @param currCar obj
+     */
+    public void show(Car currCar){
+        // get curr car data from the database and show it to user
+        // (this way user shall edit only the relevant and not type all over again)
+        make.setText(currCar.getMake());
+        model.setText(currCar.getModel());
+        mileage.setText(currCar.getMileage().toString());
+        numSeats.setText(currCar.getNumOfSeats().toString());
+        fuel.setSelection(currCar.getFuel() == "95"? 0 : 1);
+        gearbox.setSelection(currCar.getGearbox() == "automatic"? 0 : 1);
+        start_date.setText(currCar.getStartDate());
+        end_date.setText(currCar.getEndDate());
+        price.setText(currCar.getPrice());
+
+    }
+
+    /**
+     * move to next window
+     */
+    public void uploadSucceed() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
     }
 }
+
+
+//        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//                fs.collection("cars")
+//                .document(carDocId)
+//                .get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//                Car currCar = queryDocumentSnapshots.toObject(Car.class);
+//
+//        // get curr car data from the database and show it to user
+//        // (this way user shall edit only the relevant and not type all over again)
+//        make.setText(currCar.getMake());
+//        model.setText(currCar.getModel());
+//        mileage.setText(currCar.getMileage().toString());
+//        numSeats.setText(currCar.getNumOfSeats().toString());
+//        fuel.setSelection(currCar.getFuel() == "95"? 0 : 1);
+//        gearbox.setSelection(currCar.getGearbox() == "automatic"? 0 : 1);
+//        start_date.setText(currCar.getStartDate());
+//        end_date.setText(currCar.getEndDate());
+//        price.setText(currCar.getPrice());
+
+
+//// put the car data at the same car obj at fs (via carDocId)
+//                        fs.collection("cars").document(carDocId).set(new_car).addOnCompleteListener(task -> {
+//                                FragmentManager fm = getParentFragmentManager();
+//                                fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+//        });
+//        });
+//        })
+//        .addOnFailureListener( fail -> {
+//        Log.d("RenterCarViewDetails","problme loading car info" + carDocId);
+//        });

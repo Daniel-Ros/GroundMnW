@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Adapters.ListItemUserViewAdapter;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 
 import java.util.List;
@@ -33,6 +33,19 @@ public class TenantCarViewDetailsFragment extends Fragment {
 
     private static final String CAR_DATA = "CAR_DATA"; // get input from user
     private String carDocId;  // gets it as input from constructing
+
+    TenantFunctions tf;
+
+    TextView make;
+    TextView model;
+    TextView mileage;
+    TextView numOfSeats;
+    TextView fuel;
+    TextView gearbox;
+    TextView startDate;
+    TextView endDate;
+    ListView carView;
+
 
     public TenantCarViewDetailsFragment() {
         // Required empty public constructor
@@ -70,6 +83,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tf = new TenantFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tenant_car_view_details, container, false);
     }
@@ -85,89 +99,157 @@ public class TenantCarViewDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // init text vars
-        TextView make = view.findViewById(R.id.tenant_car_view_details_make);
-        TextView model = view.findViewById(R.id.tenant_car_view_details_model);
-        TextView mileage = view.findViewById(R.id.tenant_car_view_details_mileage);
-        TextView numOfSeats = view.findViewById(R.id.tenant_car_view_details_num_of_seats);
-        TextView fuel = view.findViewById(R.id.tenant_car_view_details_fuel);
-        TextView gearbox = view.findViewById(R.id.tenant_car_view_details_gearbox);
-        TextView startDate = view.findViewById(R.id.tenant_car_view_details_start_date);
-        TextView endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
-        ListView carView = view.findViewById(R.id.tenant_car_view_details_users_list_view);
+        make = view.findViewById(R.id.tenant_car_view_details_make);
+        model = view.findViewById(R.id.tenant_car_view_details_model);
+        mileage = view.findViewById(R.id.tenant_car_view_details_mileage);
+        numOfSeats = view.findViewById(R.id.tenant_car_view_details_num_of_seats);
+        fuel = view.findViewById(R.id.tenant_car_view_details_fuel);
+        gearbox = view.findViewById(R.id.tenant_car_view_details_gearbox);
+        startDate = view.findViewById(R.id.tenant_car_view_details_start_date);
+        endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
+        carView = view.findViewById(R.id.tenant_car_view_details_users_list_view);
 
         // init buttons
         Button editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
         Button removeBtn = view.findViewById(R.id.tenant_car_view_details_remove);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
+        // init buttons listeners
+        // edit - move to the edit window
+        editBtn.setOnClickListener(view1 -> {
+            this.editClicked();
+        });
 
-        // get curr car data from the database and show it to user
-        fs.collection("cars")
-                .document(carDocId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Car currentCar = queryDocumentSnapshots.toObject(Car.class);
+        // remove - delete the current car from the firebase
+        // move back to 'HOME' of tenant
+        removeBtn.setOnClickListener(view1 -> {
+            tf.deleteCar(carDocId, this);
+        });
+        // pull the data on the car for showing it
+        tf.getSpecificCar(carDocId, this);
 
-                    // split the data to the relevant text boxes
-                    make.setText(currentCar.getMake());
-                    model.setText(currentCar.getModel());
-                    mileage.setText(currentCar.getMileage().toString());
-                    numOfSeats.setText(currentCar.getNumOfSeats().toString());
-                    fuel.setText(currentCar.getFuel());
-                    gearbox.setText(currentCar.getGearbox());
-                    startDate.setText(currentCar.getStartDate());
-                    endDate.setText(currentCar.getEndDate());
+        // pull all users requests
+        tf.getAllRequests(carDocId, this);
 
-                    // init buttons listeners
-                    // edit - move to the edit window
-                    editBtn.setOnClickListener(view1 -> {
-                        FragmentManager fm = getParentFragmentManager();
-                        fm.beginTransaction().replace(R.id.main_fragment,
-                                        TenantEditCarFragment.newInstance(carDocId),null)
-                                .commit();
-                    });
-                    // remove - delete the current car from the firebase
-                    // move back to 'HOME' of tenant
-                    removeBtn.setOnClickListener(view1 -> {
-                        fs.collection("cars").document(carDocId).delete().addOnSuccessListener(runnable -> {
-                            FragmentManager fm = getParentFragmentManager();
-                            fm.beginTransaction().replace(R.id.main_fragment,
-                                            TenantCarViewFragment.class,null)
-                                    .commit();
-                        });
-                    });
-                })
-                .addOnFailureListener( fail -> {
-                    Log.d("RenterCarViewDetails","problem loading car info" + carDocId);
-                });
+    }
 
-        // get user requests and show them on screen
-        fs.collection("cars")
-                .document(carDocId)
-                .collection("request")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<User> users = queryDocumentSnapshots.toObjects(User.class);
+    /**
+     * show car details
+     * @param currentCar obj
+     */
+    public void show(Car currentCar) {
+        // split the data to the relevant text boxes
+        make.setText(currentCar.getMake());
+        model.setText(currentCar.getModel());
+        mileage.setText(currentCar.getMileage().toString());
+        numOfSeats.setText(currentCar.getNumOfSeats().toString());
+        fuel.setText(currentCar.getFuel());
+        gearbox.setText(currentCar.getGearbox());
+        startDate.setText(currentCar.getStartDate());
+        endDate.setText(currentCar.getEndDate());
+    }
 
+    /**
+     * present all users that requested the current car
+     * @param users list
+     */
+    public void uploadUsers(List<User> users) {
+        // Create the adapter and pass to it the list of users
+        ArrayAdapter adapter = new ListItemUserViewAdapter(getActivity(), users.toArray(new User[0]));
+        carView.setAdapter(adapter);
 
-                    // Create the adapter and pass to it the list of users
-                    ArrayAdapter adapter = new ListItemUserViewAdapter(getActivity(), users.toArray(new User[0]));
-                    carView.setAdapter(adapter);
+        // take the adapter view ,  view, position and on click lisener of the item
+        // we only use the poision to pass it to the next fragment
+        carView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Log.d("tenantCarViewDetails",
+                    "user want to see the details on the user: " + users.get(i).getId());
+            this.renterChosen(users.get(i).getId());
+        });
+    }
 
+    /**
+     * transaction to next window
+     */
+    public void carRemoveSucceed() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment,
+                        TenantCarViewFragment.class,null)
+                .commit();
+    }
 
-                    // take the adapter view ,  view, position and on click lisener of the item
-                    // we only use the poision to pass it to the next fragment
-                    carView.setOnItemClickListener((adapterView, view1, i, l) -> {
-                        Log.d("tenantCarViewDetails",
-                                "user want to see the details on the user: " + users.get(i).getId());
-                        FragmentManager fm = getParentFragmentManager();
-                        fm.beginTransaction().replace(R.id.main_fragment,
-                                TenantViewRequestedRenterFragment.newInstance(users.get(i).getId(), carDocId),null)
-                                .commit();
-                    });
-                })
-                .addOnFailureListener(fail -> {
-                    Log.d("tenantCarViewDetails", "problme loading car info" + carDocId);
-                });
+    /**
+     * transaction to next window
+     */
+    private void editClicked() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment,
+                        TenantEditCarFragment.newInstance(carDocId), null)
+                .commit();
+    }
+
+    /**
+     * transact it to see the details on the potential renter
+     * @param uid unique user id
+     */
+    private void renterChosen(String uid) {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment,
+                        TenantViewRequestedRenterFragment.newInstance(uid, carDocId),null)
+                .commit();
     }
 }
+
+//FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//
+//        // get curr car data from the database and show it to user
+//        fs.collection("cars")
+//        .document(carDocId)
+//        .get()
+//        .addOnSuccessListener(queryDocumentSnapshots -> {
+//        Car currentCar = queryDocumentSnapshots.toObject(Car.class);
+//
+//        // split the data to the relevant text boxes
+//        make.setText(currentCar.getMake());
+//        model.setText(currentCar.getModel());
+//        mileage.setText(currentCar.getMileage().toString());
+//        numOfSeats.setText(currentCar.getNumOfSeats().toString());
+//        fuel.setText(currentCar.getFuel());
+//        gearbox.setText(currentCar.getGearbox());
+//        startDate.setText(currentCar.getStartDate());
+//        endDate.setText(currentCar.getEndDate());
+
+//                        fs.collection("cars").document(carDocId).delete().addOnSuccessListener(runnable -> {
+//                                FragmentManager fm = getParentFragmentManager();
+//                                fm.beginTransaction().replace(R.id.main_fragment,
+//                                TenantCarViewFragment.class,null)
+//        .commit();
+//        });
+
+
+//// get user requests and show them on screen
+//        fs.collection("cars")
+//                .document(carDocId)
+//                .collection("request")
+//                .get()
+//                .addOnSuccessListener(queryDocumentSnapshots -> {
+//                List<User> users = queryDocumentSnapshots.toObjects(User.class);
+//
+//
+//        // Create the adapter and pass to it the list of users
+//        ArrayAdapter adapter = new ListItemUserViewAdapter(getActivity(), users.toArray(new User[0]));
+//        carView.setAdapter(adapter);
+//
+//
+//        // take the adapter view ,  view, position and on click lisener of the item
+//        // we only use the poision to pass it to the next fragment
+//        carView.setOnItemClickListener((adapterView, view1, i, l) -> {
+//        Log.d("tenantCarViewDetails",
+//        "user want to see the details on the user: " + users.get(i).getId());
+//        FragmentManager fm = getParentFragmentManager();
+//        fm.beginTransaction().replace(R.id.main_fragment,
+//        TenantViewRequestedRenterFragment.newInstance(users.get(i).getId(), carDocId),null)
+//        .commit();
+//        });
+//        })
+//        .addOnFailureListener(fail -> {
+//        Log.d("tenantCarViewDetails", "problme loading car info" + carDocId);
+//        });

@@ -16,8 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
 
@@ -25,6 +25,18 @@ import com.rosenberg.uni.utils.userUtils;
  * this class presents the window that provide to tenant user the option to add cars for renting
  */
 public class TenantAddCarFragment extends Fragment {
+
+    TenantFunctions tf;
+
+    EditText make;
+    EditText model;
+    EditText mileage;
+    EditText numSeats;
+    Spinner fuel;
+    Spinner gearbox;
+    EditText start_date;
+    EditText end_date;
+    EditText price;
 
     /**
      * we not doing anything more than default at "onCreateView" phase
@@ -51,15 +63,15 @@ public class TenantAddCarFragment extends Fragment {
         String[] gearboxes = new String[]{"automatic", "manual"};
 
         // init vars of the texts window
-        EditText make = view.findViewById(R.id.tenant_add_car_make);
-        EditText model = view.findViewById(R.id.tenant_add_car_model);
-        EditText mileage = view.findViewById(R.id.tenant_add_car_mileage);
-        EditText numSeats = view.findViewById(R.id.tenant_add_car_num_of_seats);
-        Spinner fuel = view.findViewById(R.id.tenant_add_car_fuel);
-        Spinner gearbox = view.findViewById(R.id.tenant_add_car_gearbox);
-        EditText start_date = view.findViewById(R.id.tenant_add_car_start_date);
-        EditText end_date = view.findViewById(R.id.tenant_add_car_end_date);
-        EditText price = view.findViewById(R.id.tenant_edit_car_price);
+        make = view.findViewById(R.id.tenant_add_car_make);
+        model = view.findViewById(R.id.tenant_add_car_model);
+        mileage = view.findViewById(R.id.tenant_add_car_mileage);
+        numSeats = view.findViewById(R.id.tenant_add_car_num_of_seats);
+        fuel = view.findViewById(R.id.tenant_add_car_fuel);
+        gearbox = view.findViewById(R.id.tenant_add_car_gearbox);
+        start_date = view.findViewById(R.id.tenant_add_car_start_date);
+        end_date = view.findViewById(R.id.tenant_add_car_end_date);
+        price = view.findViewById(R.id.tenant_edit_car_price);
 
         // init buttons for window
         Button doneBtn = view.findViewById(R.id.tenant_add_car_done);
@@ -72,7 +84,7 @@ public class TenantAddCarFragment extends Fragment {
         gearbox.setAdapter(adapterModel);
 
         doneBtn.setOnClickListener(v -> {
-            FirebaseFirestore fs = FirebaseFirestore.getInstance();
+
             String uid = userUtils.getUserID();
             Log.d("ADD CAR", "uid =" + uid);
 
@@ -89,11 +101,26 @@ public class TenantAddCarFragment extends Fragment {
                     Integer.parseInt(price.getText().toString()),
                     uid);
 
-            // add car to database
-            fs.collection("cars").add(car).addOnCompleteListener(task -> {
-                FragmentManager fm = getParentFragmentManager();
-                fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-            });
+            // push to database
+            tf.pushCar(car, this);
+
         });
     }
+
+    /**
+     * shall transact to another window
+     * car added
+     */
+    public void carPushSucceed() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+    }
+
 }
+
+//    FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//// add car to database
+//            fs.collection("cars").add(car).addOnCompleteListener(task -> {
+//                    FragmentManager fm = getParentFragmentManager();
+//                    fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+//        });

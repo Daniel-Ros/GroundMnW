@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 
 import java.util.List;
@@ -34,6 +35,18 @@ public class TenantViewRequestedRenterFragment extends Fragment {
     // and also the renter docId
     private String userDocId;
     private String carDocId;
+
+    TenantFunctions tf;
+
+    TextView firstName;
+    TextView lastName;
+    TextView role;
+    TextView phoneNum;
+    TextView gender;
+    TextView birth;
+    TextView city;
+    TextView detailsOnUser;
+
 
     public TenantViewRequestedRenterFragment() {
         // Required empty public constructor
@@ -77,6 +90,7 @@ public class TenantViewRequestedRenterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tf = new TenantFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tenant_view_requested_renter, container, false);
     }
@@ -91,69 +105,124 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // init vars of the texts window
-        TextView firstName = view.findViewById(R.id.view_renterProfile_firstN);
-        TextView lastName = view.findViewById(R.id.view_renterProfile_lastN);
-        TextView role = view.findViewById(R.id.view_renterProfile_role);
-        TextView phoneNum = view.findViewById(R.id.view_renterProfile_phoneNum);
-        TextView gender = view.findViewById(R.id.view_renterProfile_gender);
-        TextView birth = view.findViewById(R.id.view_renterProfile_born);
-        TextView city = view.findViewById(R.id.view_renterProfile_city);
-        TextView detailsOnUser = view.findViewById(R.id.view_renterProfile_onMe);
+        firstName = view.findViewById(R.id.view_renterProfile_firstN);
+        lastName = view.findViewById(R.id.view_renterProfile_lastN);
+        role = view.findViewById(R.id.view_renterProfile_role);
+        phoneNum = view.findViewById(R.id.view_renterProfile_phoneNum);
+        gender = view.findViewById(R.id.view_renterProfile_gender);
+        birth = view.findViewById(R.id.view_renterProfile_born);
+        city = view.findViewById(R.id.view_renterProfile_city);
+        detailsOnUser = view.findViewById(R.id.view_renterProfile_onMe);
 
         // init buttons for window
         Button acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
         Button rejectRenterBtn = view.findViewById(R.id.view_renterProfile_RejectBtn);
 
-        FirebaseFirestore fs = FirebaseFirestore.getInstance();
-        FragmentManager fm = getParentFragmentManager();
+        // get the renter user data for show it to curr user (tenant)
+        tf.getSpecificUser(userDocId, this);
 
-        // get the renter user data and show it to curr user (tenant)
-        fs.collection("users").whereEqualTo("id", userDocId).get()
-                .addOnSuccessListener(queryDocumentSnapshots ->{
-                    List<User> userList = queryDocumentSnapshots.toObjects(User.class); // returns list of items
-                    User user = userList.get(0);
-                    if (userList.size() == 0){
-                        Log.e("TenantViewRenter",
-                                "Where is my user? its connected to app but cant see its own details from db " + userDocId);
-                    }
+        // if accepted renter, shall go back to cars list, this car "deal" is over
+        acceptRenterBtn.setOnClickListener(v -> {
+            tf.acceptRenter(carDocId, userDocId, this);
+        });
 
-                    // get gender, role
-                    String userGender, userRole;
-                    if (user.getTenant()){
-                        userRole = "Tenant";
-                    }else {
-                        userRole = "Renter";
-                    }
-                    if (user.getGender()){
-                        userGender = "Male";
-                    }else{
-                        userGender = "Female";
-                    }
-
-                    // init text boxes
-                    firstName.setText(user.getFirstName());
-                    lastName.setText(user.getLastName());
-                    role.setText(userRole);
-                    gender.setText(userGender);
-                    phoneNum.setText(user.getPhoneNum());
-                    birth.setText(user.getBorn());
-                    city.setText(user.getCity());
-                    detailsOnUser.setText(user.getWritingOnMe());
-
-                    // if accepted renter, shall go back to cars list, this car "deal" is over
-                    acceptRenterBtn.setOnClickListener(v -> {
-                        fs.collection("cars")
-                                .document(carDocId).update("renterID", user.getId());
-
-                        fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-                    });
-                });
         // if rejected, shall see more users - maybe would like to accept/reject others
         rejectRenterBtn.setOnClickListener(v -> {
-            fs.collection("cars")
-                    .document(carDocId).update("renterID", null);
-
-            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(carDocId)).commit();
+            tf.rejectRenter(carDocId, null, this);
         });
     }
+
+    /**
+     * present all user obj details on view
+     * @param user obj
+     */
+    public void show(User user) {
+        // get gender, role
+        String userGender, userRole;
+        if (user.getTenant()){
+            userRole = "Tenant";
+        }else {
+            userRole = "Renter";
+        }
+        if (user.getGender()){
+            userGender = "Male";
+        }else{
+            userGender = "Female";
+        }
+
+        // init text boxes
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        role.setText(userRole);
+        gender.setText(userGender);
+        phoneNum.setText(user.getPhoneNum());
+        birth.setText(user.getBorn());
+        city.setText(user.getCity());
+        detailsOnUser.setText(user.getWritingOnMe());
+    }
+
+    /**
+     * renter accepted
+     * transact to next window
+     */
+    public void acceptRenterSucceed() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+    }
+
+    /**
+     * renter rejected
+     * transact to next window
+     */
+    public void rejectRentedSucceed() {
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(carDocId)).commit();
+    }
 }
+
+
+//    FirebaseFirestore fs = FirebaseFirestore.getInstance();
+//    FragmentManager fm = getParentFragmentManager();
+
+//// get the renter user data and show it to curr user (tenant)
+//        fs.collection("users").whereEqualTo("id", userDocId).get()
+//                .addOnSuccessListener(queryDocumentSnapshots ->{
+//                List<User> userList = queryDocumentSnapshots.toObjects(User.class); // returns list of items
+//        User user = userList.get(0);
+//        if (userList.size() == 0){
+//        Log.e("TenantViewRenter",
+//        "Where is my user? its connected to app but cant see its own details from db " + userDocId);
+//        }
+//
+//        // get gender, role
+//        String userGender, userRole;
+//        if (user.getTenant()){
+//        userRole = "Tenant";
+//        }else {
+//        userRole = "Renter";
+//        }
+//        if (user.getGender()){
+//        userGender = "Male";
+//        }else{
+//        userGender = "Female";
+//        }
+//
+//        // init text boxes
+//        firstName.setText(user.getFirstName());
+//        lastName.setText(user.getLastName());
+//        role.setText(userRole);
+//        gender.setText(userGender);
+//        phoneNum.setText(user.getPhoneNum());
+//        birth.setText(user.getBorn());
+//        city.setText(user.getCity());
+//        detailsOnUser.setText(user.getWritingOnMe());
+
+//                        fs.collection("cars")
+//                                .document(carDocId).update("renterID", user.getId());
+//
+//                                fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+
+//            fs.collection("cars")
+//                    .document(carDocId).update("renterID", null);
+//
+//                    fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewDetailsFragment.newInstance(carDocId)).commit();
