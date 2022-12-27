@@ -142,7 +142,6 @@ public class ViewProfileFragment extends Fragment {
      */
     public void show(User user) {
         // init texts via user details
-        System.out.println(user.getId() +" not null\n");
         String userGender, userRole;
         if (user.getTenant()){
             userRole = "Tenant";
