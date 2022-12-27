@@ -145,7 +145,6 @@ public class LoginFunctions {
             if (userList.size() == 0) {
                 Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
             }
-            System.out.println(userList.get(0).getId() +"not null\n");
             user = userList.get(0);
             viewProfileFragment.show(user);
         });

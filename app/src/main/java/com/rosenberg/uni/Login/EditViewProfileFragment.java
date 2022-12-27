@@ -73,6 +73,7 @@ public class EditViewProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        lf = new LoginFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_view_profile, container, false);
     }
@@ -106,6 +107,7 @@ public class EditViewProfileFragment extends Fragment {
 
         // get curr details on users
         String uid = userUtils.getUserID(); // current userID
+        System.out.println(uid+" "+this);
         lf.getUserDetails(uid, this);
 
 
