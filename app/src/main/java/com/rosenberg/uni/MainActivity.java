@@ -19,10 +19,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
@@ -135,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
+
+
+//        FirebaseMessaging.getInstance().setNotificationDelegationEnabled(true).addOnSuccessListener(anything -> {
+//            Toast.makeText(MainActivity.this, "got popup msg!!! ", Toast.LENGTH_LONG).show();
+//        });
 
         // disconnected from user
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
