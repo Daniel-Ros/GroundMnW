@@ -163,7 +163,7 @@ public class TenantEditCarFragment extends Fragment {
         gearbox.setSelection(currCar.getGearbox() == "automatic"? 0 : 1);
         start_date.setText(currCar.getStartDate());
         end_date.setText(currCar.getEndDate());
-        price.setText(currCar.getPrice());
+        price.setText(currCar.getPrice().toString());
 
     }
 

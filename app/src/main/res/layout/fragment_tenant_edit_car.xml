@@ -71,14 +71,6 @@
                 android:ems="10"
                 android:inputType="numberDecimal" />
 
-            <EditText
-                android:id="@+id/editTextNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:ems="10"
-                android:inputType="number" />
-
             <Spinner
                 android:id="@+id/tenant_edit_car_fuel"
                 android:layout_width="match_parent"

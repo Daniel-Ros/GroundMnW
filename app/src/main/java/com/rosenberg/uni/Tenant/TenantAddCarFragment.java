@@ -44,6 +44,7 @@ public class TenantAddCarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tf = new TenantFunctions();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tenant_add_car, container, false);
     }
@@ -100,6 +101,8 @@ public class TenantAddCarFragment extends Fragment {
                     end_date.getText().toString(),
                     Integer.parseInt(price.getText().toString()),
                     uid);
+
+            System.out.println(car.getModel());
 
             // push to database
             tf.pushCar(car, this);
