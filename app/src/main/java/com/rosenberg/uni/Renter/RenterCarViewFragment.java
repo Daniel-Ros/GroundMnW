@@ -1,5 +1,6 @@
 package com.rosenberg.uni.Renter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -97,6 +98,7 @@ public class RenterCarViewFragment extends Fragment {
      * put all cars on view
      * @param c list of Cars
      */
+    @SuppressLint("ResourceType")
     public void refreshCars(List<Car> c){
         cars = c;
         ArrayAdapter adapter = new ListItemCarViewAdapter(getActivity(),

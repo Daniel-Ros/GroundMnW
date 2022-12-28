@@ -24,6 +24,7 @@
                 android:id="@+id/textFName"
                 android:layout_width="107dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="First Name" />
 
             <TextView
@@ -41,6 +42,7 @@
                 android:id="@+id/textLName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Last Name" />
 
             <TextView
@@ -59,6 +61,7 @@
                 android:id="@+id/textRole"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Role" />
 
             <TextView
@@ -76,6 +79,7 @@
                 android:id="@+id/textPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Phone Number" />
 
             <TextView
@@ -93,6 +97,7 @@
                 android:id="@+id/textGender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Gender" />
 
             <TextView
@@ -111,6 +116,7 @@
                 android:id="@+id/textBirth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Birth Date" />
 
             <TextView
@@ -128,6 +134,7 @@
                 android:id="@+id/textCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="City" />
 
             <TextView
@@ -155,6 +162,7 @@
                 android:id="@+id/textOnMe"
                 android:layout_width="290dp"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Details On Me :)" />
         </TableRow>
 

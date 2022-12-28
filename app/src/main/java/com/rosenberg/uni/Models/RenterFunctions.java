@@ -154,6 +154,11 @@ public class RenterFunctions {
                     // we are doing this because we cant mnake compund queries
                     for (int i = 0; i < cars.size(); i++) {
                         if(cars.get(i).getRenterID() != null){
+                            // no reserved cars
+                            cars.remove(i--);
+                        }
+                        else if (cars.get(i).getEndDateStamp() < Calendar.getInstance().getTimeInMillis()){
+                            // no cars that already ended with their time rent
                             cars.remove(i--);
                         }
                     }
@@ -171,8 +176,16 @@ public class RenterFunctions {
         _fs.collection("cars").whereEqualTo("renterID", uid)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> { // get cars with U_ID as RenterID
-                    List<Car> cars = queryDocumentSnapshots.toObjects(Car.class);
+                    cars = queryDocumentSnapshots.toObjects(Car.class);
                     Log.d("RENTER ACCEPTED CARS","SHOWING MY CARS" + cars.size());
+
+                    for (int i=0; i < cars.size(); i++){
+                        // we dont want to see past cars the user requested, only "ongoing" entries
+                        if (cars.get(i).getEndDateStamp() < Calendar.getInstance().getTimeInMillis()){
+                            cars.remove(i--);
+                        }
+
+                    }
 
                     renterFragment.show(cars);
                 });

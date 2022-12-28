@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -101,7 +102,7 @@ public class RegisterFragment extends Fragment {
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window
-        Button registerBtn = view.findViewById(R.id.register_button);
+        ImageView registerBtn = view.findViewById(R.id.register_button);
 
         // currentView == view from above
         registerBtn.setOnClickListener(currentView -> {

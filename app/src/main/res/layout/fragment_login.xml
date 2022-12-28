@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Email"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/login_password"
@@ -29,28 +30,28 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Password"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/login_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="280dp"
-            android:text="Login"
+            android:layout_width="138dp"
+            android:layout_height="67dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/white_login_brown_car"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/login_btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="register"
+            android:layout_width="268dp"
+            android:layout_height="74dp"
+            android:src="@drawable/register_final"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

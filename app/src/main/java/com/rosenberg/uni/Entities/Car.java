@@ -9,8 +9,8 @@ import java.util.List;
 public class Car {
     @DocumentId
     String documentId; // UNIQUE, helpful when we want to get car from db
-                        // and also in place of updating the car via searching it again at db
-                        // we can just update it via docID
+    // and also in place of updating the car via searching it again at db
+    // we can just update it via docID
 
     private String make;
     private String model;

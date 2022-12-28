@@ -45,7 +45,6 @@ public class ListItemCarViewAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-
         // make that row be exist
         View rowView=inflater.inflate(R.layout.list_item_car_view,null,true);
 

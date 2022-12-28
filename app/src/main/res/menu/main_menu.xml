@@ -2,19 +2,24 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
         android:id="@+id/nav_home"
+        android:icon="@drawable/black_car_visible"
         android:title="Home" />
 
     <item
         android:id="@+id/nav_view_profile"
+        android:icon="@drawable/blue_car_visible"
         android:title="ViewProfile" />
 
     <item
         android:id="@+id/nav_about"
+        android:icon="@drawable/brown_car_visible"
         android:title="About" />
 
     <item
         android:id="@+id/nav_sign_out"
+        android:icon="@drawable/bezz_car_visible"
         android:title="Sign out" />
 </menu>

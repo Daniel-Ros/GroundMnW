@@ -3,6 +3,8 @@ package com.rosenberg.uni;
 import static android.content.ContentValues.TAG;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             //Setting a dynamic title at runtime. Here, it displays the current time.
+            actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.reg_blue)));
             actionBar.setTitle("Dashboard");
         }
         drawerLayout = findViewById(R.id.main_drawer);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.rosenberg.uni.Entities.User;
@@ -87,8 +88,8 @@ public class LoginFragment extends Fragment {
         // init vars of the texts and buttons of the window
         EditText email = view.findViewById(R.id.login_email);
         EditText password = view.findViewById(R.id.login_password);
-        Button loginBtn = view.findViewById(R.id.login_button);
-        Button RegisterBtn = view.findViewById(R.id.login_btn_register);
+        ImageView loginBtn = view.findViewById(R.id.login_button);
+        ImageView RegisterBtn = view.findViewById(R.id.login_btn_register);
 
         // logic process - verify user details, then log him if match.
         loginBtn.setOnClickListener(currentView -> {

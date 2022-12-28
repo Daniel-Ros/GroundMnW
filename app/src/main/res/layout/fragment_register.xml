@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="email"
+            android:fontFamily="@font/assistant_extrabold"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:layout_margin="@dimen/text_margin"/>
@@ -30,7 +31,7 @@
                 android:id="@+id/register_last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
-
+                android:fontFamily="@font/assistant_extrabold"
                 android:hint="last name"
                 android:inputType="textPersonName"
                 android:layout_margin="@dimen/text_margin"
@@ -40,6 +41,7 @@
                 android:id="@+id/register_first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
+                android:fontFamily="@font/assistant_extrabold"
                 android:hint="first name"
                 android:inputType="textPersonName"
                 android:layout_margin="@dimen/text_margin"
@@ -51,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Password"
             android:inputType="textPassword"
             android:minHeight="48dp"
@@ -61,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Repeat Password"
             android:inputType="textPassword"
             android:minHeight="48dp"
@@ -71,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Date Of Birth"
             android:inputType="date"
             android:minHeight="48dp"
@@ -82,21 +87,26 @@
             android:id="@+id/register_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:fontFamily="@font/assistant_extrabold"
             android:minHeight="48dp"
-            android:layout_margin="@dimen/text_margin"/>
+            android:popupBackground="@color/lblue" />
 
         <Spinner
             android:id="@+id/register_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:fontFamily="@font/assistant_extrabold"
             android:minHeight="48dp"
-            android:layout_margin="@dimen/text_margin"/>
+            android:popupBackground="@color/lblue" />
 
         <EditText
             android:id="@+id/register_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="City"
             android:inputType="textPersonName"
             android:layout_margin="@dimen/text_margin"/>
@@ -106,14 +116,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
             android:hint="Phone Number"
             android:inputType="phone"
             android:layout_margin="@dimen/text_margin"/>
 
-        <Button
+        <ImageView
             android:id="@+id/register_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="138dp"
+            android:layout_height="67dp"
+            android:src="@drawable/register_button_browncar_whitefont"
             android:text="Register"
             android:layout_margin="@dimen/text_margin"/>
 
