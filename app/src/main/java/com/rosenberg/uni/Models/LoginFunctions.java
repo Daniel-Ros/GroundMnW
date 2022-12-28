@@ -146,8 +146,8 @@ public class LoginFunctions {
                 Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
             }
             user = userList.get(0);
+            viewProfileFragment.show(user);
         });
-        viewProfileFragment.show(user);
     }
 
     /**
@@ -163,8 +163,8 @@ public class LoginFunctions {
                 Log.e("ViewProfile", "Where is my user? its connected to app but cant see its own details from db " + uid);
             }
             user = userList.get(0);
+            editProfileFragment.show(user);
         });
-        editProfileFragment.show(user);
     }
 
     /**
