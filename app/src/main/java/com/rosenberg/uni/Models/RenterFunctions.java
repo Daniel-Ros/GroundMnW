@@ -259,17 +259,15 @@ public class RenterFunctions {
 
                     reviews.add(new Review(comment, rating));
                     dr.update("reviews", reviews);
+
+                    List<History> hist = c.getPreviousRentersID();
+                    if (hist == null) {
+                        hist = new ArrayList<>();
+                    }
+                    hist.add(new History(c.getRenterID(), u.getFirstName() + " " + u.getLastName(),  false));
+                    cr.update("previousRentersID", hist);
+                    cr.update("renterID", null);
                 }
-
-
-                List<History> hist = c.getPreviousRentersID();
-                if (hist == null) {
-                    hist = new ArrayList<>();
-                }
-                hist.add(new History(c.getRenterID(), false));
-                cr.update("previousRentersID", hist);
-                cr.update("renterID", null);
-
             });
         });
     }

@@ -71,7 +71,6 @@ public class RenterCarViewFragment extends Fragment {
 
         // filtering process
         filter.setOnClickListener(v -> {
-
             rf.filterSearch(start.getText().toString(), end.getText().toString(), this);
         });
 

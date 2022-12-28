@@ -11,10 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Adapters.ListItemReviewViewAdapter;
+import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.LoginFunctions;
 import com.rosenberg.uni.R;
@@ -41,6 +45,7 @@ public class ViewProfileFragment extends Fragment {
     TextView birth;
     TextView city;
     TextView detailsOnUser;
+    ListView reviews;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -92,6 +97,7 @@ public class ViewProfileFragment extends Fragment {
         birth = viewProfileView.findViewById(R.id.view_Birth);
         city = viewProfileView.findViewById(R.id.view_city);
         detailsOnUser = viewProfileView.findViewById(R.id.view_on_me);
+        reviews = viewProfileView.findViewById(R.id.view_reviews);
 
         // init buttons for the window
         Button editProfileBtn = viewProfileView.findViewById(R.id.user_view_edit);
@@ -161,6 +167,11 @@ public class ViewProfileFragment extends Fragment {
         birth.setText(user.getBorn());
         city.setText(user.getCity());
         detailsOnUser.setText(user.getWritingOnMe());
+        List<Review> r = user.getReviews();
+        if(r != null){
+            ArrayAdapter adapter = new ListItemReviewViewAdapter(getActivity(),r.toArray(new Review[0]));
+            reviews.setAdapter(adapter);
+        }
     }
 }
 

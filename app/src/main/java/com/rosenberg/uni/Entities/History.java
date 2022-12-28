@@ -3,10 +3,12 @@ package com.rosenberg.uni.Entities;
 public class History {
     String renterID;
     Boolean reviewed;
+    String name;
 
-    public History(String renterID, Boolean reviewed) {
+    public History(String renterID,String name, Boolean reviewed) {
         this.renterID = renterID;
         this.reviewed = reviewed;
+        this.name = name;
     }
 
     public History() {
@@ -26,5 +28,9 @@ public class History {
 
     public void setReviewed(Boolean reviewed) {
         this.reviewed = reviewed;
+    }
+
+    public String getName() {
+        return name;
     }
 }

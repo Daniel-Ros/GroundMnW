@@ -1,4 +1,4 @@
-package com.rosenberg.uni.Renter;
+package com.rosenberg.uni.Tenant;
 
 import android.os.Bundle;
 
@@ -14,25 +14,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
-import com.rosenberg.uni.Models.RenterFunctions;
+import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RenterRateTenant#newInstance} factory method to
+ * Use the {@link TenantRateRenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RenterRateTenant extends Fragment {
+public class TenantRateRenterFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "CARID";
-    private String carId;
+    private String userId;
 
-    RenterFunctions rf;
+    TenantFunctions tf;
 
-    public RenterRateTenant() {
+    public TenantRateRenterFragment() {
         // Required empty public constructor
-        rf = new RenterFunctions();
+        tf = new TenantFunctions();
     }
 
     /**
@@ -42,8 +42,8 @@ public class RenterRateTenant extends Fragment {
      * @param param1 Paramet
      * @return A new instance of fragment RenterRateTenant.
      */
-    public static RenterRateTenant newInstance(String param1) {
-        RenterRateTenant fragment = new RenterRateTenant();
+    public static TenantRateRenterFragment newInstance(String param1) {
+        TenantRateRenterFragment fragment = new TenantRateRenterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -54,7 +54,7 @@ public class RenterRateTenant extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            carId = getArguments().getString(ARG_PARAM1);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -62,7 +62,7 @@ public class RenterRateTenant extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_renter_rate_tenant, container, false);
+        return inflater.inflate(R.layout.fragment_tenant_rate_renter, container, false);
     }
 
 
@@ -70,14 +70,14 @@ public class RenterRateTenant extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EditText comment = view.findViewById(R.id.renter_rate_comment);
-        RatingBar rate = view.findViewById(R.id.renter_rate_rate);
-        Button done = view.findViewById(R.id.renter_rate_done);
+        EditText comment = view.findViewById(R.id.tenant_rate_comment);
+        RatingBar rate = view.findViewById(R.id.tenant_rate_renter);
+        Button done = view.findViewById(R.id.tenant_rate_done);
 
         done.setOnClickListener(view1 -> {
-            rf.rateCar(carId,comment.getText().toString(),rate.getRating());
+            tf.rateUser(userId,comment.getText().toString(),rate.getRating());
             FragmentManager fm = getParentFragmentManager();
-            fm.beginTransaction().replace(R.id.main_fragment,RenterCarViewFragment.class,null).commit();
+            fm.beginTransaction().replace(R.id.main_fragment,TenantCarViewFragment.class,null).commit();
         });
     }
 }

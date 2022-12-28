@@ -7,14 +7,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
@@ -107,7 +105,7 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
 
         endRent.setOnClickListener(view1 -> {
             FragmentManager fm = getParentFragmentManager();
-            RenterRateTenant f = RenterRateTenant.newInstance(carDocId);
+            RenterRateTenantFragment f = RenterRateTenantFragment.newInstance(carDocId);
             fm.beginTransaction().replace(R.id.main_fragment, f, null).commit();
         });
     }

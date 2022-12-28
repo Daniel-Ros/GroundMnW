@@ -2,8 +2,12 @@ package com.rosenberg.uni.Models;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Entities.History;
+import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Tenant.TenantAddCarFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewDetailsFragment;
@@ -12,6 +16,7 @@ import com.rosenberg.uni.Tenant.TenantEditCarFragment;
 import com.rosenberg.uni.Tenant.TenantViewRequestedRenterFragment;
 import com.rosenberg.uni.utils.userUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TenantFunctions {
@@ -169,5 +174,39 @@ public class TenantFunctions {
                     Log.d("CAR_VIEW", "ADDING CARS" + cars.size());
                     tenantFragment.show(cars);
                 });
+    }
+
+    public void rateUser(String userId, String comment, float rating) {
+        _fs.collection("users").whereEqualTo("id", userId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                DocumentReference dr = queryDocumentSnapshot.getReference();
+
+                User u = queryDocumentSnapshot.toObject(User.class);
+                List<Review> reviews;
+                if (u.getReviews() == null) {
+                    reviews = new ArrayList<>();
+                } else {
+                    reviews = u.getReviews();
+                }
+
+                reviews.add(new Review(comment, rating));
+                dr.update("reviews", reviews);
+            }
+        });
+    }
+
+    public void setHistReviewed(String carDocId, String renterID) {
+        DocumentReference cr = _fs.collection("cars")
+                .document(carDocId);
+        cr.get().addOnSuccessListener(documentSnapshot -> {
+            Car c = documentSnapshot.toObject(Car.class);
+            List<History> histories = c.getPreviousRentersID();
+            for (History h :
+                    histories) {
+                h.setReviewed(true);
+            }
+
+            cr.update("previousRentersID",histories);
+        });
     }
 }
