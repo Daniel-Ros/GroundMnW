@@ -5,11 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,6 +36,7 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     TextView gearbox;
     TextView startDate;
     TextView endDate;
+    Button endRent;
 
     public RenterMyCarDetailsViewFragment() {
         // Required empty public constructor
@@ -95,10 +98,18 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
         gearbox = view.findViewById(R.id.renter_my_car_view_details_gearbox);
         startDate = view.findViewById(R.id.renter_my_car_view_details_start_date);
         endDate = view.findViewById(R.id.renter_my_car_view_details_end_date);
+        endRent = view.findViewById(R.id.renter_my_car_view_details_end_rent);
 
         // get details on my specific car
         // and then show it
         rf.getSpecificCar(carDocId, this);
+
+
+        endRent.setOnClickListener(view1 -> {
+            FragmentManager fm = getParentFragmentManager();
+            RenterRateTenant f = RenterRateTenant.newInstance(carDocId);
+            fm.beginTransaction().replace(R.id.main_fragment, f, null).commit();
+        });
     }
 
     /**

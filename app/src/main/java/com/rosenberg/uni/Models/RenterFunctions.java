@@ -2,16 +2,19 @@ package com.rosenberg.uni.Models;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Entities.History;
+import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Renter.RenterCarViewDetailsFragment;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Renter.RenterMyCarDetailsViewFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -59,7 +62,10 @@ public class RenterFunctions {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     Car car = queryDocumentSnapshots.toObject(Car.class);
 
-                    renterFragment.show(car);
+                    _fs.collection("users").whereEqualTo("id", car.getOwnerID()).get().addOnSuccessListener(queryDocumentSnapshots1 -> {
+                        List<User> users = queryDocumentSnapshots1.toObjects(User.class);
+                        renterFragment.show(car, users.get(0).getReviews());
+                    });
                 })
                 .addOnFailureListener( fail -> {
                     Log.d("RenterCarViewDetails","problem loading car info" + carDocId);
@@ -196,32 +202,62 @@ public class RenterFunctions {
      * @return stare-end in milis (for db)
      */
     private long[] extractSpectrum(String start, String end) {
-        long start_date_stamp,end_date_stamp;
-        if(start.isEmpty()){ // get start date for filtering
-            Calendar calendar = new GregorianCalendar(0,1,1);
+        long start_date_stamp, end_date_stamp;
+        if (start.isEmpty()) { // get start date for filtering
+            Calendar calendar = new GregorianCalendar(0, 1, 1);
             start_date_stamp = calendar.getTimeInMillis();
-        }else{ // parse start date for filtering
-            String [] splitdate = start.split("/");
-            Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
-                    Integer.parseInt(splitdate[1]),
-                    Integer.parseInt(splitdate[0]));
+        } else { // parse start date for filtering
+            String[] splitdate = start.split("/");
+            Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]), Integer.parseInt(splitdate[1]), Integer.parseInt(splitdate[0]));
             start_date_stamp = calendar.getTimeInMillis();
         }
 
-        if(end.isEmpty()){ // get end date for filtering
-            Calendar calendar = new GregorianCalendar(3000,1,1);
+        if (end.isEmpty()) { // get end date for filtering
+            Calendar calendar = new GregorianCalendar(3000, 1, 1);
             end_date_stamp = calendar.getTimeInMillis();
-        }else{ // parse end date for filtering
-            String [] splitdate = end.split("/");
-            Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
-                    Integer.parseInt(splitdate[1]),
-                    Integer.parseInt(splitdate[0]));
+        } else { // parse end date for filtering
+            String[] splitdate = end.split("/");
+            Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]), Integer.parseInt(splitdate[1]), Integer.parseInt(splitdate[0]));
             end_date_stamp = calendar.getTimeInMillis();
         }
 
         long[] ans = new long[2];
-        ans[0] = start_date_stamp; ans[1] = end_date_stamp;
+        ans[0] = start_date_stamp;
+        ans[1] = end_date_stamp;
         return ans;
     }
 
+    public void rateCar(String carId, String comment, float rating) {
+        DocumentReference cr = _fs.collection("cars").document(carId);
+        cr.get().addOnSuccessListener(documentSnapshot -> {
+            Car c = documentSnapshot.toObject(Car.class);
+            String owner = c.getOwnerID();
+            _fs.collection("users").whereEqualTo("id", owner).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                    DocumentReference dr = queryDocumentSnapshot.getReference();
+
+                    User u = queryDocumentSnapshot.toObject(User.class);
+                    List<Review> reviews;
+                    if (u.getReviews() == null) {
+                        reviews = new ArrayList<>();
+                    } else {
+                        reviews = u.getReviews();
+                    }
+
+                    reviews.add(new Review(comment, rating));
+                    dr.update("reviews", reviews);
+                }
+
+
+                List<History> hist = c.getPreviousRentersID();
+                if (hist == null) {
+                    hist = new ArrayList<>();
+                }
+                hist.add(new History(c.getRenterID(), false));
+                cr.update("previousRentersID", hist);
+                cr.update("renterID", null);
+
+            });
+        });
+    }
 }

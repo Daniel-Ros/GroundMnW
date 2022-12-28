@@ -201,6 +201,29 @@ public class MainActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+            db.collection("users").whereEqualTo("id", u.getUid())
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> { // get all users with the same ID
+                        List<User> userList = queryDocumentSnapshots.toObjects(User.class);
+                        if (userList.size() == 0) { // user not found
+                            Log.e("MainActivity", "Where is my user? " + u.getUid());
+                            FirebaseAuth.getInstance().signOut();
+                            return;
+                        }
+                        User user = userList.get(0);
+                        if (user.getTenant()) { // send tenant to his Cars For Rent View
+                            Log.d("MainActivity", "Going to tenant");
+                            FragmentManager fm = getSupportFragmentManager();
+                            fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+                        } else { // send renter to his Accepted Cars View
+                            Log.d("MainActivity", "Going to renter");
+                            FragmentManager fm = getSupportFragmentManager();
+                            fm.beginTransaction().replace(R.id.main_fragment, RenterMyAcceptedCarsFragment.class, null).commit();
+                        }
+                    });
+            Log.d("MainActivity", "pressed back");
             super.onBackPressed();
         }
     }

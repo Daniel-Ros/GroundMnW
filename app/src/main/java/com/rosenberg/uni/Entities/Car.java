@@ -4,8 +4,7 @@ import com.google.firebase.firestore.DocumentId;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Car {
     @DocumentId
@@ -27,6 +26,7 @@ public class Car {
     private Integer price;
 
     private String renterID; // UNIQUE, userId - but for the renter of the car
+    private List<History> previousRentersID;
 
     /**
      * default constructor required for calls to DataSnapshot.getValue(Car.class)
@@ -174,8 +174,12 @@ public class Car {
     public void setRenterID(String renterID) {
         this.renterID = renterID;
     }
+
     public String getRenterID() {
         return renterID;
     }
 
+    public List<History> getPreviousRentersID() {
+        return previousRentersID;
+    }
 }

@@ -10,13 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.rosenberg.uni.Adapters.ListItemCarViewAdapter;
+import com.rosenberg.uni.Adapters.ListItemReviewViewAdapter;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
@@ -45,6 +50,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
     TextView startDate;
     TextView endDate;
     Button req_car;
+    ListView reviewsList;
 
     public RenterCarViewDetailsFragment() {
         // Required empty public constructor
@@ -110,6 +116,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
 
         // init button
         req_car = view.findViewById(R.id.renter_car_view_details_req_car);
+        reviewsList = view.findViewById(R.id.renter_car_view_details_reviews);
 
         // get curr data on car to show it
         rf.getSpecificCar(car_id, this);
@@ -139,7 +146,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
      * present the details on car
      * @param car to show
      */
-    public void show(Car car) {
+    public void show(Car car, List<Review> reviews) {
         // update text to information from database
         make.setText(car.getMake());
         model.setText(car.getModel());
@@ -149,6 +156,11 @@ public class RenterCarViewDetailsFragment extends Fragment {
         gearbox.setText(car.getGearbox());
         startDate.setText(car.getStartDate());
         endDate.setText(car.getEndDate());
+
+        if(reviews != null){
+            ArrayAdapter adapter = new ListItemReviewViewAdapter(getActivity(),reviews.toArray(new Review[0]));
+            reviewsList.setAdapter(adapter);
+        }
     }
 
     /**

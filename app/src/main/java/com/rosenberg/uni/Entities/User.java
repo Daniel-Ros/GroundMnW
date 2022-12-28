@@ -3,6 +3,7 @@ package com.rosenberg.uni.Entities;
 import com.google.firebase.firestore.DocumentId;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User{
@@ -17,8 +18,9 @@ public class User{
     private boolean male; // true for male, false for female
     private String phoneNum;
     private String city;
-
     private String writingOnMe; // for the view profile, let every user write something about themselves
+
+    List<Review> reviews;
 
     /**
      * Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -129,5 +131,9 @@ public class User{
 
     public void setDocumentId(String docId) {
         this.documentId = docId;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 }
