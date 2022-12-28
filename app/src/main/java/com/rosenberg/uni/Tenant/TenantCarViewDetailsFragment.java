@@ -1,12 +1,6 @@
 package com.rosenberg.uni.Tenant;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +10,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.rosenberg.uni.Adapters.ListItemHistoryViewAdapter;
 import com.rosenberg.uni.Adapters.ListItemUserViewAdapter;
 import com.rosenberg.uni.Entities.Car;
+import com.rosenberg.uni.Entities.History;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
@@ -45,6 +46,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
     TextView startDate;
     TextView endDate;
     ListView carView;
+    ListView historyView;
 
 
     public TenantCarViewDetailsFragment() {
@@ -108,6 +110,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
         startDate = view.findViewById(R.id.tenant_car_view_details_start_date);
         endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
         carView = view.findViewById(R.id.tenant_car_view_details_users_list_view);
+        historyView = view.findViewById(R.id.tenant_car_view_details_history_list_view);
 
         // init buttons
         Button editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
@@ -146,6 +149,23 @@ public class TenantCarViewDetailsFragment extends Fragment {
         gearbox.setText(currentCar.getGearbox());
         startDate.setText(currentCar.getStartDate());
         endDate.setText(currentCar.getEndDate());
+
+        List<History> histories = currentCar.getPreviousRentersID();
+
+        ArrayAdapter arrayAdapter = new ListItemHistoryViewAdapter(getActivity(), histories.toArray(new History[0]));
+        historyView.setAdapter(arrayAdapter);
+
+        historyView.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (!histories.get(i).getReviewed()) {
+                FragmentManager fm = getParentFragmentManager();
+                TenantRateRenterFragment fragment = TenantRateRenterFragment.newInstance(histories.get(i).getRenterID());
+                fm.beginTransaction()
+                        .replace(R.id.main_fragment,fragment,null)
+                        .addToBackStack("review")
+                        .commit();
+                tf.setHistReviewed(carDocId,histories.get(i).getRenterID());
+            }
+        });
     }
 
     /**

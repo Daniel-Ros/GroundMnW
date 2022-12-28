@@ -11,10 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rosenberg.uni.Adapters.ListItemHistoryViewAdapter;
+import com.rosenberg.uni.Adapters.ListItemReviewViewAdapter;
+import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
@@ -46,6 +51,7 @@ public class TenantViewRequestedRenterFragment extends Fragment {
     TextView birth;
     TextView city;
     TextView detailsOnUser;
+    ListView reviews;
 
 
     public TenantViewRequestedRenterFragment() {
@@ -113,6 +119,7 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         birth = view.findViewById(R.id.view_renterProfile_born);
         city = view.findViewById(R.id.view_renterProfile_city);
         detailsOnUser = view.findViewById(R.id.view_renterProfile_onMe);
+        reviews = view.findViewById(R.id.view_renter_reviews);
 
         // init buttons for window
         Button acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
@@ -159,6 +166,12 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         birth.setText(user.getBorn());
         city.setText(user.getCity());
         detailsOnUser.setText(user.getWritingOnMe());
+
+        List<Review> reviewsList = user.getReviews();
+        if(reviews != null){
+            ArrayAdapter adapter = new ListItemReviewViewAdapter(getActivity(),reviewsList.toArray(new Review[0]));
+            reviews.setAdapter(adapter);
+        }
     }
 
     /**
