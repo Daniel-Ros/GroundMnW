@@ -26,6 +26,7 @@
                 android:id="@+id/list_item_car_view_make"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
         </TableRow>
 
@@ -44,6 +45,7 @@
                 android:id="@+id/list_item_car_view_model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
         </TableRow>
 
@@ -60,14 +62,19 @@
                 android:id="@+id/list_item_car_view_milage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
         </TableRow>
 
         <TableRow>
 
-            <TextView android:id="@+id/list_item_car_view_start_date" />
+            <TextView android:id="@+id/list_item_car_view_start_date"
+                android:fontFamily="@font/assistant_semibold"
+                />
 
-            <TextView android:id="@+id/list_item_car_view_end_date" />
+            <TextView android:id="@+id/list_item_car_view_end_date"
+                android:fontFamily="@font/assistant_semibold"
+                />
 
 
         </TableRow>
@@ -92,6 +99,7 @@
         android:layout_marginTop="@dimen/text_margin"
         android:layout_weight="0"
         android:gravity="center"
+        android:fontFamily="@font/assistant_semibold"
         android:text="TextView" />
 
     <TextView

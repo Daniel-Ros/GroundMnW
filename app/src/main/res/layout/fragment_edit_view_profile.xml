@@ -27,6 +27,7 @@
                 android:ems="10"
                 android:hint="first name"
                 android:inputType="textPersonName"
+                android:fontFamily="@font/assistant_extrabold"
                 tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
         </TableRow>
@@ -42,6 +43,7 @@
                 android:ems="10"
                 android:hint="last name"
                 android:inputType="textPersonName"
+                android:fontFamily="@font/assistant_extrabold"
                 tools:ignore="TouchTargetSizeCheck" />
 
         </TableRow>
@@ -57,6 +59,7 @@
                 android:ems="10"
                 android:hint="0501112222"
                 android:inputType="phone"
+                android:fontFamily="@font/assistant_extrabold"
                 tools:ignore="TouchTargetSizeCheck" />
 
         </TableRow>
@@ -69,6 +72,8 @@
                 android:id="@+id/edit_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
+                android:popupBackground="@color/lblue"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         </TableRow>
@@ -85,6 +90,7 @@
                 android:hint="date of birth"
                 android:inputType="textPersonName"
                 tools:ignore="TouchTargetSizeCheck"
+                android:fontFamily="@font/assistant_extrabold"
                 android:onClick="showDateDialog" />
         </TableRow>
 
@@ -99,6 +105,7 @@
                 android:ems="10"
                 android:hint="city"
                 android:inputType="textPersonName"
+                android:fontFamily="@font/assistant_extrabold"
                 tools:ignore="TouchTargetSizeCheck" />
         </TableRow>
 
@@ -110,6 +117,7 @@
         android:layout_height="248dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/assistant_extrabold"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout3">
 
         <TableRow
@@ -120,6 +128,7 @@
                 android:id="@+id/textDetailsOnMe"
                 android:layout_width="296dp"
                 android:layout_height="33dp"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Details On Me ^^" />
         </TableRow>
 
@@ -134,22 +143,36 @@
                 android:ems="300"
                 android:hint="till 300 digits"
                 android:inputType="textPersonName"
+                android:fontFamily="@font/assistant_semibold"
                 android:textColorHint="#757575" />
         </TableRow>
 
     </TableLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:layout_marginBottom="4dp"
-        android:text="confirm"
+        android:src="@drawable/confirm_button_edit_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout4"
         app:layout_constraintVertical_bias="0.625" />
+
+<!--    <Button-->
+<!--        android:id="@+id/confirm_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:text="confirm"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tableLayout4"-->
+<!--        app:layout_constraintVertical_bias="0.625" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Login.LoginFragment">
+    tools:context=".Login.LoginFragment"
+    android:background="@drawable/dry_lblue_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,7 +43,7 @@
             android:layout_width="138dp"
             android:layout_height="67dp"
             android:layout_marginBottom="300dp"
-            android:src="@drawable/white_login_brown_car"
+            android:src="@drawable/login_button_loginfragment"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -51,11 +52,12 @@
             android:id="@+id/login_btn_register"
             android:layout_width="268dp"
             android:layout_height="74dp"
-            android:src="@drawable/register_final"
+            android:src="@drawable/register_button_loginfragment2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_button" />
+<!--        android:src="@drawable/register_button_loginframent"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

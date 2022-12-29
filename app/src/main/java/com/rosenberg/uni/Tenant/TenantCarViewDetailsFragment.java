@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -113,8 +114,8 @@ public class TenantCarViewDetailsFragment extends Fragment {
         historyView = view.findViewById(R.id.tenant_car_view_details_history_list_view);
 
         // init buttons
-        Button editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
-        Button removeBtn = view.findViewById(R.id.tenant_car_view_details_remove);
+        ImageView editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
+        ImageView removeBtn = view.findViewById(R.id.tenant_car_view_details_remove);
 
         // init buttons listeners
         // edit - move to the edit window
@@ -152,8 +153,11 @@ public class TenantCarViewDetailsFragment extends Fragment {
 
         List<History> histories = currentCar.getPreviousRentersID();
 
-        ArrayAdapter arrayAdapter = new ListItemHistoryViewAdapter(getActivity(), histories.toArray(new History[0]));
-        historyView.setAdapter(arrayAdapter);
+
+        if (histories.toArray(new History[0]) == null){
+            ArrayAdapter arrayAdapter = new ListItemHistoryViewAdapter(getActivity(), histories.toArray(new History[0]));
+            historyView.setAdapter(arrayAdapter);
+        }
 
         historyView.setOnItemClickListener((adapterView, view, i, l) -> {
             if (!histories.get(i).getReviewed()) {

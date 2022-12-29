@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -122,8 +123,8 @@ public class TenantViewRequestedRenterFragment extends Fragment {
         reviews = view.findViewById(R.id.view_renter_reviews);
 
         // init buttons for window
-        Button acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
-        Button rejectRenterBtn = view.findViewById(R.id.view_renterProfile_RejectBtn);
+        ImageView acceptRenterBtn = view.findViewById(R.id.view_renterProfile_AcceptBtn);
+        ImageView rejectRenterBtn = view.findViewById(R.id.view_renterProfile_RejectBtn);
 
         // get the renter user data for show it to curr user (tenant)
         tf.getSpecificUser(userDocId, this);

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Login.RegisterFragment">
+    tools:context=".Login.RegisterFragment"
+    android:background="@drawable/dense_dry_lblue_background">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -125,7 +126,7 @@
             android:id="@+id/register_button"
             android:layout_width="138dp"
             android:layout_height="67dp"
-            android:src="@drawable/register_button_browncar_whitefont"
+            android:src="@drawable/register_button_registerfragment"
             android:text="Register"
             android:layout_margin="@dimen/text_margin"/>
 

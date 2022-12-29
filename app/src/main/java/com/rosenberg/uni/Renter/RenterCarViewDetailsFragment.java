@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class RenterCarViewDetailsFragment extends Fragment {
     TextView gearbox;
     TextView startDate;
     TextView endDate;
-    Button req_car;
+    ImageView req_car;
     ListView reviewsList;
 
     public RenterCarViewDetailsFragment() {
@@ -131,11 +132,11 @@ public class RenterCarViewDetailsFragment extends Fragment {
                 // car already requested- cancel request
                 rf.cancelRequests(car_id, FirebaseAuth.getInstance().getUid(), this);
                 isCarAlreadyReq = false;
-                req_car.setText("Request car");
+                req_car.setImageResource(R.drawable.requestcar_button_rentercarviewdetails);
             } else {
                 // request car
                 isCarAlreadyReq = true;
-                req_car.setText("Cancel Request");
+                req_car.setImageResource(R.drawable.cancelrequest_button_rentercarviewdetails);
                 rf.sendRequest(car_id, FirebaseAuth.getInstance().getUid());
 
             }
@@ -173,9 +174,9 @@ public class RenterCarViewDetailsFragment extends Fragment {
         if(size > 0) {
             // The user already requested the car
             isCarAlreadyReq = true;
-            req_car.setText("Cancel Request");
+            req_car.setImageResource(R.drawable.cancelrequest_button_rentercarviewdetails);
         }else {
-            req_car.setText("Request car");
+            req_car.setImageResource(R.drawable.requestcar_button_rentercarviewdetails);
         }
     }
 }

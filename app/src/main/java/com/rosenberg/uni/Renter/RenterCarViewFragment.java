@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,7 +61,7 @@ public class RenterCarViewFragment extends Fragment {
         // start and end dates for filtering
         EditText start = view.findViewById(R.id.renter_car_view_start_date);
         EditText end = view.findViewById(R.id.renter_car_view_end_date);
-        Button filter = view.findViewById(R.id.renter_car_view_filter);
+        ImageView filter = view.findViewById(R.id.renter_car_view_filter);
 
         // list of cars to rent
         carsView = view.findViewById(R.id.renter_car_view_list_view);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ public class TenantCarViewFragment extends Fragment {
     private boolean canAddCar = false; // already more than 5 ongoing offers
     TenantFunctions tf;
     ListView car_view;
-    Button add_car;
+    ImageView add_car;
     /**
      * we not doing anything more than default at "onCreateView" phase
      */
@@ -106,11 +107,12 @@ public class TenantCarViewFragment extends Fragment {
         });
         // If we have more then 5 cars, disable this option
         if(cars.size() >= 5) {
+            add_car.setImageResource(R.drawable.max5cars_button_tenantcarview);
             canAddCar = false;
-            add_car.setText("max 5 cars");
         }
         else{
             //other wise, enable it again
+            add_car.setImageResource(R.drawable.addcar_button_tenant);
             canAddCar = true;
         }
     }

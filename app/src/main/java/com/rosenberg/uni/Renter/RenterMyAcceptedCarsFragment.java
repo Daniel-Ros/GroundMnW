@@ -1,5 +1,6 @@
 package com.rosenberg.uni.Renter;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
     public boolean canAddCar; // if more or less than 5 cars already in rent time
     public ListView carsView;
     RenterFunctions rf;
-    Button searchCar;
+    ImageView searchCar;
 
     public RenterMyAcceptedCarsFragment() {
         // Required empty public constructor
@@ -96,7 +98,7 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
                 FragmentManager fm = getParentFragmentManager();
                 // search for new cars
                 fm.beginTransaction().replace(R.id.main_fragment, RenterCarViewFragment.class, null)
-                        .addToBackStack("TenantCarView")
+                        .addToBackStack("RenterMyAcceptedCars")
                         .commit();
             }else {
                 // can't rent more than 5 cars
@@ -116,9 +118,10 @@ public class RenterMyAcceptedCarsFragment extends Fragment {
         // If we have more then 5 cars, disable this option
         if(cars.size() >= 5) {
             canAddCar = false;
-            searchCar.setText("max 5 cars");
+            searchCar.setImageResource(R.drawable.max5cars_button_renteracceptedcars);
         }
         else{
+            searchCar.setImageResource(R.drawable.searchcar_button_renteracceptedcars);
             //other wise, enable it again
             canAddCar = true;
         }

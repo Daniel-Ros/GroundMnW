@@ -12,15 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TenantRateRenterFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * this class is window that the tenant RATES the RENTER that gave him his car
  */
 public class TenantRateRenterFragment extends Fragment {
 
@@ -50,6 +49,10 @@ public class TenantRateRenterFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * do default onCreate with initializing userId
+     * @param savedInstanceState last state of this fragment,should be null
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,9 @@ public class TenantRateRenterFragment extends Fragment {
         }
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,14 +71,19 @@ public class TenantRateRenterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_tenant_rate_renter, container, false);
     }
 
-
+    /**
+     * Called when fragment is inflated,
+     * init all texts and buttons for curr window
+     * @param view - curr view
+     * @param savedInstanceState - last state of this fragment,should be null
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         EditText comment = view.findViewById(R.id.tenant_rate_comment);
         RatingBar rate = view.findViewById(R.id.tenant_rate_renter);
-        Button done = view.findViewById(R.id.tenant_rate_done);
+        ImageView done = view.findViewById(R.id.tenant_rate_done);
 
         done.setOnClickListener(view1 -> {
             tf.rateUser(userId,comment.getText().toString(),rate.getRating());

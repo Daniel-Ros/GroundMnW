@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.rosenberg.uni.Entities.Car;
@@ -75,7 +76,7 @@ public class TenantAddCarFragment extends Fragment {
         price = view.findViewById(R.id.tenant_edit_car_price);
 
         // init buttons for window
-        Button doneBtn = view.findViewById(R.id.tenant_add_car_done);
+        ImageView doneBtn = view.findViewById(R.id.tenant_add_car_done);
 
         // hold all make and model values in one array
         ArrayAdapter<String> adapterMake = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,fuels);
@@ -101,8 +102,6 @@ public class TenantAddCarFragment extends Fragment {
                     end_date.getText().toString(),
                     Integer.parseInt(price.getText().toString()),
                     uid);
-
-            System.out.println(car.getModel());
 
             // push to database
             tf.pushCar(car, this);

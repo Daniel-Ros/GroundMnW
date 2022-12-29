@@ -25,6 +25,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="make"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -32,7 +33,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
+
             </TableRow>
 
             <TableRow
@@ -44,6 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="model"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -51,7 +55,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
+
             </TableRow>
 
             <TableRow
@@ -63,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="mileage"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -70,7 +77,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
+
             </TableRow>
 
             <TableRow
@@ -82,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -89,7 +99,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
+
             </TableRow>
 
 
@@ -102,6 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Gear box"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -109,6 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
             </TableRow>
 
@@ -121,6 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="fuel type"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -128,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
             </TableRow>
 
@@ -140,6 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="number of seats"
+                    android:fontFamily="@font/assistant_extrabold"
                     android:layout_margin="@dimen/text_margin"/>
 
                 <TextView
@@ -147,23 +164,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/assistant_semibold"
                     android:layout_margin="@dimen/text_margin"/>
             </TableRow>
 
             <TableRow>
-                <Button
+                <ImageView
                     android:id="@+id/tenant_car_view_details_edit"
-                    android:text="Edit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="8dp"
                     android:layout_margin="@dimen/text_margin"
+                    android:src="@drawable/edit_button_tenant"
                     />
 
-                <Button
+                <ImageView
                     android:id="@+id/tenant_car_view_details_remove"
-                    android:layout_width="wrap_content"
-                    android:layout_margin="@dimen/text_margin"
-                    android:text="Remove"
-                    />
+                    android:layout_width="165dp"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/remove2_button_tenantcar" />
             </TableRow>
         </TableLayout>
 

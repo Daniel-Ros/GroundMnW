@@ -10,25 +10,23 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link RenterRateTenantFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * this class is window that the renter RATES the TENANT that gave him his car
  */
 public class RenterRateTenantFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "CARID";
-    private String carId;
+    private String carDocId;
 
-    RenterFunctions rf;
+    RenterFunctions rf; // the model
 
     public RenterRateTenantFragment() {
         // Required empty public constructor
@@ -50,14 +48,21 @@ public class RenterRateTenantFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * do default onCreate with initializing carDocId
+     * @param savedInstanceState last state of this fragment,should be null
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            carId = getArguments().getString(ARG_PARAM1);
+            carDocId = getArguments().getString(ARG_PARAM1);
         }
     }
 
+    /**
+     * we not doing anything more than default at "onCreateView" phase
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,17 +70,22 @@ public class RenterRateTenantFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_renter_rate_tenant, container, false);
     }
 
-
+    /**
+     * Called when fragment is inflated,
+     * init all texts and buttons for curr window
+     * @param view - curr view
+     * @param savedInstanceState - last state of this fragment,should be null
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         EditText comment = view.findViewById(R.id.renter_rate_comment);
         RatingBar rate = view.findViewById(R.id.renter_rate_rate);
-        Button done = view.findViewById(R.id.renter_rate_done);
+        ImageView done = view.findViewById(R.id.renter_rate_done);
 
-        done.setOnClickListener(view1 -> {
-            rf.rateCar(carId,comment.getText().toString(),rate.getRating());
+        done.setOnClickListener(view1 -> { // done rating
+            rf.rateCar(carDocId,comment.getText().toString(),rate.getRating());
             FragmentManager fm = getParentFragmentManager();
             fm.beginTransaction().replace(R.id.main_fragment,RenterCarViewFragment.class,null).commit();
         });

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -100,7 +101,7 @@ public class ViewProfileFragment extends Fragment {
         reviews = viewProfileView.findViewById(R.id.view_reviews);
 
         // init buttons for the window
-        Button editProfileBtn = viewProfileView.findViewById(R.id.user_view_edit);
+        ImageView editProfileBtn = viewProfileView.findViewById(R.id.user_view_edit);
 
         String uid = userUtils.getUserID(); // current userID
         // get from FS the data of the current user via its id (UNIQUE)

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -103,11 +104,10 @@ public class EditViewProfileFragment extends Fragment {
         spinnerGender.setAdapter(adapterGenders);
 
         // init buttons for the window
-        Button confirmBtn = view.findViewById(R.id.confirm_button);
+        ImageView confirmBtn = view.findViewById(R.id.confirm_button);
 
         // get curr details on users
         String uid = userUtils.getUserID(); // current userID
-        System.out.println(uid+" "+this);
         lf.getUserDetails(uid, this);
 
 

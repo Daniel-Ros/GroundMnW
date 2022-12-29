@@ -25,6 +25,7 @@
                 android:ems="10"
                 android:hint="Start Date"
                 android:inputType="date"
+                android:fontFamily="@font/assistant_semibold"
                 android:onClick="showDateDialog"/>
 
 
@@ -35,14 +36,14 @@
                 android:ems="10"
                 android:hint="end Date"
                 android:inputType="date"
+                android:fontFamily="@font/assistant_semibold"
                 android:onClick="showDateDialog"/>
             </TableRow>
 
-            <Button
+            <ImageView
                 android:id="@+id/renter_car_view_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Filter" />
+                android:layout_height="60dp"
+                android:src="@drawable/filter_button2" />
         </TableLayout>
     </androidx.core.widget.NestedScrollView>
 

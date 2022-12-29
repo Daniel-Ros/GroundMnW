@@ -24,13 +24,16 @@
                 android:id="@+id/textView4"
                 android:layout_width="107dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="First Name" />
 
             <TextView
                 android:id="@+id/view_renterProfile_firstN"
                 android:layout_width="96dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -41,13 +44,16 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Last Name" />
 
             <TextView
                 android:id="@+id/view_renterProfile_lastN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -58,13 +64,16 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Role" />
 
             <TextView
                 android:id="@+id/view_renterProfile_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -75,13 +84,16 @@
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Phone Number" />
 
             <TextView
                 android:id="@+id/view_renterProfile_phoneNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -92,13 +104,16 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Gender" />
 
             <TextView
                 android:id="@+id/view_renterProfile_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -109,13 +124,16 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Birth Date" />
 
             <TextView
                 android:id="@+id/view_renterProfile_born"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
 
         <TableRow
@@ -126,13 +144,16 @@
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="City" />
 
             <TextView
                 android:id="@+id/view_renterProfile_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/assistant_semibold"
                 android:text="TextView" />
+
         </TableRow>
     </TableLayout>
 
@@ -153,7 +174,9 @@
                 android:id="@+id/textView23"
                 android:layout_width="290dp"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/assistant_extrabold"
                 android:text="Details On Me :)" />
+
         </TableRow>
 
         <TableRow
@@ -163,27 +186,29 @@
             <TextView
                 android:id="@+id/view_renterProfile_onMe"
                 android:layout_width="294dp"
+                android:fontFamily="@font/assistant_semibold"
                 android:layout_height="231dp" />
+
         </TableRow>
     </TableLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/view_renterProfile_AcceptBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_width="138dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="8dp"
-        android:text="Accept"
+        android:src="@drawable/accept_button_tenantviewrequested"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottomlayout"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <ImageView
         android:id="@+id/view_renterProfile_RejectBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="REJECT"
+        android:layout_width="165dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/reject_button_tenantviewrequestedrenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_renterProfile_AcceptBtn"
         app:layout_constraintTop_toBottomOf="@+id/bottomlayout"

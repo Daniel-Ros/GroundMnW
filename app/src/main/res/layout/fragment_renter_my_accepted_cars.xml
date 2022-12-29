@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".Renter.RenterMyAcceptedCarsFragment">
 
-    <Button
+    <ImageView
         android:id="@+id/renter_my_accepted_cars_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search Car"
+        android:layout_width="170dp"
+        android:layout_height="85dp"
+        android:layout_marginBottom="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

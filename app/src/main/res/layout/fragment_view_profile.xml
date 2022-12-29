@@ -22,6 +22,7 @@
                 android:layout_width="207dp"
                 android:layout_height="141dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,12 +36,14 @@
                         android:id="@+id/textFName"
                         android:layout_width="107dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="First Name" />
 
                     <TextView
                         android:id="@+id/view_first_name"
                         android:layout_width="96dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
                 </TableRow>
 
@@ -52,12 +55,14 @@
                         android:id="@+id/textLName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Last Name" />
 
                     <TextView
                         android:id="@+id/view_last_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
 
                 </TableRow>
@@ -70,12 +75,14 @@
                         android:id="@+id/textRole"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Role" />
 
                     <TextView
                         android:id="@+id/view_Role"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
                 </TableRow>
 
@@ -87,12 +94,14 @@
                         android:id="@+id/textPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Phone Number" />
 
                     <TextView
                         android:id="@+id/view_phone_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
                 </TableRow>
 
@@ -104,12 +113,14 @@
                         android:id="@+id/textGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Gender" />
 
                     <TextView
                         android:id="@+id/view_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
 
                 </TableRow>
@@ -122,12 +133,14 @@
                         android:id="@+id/textBirth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Birth Date" />
 
                     <TextView
                         android:id="@+id/view_Birth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
                 </TableRow>
 
@@ -139,12 +152,14 @@
                         android:id="@+id/textCity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="City" />
 
                     <TextView
                         android:id="@+id/view_city"
                         android:layout_width="95dp"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/assistant_semibold"
                         android:text="TextView" />
                 </TableRow>
 
@@ -166,6 +181,7 @@
                         android:id="@+id/textOnMe"
                         android:layout_width="290dp"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/assistant_extrabold"
                         android:text="Details On Me :)" />
                 </TableRow>
 
@@ -176,6 +192,7 @@
                     <TextView
                         android:id="@+id/view_on_me"
                         android:layout_width="294dp"
+                        android:fontFamily="@font/assistant_semibold"
                         android:layout_height="231dp" />
                 </TableRow>
             </TableLayout>
@@ -184,15 +201,17 @@
                 android:id="@+id/view_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/assistant_extrabold"
                 />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <Button
+    <ImageView
         android:id="@+id/user_view_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="138dp"
+        android:layout_height="67dp"
         android:text="Edit"
+        android:src="@drawable/edit_button_viewprofile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

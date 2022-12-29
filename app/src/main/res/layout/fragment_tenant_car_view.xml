@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Tenant.TenantCarViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <Button
+    <ImageView
         android:id="@+id/tenant_car_view_add_car"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Car"
+        android:layout_width="138dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

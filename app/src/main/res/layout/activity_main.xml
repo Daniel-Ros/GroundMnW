@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/dry_lblue_background">
+    android:background="@drawable/bezz_background">
 
     <FrameLayout
         android:id="@+id/main_fragment"

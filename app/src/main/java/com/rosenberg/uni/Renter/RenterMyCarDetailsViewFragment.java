@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rosenberg.uni.Entities.Car;
@@ -34,7 +35,7 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     TextView gearbox;
     TextView startDate;
     TextView endDate;
-    Button endRent;
+    ImageView endRent;
 
     public RenterMyCarDetailsViewFragment() {
         // Required empty public constructor

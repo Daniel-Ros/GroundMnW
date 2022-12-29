@@ -1,125 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".Tenant.TenantEditCarFragment">
+
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tenant.TenantEditCarFragment">
+    android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="62dp">
+        android:orientation="vertical"
+        android:weightSum="80">
+
+        <EditText
+            android:id="@+id/tenant_edit_car_make"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_weight="10"
+            android:ems="10"
+            android:hint="make"
+            android:fontFamily="@font/assistant_extrabold"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/tenant_edit_car_model"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_weight="10"
+            android:ems="10"
+            android:hint="model"
+            android:fontFamily="@font/assistant_extrabold"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/tenant_edit_car_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_weight="10"
+            android:ems="10"
+            android:hint="millege"
+            android:inputType="number"
+            android:fontFamily="@font/assistant_extrabold"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/tenant_edit_car_num_of_seats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_weight="10"
+            android:ems="10"
+            android:hint="Number of  seats"
+            android:inputType="number"
+            android:fontFamily="@font/assistant_extrabold"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/tenant_edit_car_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_margin="@dimen/text_margin"
+            android:hint="Price USD"
+            android:ems="10"
+            android:fontFamily="@font/assistant_extrabold"
+            android:inputType="numberDecimal" />
+
+        <Spinner
+            android:id="@+id/tenant_edit_car_fuel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/assistant_extrabold"
+            android:layout_margin="@dimen/text_margin" />
+
+        <Spinner
+            android:id="@+id/tenant_edit_car_gearbox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/assistant_extrabold"
+            android:layout_margin="@dimen/text_margin" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="80">
+            android:layout_margin="@dimen/text_margin">
 
             <EditText
-                android:id="@+id/tenant_edit_car_make"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:layout_weight="10"
-                android:ems="10"
-                android:hint="make"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/tenant_edit_car_model"
+                android:id="@+id/tenant_edit_car_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin"
-                android:layout_weight="10"
-                android:ems="10"
-                android:hint="model"
-                android:minHeight="48dp" />
+                android:layout_weight="4"
+                android:hint="Start Date"
+                android:inputType="date"
+                android:minHeight="48dp"
+                android:fontFamily="@font/assistant_extrabold"
+                android:onClick="showDateDialog" />
 
             <EditText
-                android:id="@+id/tenant_edit_car_mileage"
+                android:id="@+id/tenant_edit_car_end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:layout_weight="10"
-                android:ems="10"
-                android:hint="millege"
-                android:inputType="number"
-                android:minHeight="48dp" />
+                android:layout_weight="4"
+                android:hint="End Date"
+                android:inputType="date"
+                android:minHeight="48dp"
+                android:fontFamily="@font/assistant_extrabold"
+                android:onClick="showDateDialog" />
 
-            <EditText
-                android:id="@+id/tenant_edit_car_num_of_seats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:layout_weight="10"
-                android:ems="10"
-                android:hint="Number of  seats"
-                android:inputType="number"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/tenant_edit_car_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:layout_margin="@dimen/text_margin"
-                android:hint="Price USD"
-                android:ems="10"
-                android:inputType="numberDecimal" />
-
-            <Spinner
-                android:id="@+id/tenant_edit_car_fuel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin" />
-
-            <Spinner
-                android:id="@+id/tenant_edit_car_gearbox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/text_margin" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin">
-
-                <EditText
-                    android:id="@+id/tenant_edit_car_start_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:hint="Start Date"
-                    android:inputType="date"
-                    android:minHeight="48dp"
-                    android:onClick="showDateDialog" />
-
-                <EditText
-                    android:id="@+id/tenant_edit_car_end_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:hint="End Date"
-                    android:inputType="date"
-                    android:minHeight="48dp"
-                    android:onClick="showDateDialog" />
-            </LinearLayout>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
-    <Button
+
+    <ImageView
         android:id="@+id/tenant_edit_car_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Edit Car"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="138dp"
+        android:layout_height="67dp"
+        android:layout_marginLeft="145dp"
+        android:src="@drawable/edit_button_tenant" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>
