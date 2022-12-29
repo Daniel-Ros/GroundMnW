@@ -1,5 +1,9 @@
 package com.rosenberg.uni.Entities;
 
+/**
+ * represent history of user review
+ * this way can know if user got reviewed
+ */
 public class History {
     String renterID;
     Boolean reviewed;

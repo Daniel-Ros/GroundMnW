@@ -65,19 +65,25 @@ public class Car {
 
         // extract the starting time from string
         // new Calender(year, month, day)
-        String [] splitdate = startDate.split("/");
-        Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
-                Integer.parseInt(splitdate[1]),
-                Integer.parseInt(splitdate[0]));
-        this.startDateStamp = calendar.getTimeInMillis();
+        this.startDateStamp = extractMilisTime(startDate);
 
         // extract the end time from string
         // new Calender(year, month, day)
-        splitdate = endDate.split("/");
-        calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
+        this.endDateStamp = extractMilisTime(endDate);
+    }
+
+    /**
+     * extract the time from date string
+     * to new Calender(year, month, day)
+     * @param date string
+     * @return time in milis
+     */
+    private Long extractMilisTime(String date){
+        String [] splitdate = endDate.split("/");
+        Calendar calendar = new GregorianCalendar(Integer.parseInt(splitdate[2]),
                 Integer.parseInt(splitdate[1]),
                 Integer.parseInt(splitdate[0]));
-        this.endDateStamp = calendar.getTimeInMillis();
+        return calendar.getTimeInMillis();
     }
 
 

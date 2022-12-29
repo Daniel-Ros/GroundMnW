@@ -1,8 +1,11 @@
 package com.rosenberg.uni.Entities;
 
+/**
+ * presents the review content between user to another
+ */
 public class Review {
-    float rating;
-    String comment;
+    float rating; // stars 1~5
+    String comment; // words details
 
     public Review() {
     }

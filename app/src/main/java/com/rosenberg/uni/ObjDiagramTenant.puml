@@ -1,0 +1,48 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+class User{
+}
+
+object LoginFragment
+object RegisterFragment
+
+object ViewProfile
+object EditProfile{
+String firstName
+String lastName
+String date
+Boolean gender
+String phoneNumber
+String city
+String writingOnMe
+}
+
+
+object RateRenter{
+float stars
+String feedback
+}
+
+object TenantMyCars
+
+object TenantCarDetails
+object TenantAddCar
+object TenantAcceptRenter{
+profile details
+List<Reviews> renter
+}
+
+User --> LoginFragment
+LoginFragment --> RegisterFragment
+LoginFragment --> TenantMyCars
+TenantMyCars --> TenantAddCar
+TenantMyCars --> TenantCarDetails
+TenantCarDetails --> TenantAcceptRenter
+
+TenantCarDetails --> RateRenter
+
+TenantMyCars --> ViewProfile
+ViewProfile --> EditProfile
+
+@enduml
