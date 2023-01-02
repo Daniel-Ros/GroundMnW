@@ -1,12 +1,19 @@
 package com.rosenberg.uni.Tenant;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +28,8 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.userUtils;
+
+import java.io.IOException;
 
 /**
  * this class presents the window that provide to tenant user the option to add cars for renting
@@ -38,6 +47,10 @@ public class TenantAddCarFragment extends Fragment {
     EditText start_date;
     EditText end_date;
     EditText price;
+    ImageView imageView;
+    Button addImage;
+
+    Bitmap bitmap;
 
     /**
      * we not doing anything more than default at "onCreateView" phase
@@ -75,6 +88,9 @@ public class TenantAddCarFragment extends Fragment {
         end_date = view.findViewById(R.id.tenant_add_car_end_date);
         price = view.findViewById(R.id.tenant_edit_car_price);
 
+        imageView = view.findViewById(R.id.tenant_add_car_image);
+        addImage = view.findViewById(R.id.tenant_add_car_add_image);
+
         // init buttons for window
         ImageView doneBtn = view.findViewById(R.id.tenant_add_car_done);
 
@@ -85,11 +101,29 @@ public class TenantAddCarFragment extends Fragment {
         ArrayAdapter<String> adapterModel = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,gearboxes);
         gearbox.setAdapter(adapterModel);
 
-        doneBtn.setOnClickListener(v -> {
 
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == Activity.RESULT_OK){
+                Intent data = result.getData();
+                Uri uri = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    imageView.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        addImage.setOnClickListener(v ->{
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            activityResultLauncher.launch(intent);
+        });
+
+        doneBtn.setOnClickListener(v -> {
             String uid = userUtils.getUserID();
             Log.d("ADD CAR", "uid =" + uid);
-
             // set input value as car object
             Car car = new Car(
                     make.getText().toString(),
@@ -104,8 +138,7 @@ public class TenantAddCarFragment extends Fragment {
                     uid);
 
             // push to database
-            tf.pushCar(car, this);
-
+            tf.pushCar(car,bitmap, this);
         });
     }
 

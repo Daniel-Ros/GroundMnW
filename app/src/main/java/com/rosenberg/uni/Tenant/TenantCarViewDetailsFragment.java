@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.rosenberg.uni.Adapters.ListItemHistoryViewAdapter;
 import com.rosenberg.uni.Adapters.ListItemUserViewAdapter;
 import com.rosenberg.uni.Entities.Car;
@@ -23,6 +25,7 @@ import com.rosenberg.uni.Entities.History;
 import com.rosenberg.uni.Entities.User;
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.utils.CustomVolleyRequestQueue;
 
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
     private String carDocId;  // gets it as input from constructing
 
     TenantFunctions tf;
+    ImageLoader imageLoader;
 
     TextView make;
     TextView model;
@@ -48,6 +52,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
     TextView endDate;
     ListView carView;
     ListView historyView;
+    NetworkImageView imageView;
 
 
     public TenantCarViewDetailsFragment() {
@@ -112,10 +117,13 @@ public class TenantCarViewDetailsFragment extends Fragment {
         endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
         carView = view.findViewById(R.id.tenant_car_view_details_users_list_view);
         historyView = view.findViewById(R.id.tenant_car_view_details_history_list_view);
+        imageView = view.findViewById(R.id.tenant_car_view_details_image);
 
         // init buttons
         ImageView editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
         ImageView removeBtn = view.findViewById(R.id.tenant_car_view_details_remove);
+
+
 
         // init buttons listeners
         // edit - move to the edit window
@@ -154,7 +162,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
         List<History> histories = currentCar.getPreviousRentersID();
 
 
-        if (histories.toArray(new History[0]) == null){
+        if (histories != null){
             ArrayAdapter arrayAdapter = new ListItemHistoryViewAdapter(getActivity(), histories.toArray(new History[0]));
             historyView.setAdapter(arrayAdapter);
         }
@@ -170,6 +178,20 @@ public class TenantCarViewDetailsFragment extends Fragment {
                 tf.setHistReviewed(carDocId,histories.get(i).getRenterID());
             }
         });
+        if(!currentCar.getPicid().isEmpty()){
+            try {
+                imageLoader = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext())
+                        .getImageLoader();
+                String url = "http://10.0.2.2:3000/pic/" + currentCar.getPicid();
+                imageLoader.get(url, ImageLoader.getImageListener(imageView,
+                        R.mipmap.ic_launcher, android.R.drawable
+                                .ic_dialog_alert));
+                imageView.setImageUrl(url, imageLoader);
+            }catch (Exception e) {
+                Log.e("IMAGE", e.getLocalizedMessage());
+            }
+        }
+
     }
 
     /**

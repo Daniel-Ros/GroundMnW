@@ -24,6 +24,7 @@ public class Car {
     private String endDate;
     private Long endDateStamp; // same as above
     private Integer price;
+    private String picid;
 
     private String renterID; // UNIQUE, userId - but for the renter of the car
     private List<History> previousRentersID;
@@ -187,5 +188,13 @@ public class Car {
 
     public List<History> getPreviousRentersID() {
         return previousRentersID;
+    }
+
+    public String getPicid() {
+        return picid;
+    }
+
+    public void setPicid(String picid) {
+        this.picid = picid;
     }
 }

@@ -168,6 +168,16 @@
                     android:layout_margin="@dimen/text_margin"/>
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/tenant_car_view_details_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </TableRow>
+
             <TableRow>
                 <ImageView
                     android:id="@+id/tenant_car_view_details_edit"
