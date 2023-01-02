@@ -118,6 +118,16 @@ tools:context=".Tenant.TenantAddCarFragment">
                 android:onClick="showDateDialog" />
 
         </LinearLayout>
+        <ImageView
+            android:id="@+id/tenant_add_car_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/tenant_add_car_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add image"/>
     </LinearLayout>
 
     <ImageView

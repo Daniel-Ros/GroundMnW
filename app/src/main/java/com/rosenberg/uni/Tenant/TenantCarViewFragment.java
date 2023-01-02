@@ -57,6 +57,7 @@ public class TenantCarViewFragment extends Fragment {
     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d("ADD CAR","entered");
         super.onViewCreated(view, savedInstanceState);
 
         // init car row entries
@@ -70,6 +71,7 @@ public class TenantCarViewFragment extends Fragment {
         add_car.setOnClickListener(v -> {
             // check if possible to add car
             // canAddCar == true iff (<=>) user have 4 or less ongoing cars entry
+            Log.d("ADD CAR","clicked");
             if(canAddCar) {
                 this.addCarClicked();
             }else{ // just msg him failed
