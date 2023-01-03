@@ -71,6 +71,7 @@ public class Car {
         // extract the end time from string
         // new Calender(year, month, day)
         this.endDateStamp = extractMilisTime(endDate);
+        this.picid = "";
     }
 
     /**

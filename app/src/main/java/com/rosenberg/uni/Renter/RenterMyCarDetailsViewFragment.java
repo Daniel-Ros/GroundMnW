@@ -10,10 +10,11 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Models.RenterFunctions;
 import com.rosenberg.uni.R;
@@ -35,7 +36,10 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
     TextView gearbox;
     TextView startDate;
     TextView endDate;
-    ImageView endRent;
+    ImageView endRentBtn;
+
+    ImageLoader imageLoader;
+    NetworkImageView carImage;
 
     public RenterMyCarDetailsViewFragment() {
         // Required empty public constructor
@@ -97,14 +101,19 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
         gearbox = view.findViewById(R.id.renter_my_car_view_details_gearbox);
         startDate = view.findViewById(R.id.renter_my_car_view_details_start_date);
         endDate = view.findViewById(R.id.renter_my_car_view_details_end_date);
-        endRent = view.findViewById(R.id.renter_my_car_view_details_end_rent);
+
+        // image of car
+        carImage = view.findViewById(R.id.renter_my_car_view_details_image);
+
+        // init button
+        endRentBtn = view.findViewById(R.id.renter_my_car_view_details_end_rent);
 
         // get details on my specific car
         // and then show it
         rf.getSpecificCar(carDocId, this);
 
 
-        endRent.setOnClickListener(view1 -> {
+        endRentBtn.setOnClickListener(view1 -> {
             FragmentManager fm = getParentFragmentManager();
             RenterRateTenantFragment f = RenterRateTenantFragment.newInstance(carDocId);
             fm.beginTransaction().replace(R.id.main_fragment, f, null).commit();
@@ -113,17 +122,21 @@ public class RenterMyCarDetailsViewFragment extends Fragment {
 
     /**
      * would like to show the details of the car that the renter clicked on
-     * @param myCar my car
+     * @param currentCar my car
      */
-    public void show(Car myCar) {
+    public void show(Car currentCar) {
         // init text boxes
-        make.setText(myCar.getMake());
-        model.setText(myCar.getModel());
-        mileage.setText(myCar.getMileage().toString());
-        numOfSeats.setText(myCar.getNumOfSeats().toString());
-        fuel.setText(myCar.getFuel());
-        gearbox.setText(myCar.getGearbox());
-        startDate.setText(myCar.getStartDate());
-        endDate.setText(myCar.getEndDate());
+        make.setText(currentCar.getMake());
+        model.setText(currentCar.getModel());
+        mileage.setText(currentCar.getMileage().toString());
+        numOfSeats.setText(currentCar.getNumOfSeats().toString());
+        fuel.setText(currentCar.getFuel());
+        gearbox.setText(currentCar.getGearbox());
+        startDate.setText(currentCar.getStartDate());
+        endDate.setText(currentCar.getEndDate());
+
+        // update image
+        rf.setCarImage(imageLoader, carImage, currentCar, getActivity());
+
     }
 }

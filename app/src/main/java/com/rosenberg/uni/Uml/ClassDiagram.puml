@@ -1,0 +1,62 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+Car --> User
+Car --> history
+
+History --> Review
+
+class User {
+- String id
+- String firstName
+- String lastName
+- String email
+- String date
+- Boolean tenant
+- Boolean gender
+- String phoneNumber
+- String city
+- String writingOnMe
++ getters()
++ setters()
+}
+
+class History{
+- String userID
+- Boolean reviewed
+- String name
+- String reviewID
++ getters()
++ setters()
+}
+
+class Review {
+- String reviewID
+- float rating
+- String comment
++ getters()
++ setters()
+}
+
+class Car{
+- String carID
+- String make
+- String model
+- String mileage
+- String numOfSeats
+- String fuel
+- String gearbox
+- String startDate
+- String endDate,
+- Integer price
+- String ownerID
+- String renterID
+- Long startDateStamp
+- Long endDateStamp
+- List<History> previousRenters
+- Long extractMilisTime (String date)
++ getters()
++ setters()
+}
+
+@enduml

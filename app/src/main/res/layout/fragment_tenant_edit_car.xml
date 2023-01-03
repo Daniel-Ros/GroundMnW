@@ -116,6 +116,24 @@ tools:context=".Tenant.TenantEditCarFragment">
                 android:onClick="showDateDialog" />
 
         </LinearLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/tenant_edit_car_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </TableRow>
+
+        <ImageView
+            android:id="@+id/tenant__edit_car_change_car"
+            android:layout_width="138dp"
+            android:layout_height="67dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/changeimage_tenanteditcar" />
+
     </LinearLayout>
 
 

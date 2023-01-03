@@ -1,0 +1,54 @@
+@startuml
+
+
+Car --> User
+Car --> history
+
+History1 --> Review
+
+object User {
+- id "u1111111"
+- firstName = "israel"
+- lastName = "israeli"
+- email = "tenantObj@live.com"
+- date = "11/11/2001"
+- tenant = true
+- gender = true
+- phoneNumber = "0503334444"
+- city = "Ariel"
+- writingOnMe = "hello WnM world xD"
+}
+
+object History1{
+- userID = "q1273128412"
+- reviewed = true
+- reviewID = "r1283174"
+}
+
+object Review {
+- rating = 3.5
+- comment = "very nice tenant!"
+- reviewID = "r1283174"
+}
+
+object Car{
+- carID - "c127312471"
+- make = "Toyota"
+- model = "Corola 2022"
+- mileage = "10000"
+- numOfSeats = "5"
+- fuel = "95"
+- gearbox = "auto"
+- startDate = "13/12/2022"
+- endDate = "19/12/2022"
+- price = "1000"
+- ownerID = "u1111111"
+- renterID = "a128312731"
+- startDateStamp = 214751
+- endDateStamp = 127314
+- previousRenters = [history1]
+}
+
+
+
+@enduml

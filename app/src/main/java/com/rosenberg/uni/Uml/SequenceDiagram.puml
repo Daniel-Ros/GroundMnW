@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Reuven -> Shimon: Request to rent car
+Shimon --> Reuven: Accepted request
+
+Reuven -> Shimon: Checkout Car renting
+Shimon --> Reuven: Rate Reuven
+Reuven --> Shimon: Rate Shimon
+
+
+@enduml

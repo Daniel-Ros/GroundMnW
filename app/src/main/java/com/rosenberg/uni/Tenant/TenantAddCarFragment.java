@@ -19,10 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Models.TenantFunctions;
@@ -47,8 +47,8 @@ public class TenantAddCarFragment extends Fragment {
     EditText start_date;
     EditText end_date;
     EditText price;
-    ImageView imageView;
-    Button addImage;
+    ImageView carImage;
+    ImageView addImage;
 
     Bitmap bitmap;
 
@@ -88,7 +88,7 @@ public class TenantAddCarFragment extends Fragment {
         end_date = view.findViewById(R.id.tenant_add_car_end_date);
         price = view.findViewById(R.id.tenant_edit_car_price);
 
-        imageView = view.findViewById(R.id.tenant_add_car_image);
+        carImage = view.findViewById(R.id.tenant_add_car_image);
         addImage = view.findViewById(R.id.tenant_add_car_add_image);
 
         // init buttons for window
@@ -102,18 +102,20 @@ public class TenantAddCarFragment extends Fragment {
         gearbox.setAdapter(adapterModel);
 
 
-        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == Activity.RESULT_OK){
-                Intent data = result.getData();
-                Uri uri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        Uri uri = data.getData();
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                            carImage.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
         addImage.setOnClickListener(v ->{
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -151,11 +153,11 @@ public class TenantAddCarFragment extends Fragment {
         fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
     }
 
+    /**
+     * user tried to add car without image
+     * we wont allow that
+     */
+    public void wontPushWithoutImage() {
+        Toast.makeText(getActivity(),"cannot add car without an Image", Toast.LENGTH_LONG).show();
+    }
 }
-
-//    FirebaseFirestore fs = FirebaseFirestore.getInstance();
-//// add car to database
-//            fs.collection("cars").add(car).addOnCompleteListener(task -> {
-//                    FragmentManager fm = getParentFragmentManager();
-//                    fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
-//        });

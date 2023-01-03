@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -50,6 +52,10 @@ public class RenterCarViewDetailsFragment extends Fragment {
     TextView gearbox;
     TextView startDate;
     TextView endDate;
+
+    ImageLoader imageLoader;
+    NetworkImageView carImage;
+
     ImageView req_car;
     ListView reviewsList;
 
@@ -115,6 +121,9 @@ public class RenterCarViewDetailsFragment extends Fragment {
         startDate = view.findViewById(R.id.renter_car_view_details_start_date);
         endDate = view.findViewById(R.id.renter_car_view_details_end_date);
 
+        // image of car
+        carImage = view.findViewById(R.id.renter_car_view_details_image);
+
         // init button
         req_car = view.findViewById(R.id.renter_car_view_details_req_car);
         reviewsList = view.findViewById(R.id.renter_car_view_details_reviews);
@@ -145,19 +154,23 @@ public class RenterCarViewDetailsFragment extends Fragment {
 
     /**
      * present the details on car
-     * @param car to show
+     * @param currentCar to show
      */
-    public void show(Car car, List<Review> reviews) {
+    public void show(Car currentCar, List<Review> reviews) {
         // update text to information from database
-        make.setText(car.getMake());
-        model.setText(car.getModel());
-        mileage.setText(car.getMileage().toString());
-        numOfSeats.setText(car.getNumOfSeats().toString());
-        fuel.setText(car.getFuel());
-        gearbox.setText(car.getGearbox());
-        startDate.setText(car.getStartDate());
-        endDate.setText(car.getEndDate());
+        make.setText(currentCar.getMake());
+        model.setText(currentCar.getModel());
+        mileage.setText(currentCar.getMileage().toString());
+        numOfSeats.setText(currentCar.getNumOfSeats().toString());
+        fuel.setText(currentCar.getFuel());
+        gearbox.setText(currentCar.getGearbox());
+        startDate.setText(currentCar.getStartDate());
+        endDate.setText(currentCar.getEndDate());
 
+        // update image
+        rf.setCarImage(imageLoader, carImage, currentCar, getActivity());
+
+        // update reviews
         if(reviews != null){
             ArrayAdapter adapter = new ListItemReviewViewAdapter(getActivity(),reviews.toArray(new Review[0]));
             reviewsList.setAdapter(adapter);

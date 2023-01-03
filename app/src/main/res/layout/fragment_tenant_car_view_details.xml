@@ -9,11 +9,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TableLayout
             android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -24,17 +26,17 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="make"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="make" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_make"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="TextView" />
 
             </TableRow>
 
@@ -46,17 +48,17 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="model"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="model" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_model"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="TextView" />
 
             </TableRow>
 
@@ -68,17 +70,17 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="mileage"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="mileage" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_mileage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="TextView" />
 
             </TableRow>
 
@@ -90,17 +92,17 @@
                     android:id="@+id/tenant_car_view_details_start_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_end_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="" />
 
             </TableRow>
 
@@ -113,17 +115,17 @@
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gear box"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="Gear box" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_gearbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="" />
             </TableRow>
 
             <TableRow
@@ -134,17 +136,17 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="fuel type"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="fuel type" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_fuel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="" />
             </TableRow>
 
             <TableRow
@@ -155,17 +157,17 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="number of seats"
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_extrabold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="number of seats" />
 
                 <TextView
                     android:id="@+id/tenant_car_view_details_num_of_seats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_margin="@dimen/text_margin"
                     android:fontFamily="@font/assistant_semibold"
-                    android:layout_margin="@dimen/text_margin"/>
+                    android:text="" />
             </TableRow>
 
             <TableRow
@@ -175,19 +177,19 @@
                 <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/tenant_car_view_details_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </TableRow>
 
             <TableRow>
+
                 <ImageView
                     android:id="@+id/tenant_car_view_details_edit"
                     android:layout_width="130dp"
                     android:layout_height="60dp"
+                    android:layout_margin="@dimen/text_margin"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="8dp"
-                    android:layout_margin="@dimen/text_margin"
-                    android:src="@drawable/edit_button_tenant"
-                    />
+                    android:src="@drawable/edit_button_tenant" />
 
                 <ImageView
                     android:id="@+id/tenant_car_view_details_remove"
@@ -198,8 +200,8 @@
             </TableRow>
         </TableLayout>
 
-
     </androidx.core.widget.NestedScrollView>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -2,6 +2,10 @@ package com.rosenberg.uni.Models;
 
 import android.util.Log;
 
+import androidx.fragment.app.FragmentActivity;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -9,15 +13,18 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.History;
 import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.R;
 import com.rosenberg.uni.Renter.RenterCarViewDetailsFragment;
 import com.rosenberg.uni.Renter.RenterCarViewFragment;
 import com.rosenberg.uni.Renter.RenterMyAcceptedCarsFragment;
 import com.rosenberg.uni.Renter.RenterMyCarDetailsViewFragment;
+import com.rosenberg.uni.utils.CustomVolleyRequestQueue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 
 public class RenterFunctions {
 
@@ -270,5 +277,28 @@ public class RenterFunctions {
                 }
             });
         });
+    }
+
+    /**
+     * gets the image from the server of currCar and set it on carImage
+     * @param imageLoader - from the fragment UI
+     * @param carImage - from the fragment UI
+     * @param currCar - car obj
+     * @param activity - getActivity()
+     */
+    public void setCarImage(ImageLoader imageLoader, NetworkImageView carImage, Car currCar, FragmentActivity activity) {
+        if(!(currCar.getPicid() == null || Objects.equals(currCar.getPicid(), ""))){
+            try {
+                imageLoader = CustomVolleyRequestQueue.getInstance(activity.getApplicationContext())
+                        .getImageLoader();
+                String url = "http://10.0.2.2:3000/pic/" + currCar.getPicid();
+                imageLoader.get(url, ImageLoader.getImageListener(carImage,
+                        R.mipmap.ic_launcher, android.R.drawable
+                                .ic_dialog_alert));
+                carImage.setImageUrl(url, imageLoader);
+            }catch (Exception e) {
+                Log.e("IMAGE", e.getLocalizedMessage());
+            }
+        }
     }
 }

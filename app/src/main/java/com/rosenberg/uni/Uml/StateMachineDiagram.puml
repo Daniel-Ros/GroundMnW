@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 500 width
+[*] --> NewRequestToCarProccess
+
+state NewRequestToCarProccess {
+    [*] --> Renter
+    Renter --> ChooseCarFromActiveCars : request car
+    chooseCarFromActiveCars --> NewRequest
+    NewRequest --> UpdateTenant
+}
+
+state UpdateTenant {
+    note "upload to db to car requests, every car pointed to its owner" as uploadReq
+    [*] --> UploadReq
+    uploadReq --> UploadReq
+    UploadReq --> AddRequest
+    note "now tenant can see the new request in his local car page" as tsee
+    AddRequest <-- tsee
+}
+
+
+@enduml

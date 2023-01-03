@@ -123,11 +123,19 @@ tools:context=".Tenant.TenantAddCarFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <Button
+        <ImageView
             android:id="@+id/tenant_add_car_add_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="add image"/>
+            android:layout_width="138dp"
+            android:layout_height="67dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/addimage_button" />
+
+
+<!--        android:background="#75CCD3"-->
+<!--        android:fontFamily="@font/assistant_extrabold"-->
+
+        <!--            android:text="add image"-->
+<!--            android:textColor="@color/white"-->
     </LinearLayout>
 
     <ImageView

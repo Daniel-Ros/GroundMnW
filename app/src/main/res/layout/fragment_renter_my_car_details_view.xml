@@ -1,184 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Renter.RenterMyCarDetailsViewFragment">
+    tools:context=".Renter.RenterCarViewDetailsFragment"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/renter_my_car_view_details_end_rent"
-        android:layout_width="138dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="36dp"
-        android:src="@drawable/endrent_button_rentermycarview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayoutRenterMyCar" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TableLayout
-        android:id="@+id/tableLayoutRenterMyCar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="make" />
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="make" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_make"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="TextView" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_make"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="TextView" />
+            </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="model" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="model" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_model"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="TextView" />
-        </TableRow>
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="TextView" />
+            </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="mileage" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="mileage" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_mileage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="TextView" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_mileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="TextView" />
 
-        </TableRow>
+            </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_start_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_end_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="" />
 
-        </TableRow>
+            </TableRow>
 
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="Gear box" />
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="Gear box" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_gearbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_gearbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="" />
 
-        </TableRow>
+            </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="fuel type" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="fuel type" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_fuel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_fuel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="" />
 
-        </TableRow>
+            </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_extrabold"
-                android:text="number of seats" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:text="number of seats" />
 
-            <TextView
-                android:id="@+id/renter_my_car_view_details_num_of_seats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:fontFamily="@font/assistant_semibold"
-                android:text="" />
+                <TextView
+                    android:id="@+id/renter_my_car_view_details_num_of_seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:fontFamily="@font/assistant_semibold"
+                    android:text="" />
 
-        </TableRow>
-    </TableLayout>
+            </TableRow>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/renter_my_car_view_details_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp" />
+            </TableRow>
+
+            <ImageView
+                android:id="@+id/renter_my_car_view_details_end_rent"
+                android:layout_width="138dp"
+                android:layout_height="67dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/endrent_button_rentermycarview" />
+
+        </TableLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

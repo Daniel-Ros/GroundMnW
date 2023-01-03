@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:RenterHome;
+:RenterHome.searchCar();
+:new page;
+:AvailableCars;
+if (AvailableCars.filter()) then (set filter)
+    :AvailableCars.getAllCarsStandFilter();
+else (not)
+    :AvailableCars.getAllAvailableCars();
+endif
+if (AvailableCars.userChooseCar()) then (chose car)
+    :new page;
+    :DetailsSpecificCar;
+else (not)
+    :RenterHome;
+    stop
+endif
+
+
+:DetailsSpecificCar.requestCar();
+:DetailsSpecificCar.sendRequest();
+stop
+
+
+
+@enduml

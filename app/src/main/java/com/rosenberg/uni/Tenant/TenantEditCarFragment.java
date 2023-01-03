@@ -1,12 +1,19 @@
 package com.rosenberg.uni.Tenant;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +23,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Models.TenantFunctions;
 import com.rosenberg.uni.R;
+import com.rosenberg.uni.utils.CustomVolleyRequestQueue;
 import com.rosenberg.uni.utils.userUtils;
+
+import java.io.IOException;
+import java.util.Objects;
 //aa
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +60,11 @@ public class TenantEditCarFragment extends Fragment {
     EditText end_date;
     EditText price;
 
+    ImageView doneBtn;
+    NetworkImageView carImage;
+    ImageView editPicBtn;
+    ImageLoader imageLoader;
+    Bitmap bitmap;
 
     public TenantEditCarFragment() {
         // Required empty public constructor
@@ -115,7 +134,9 @@ public class TenantEditCarFragment extends Fragment {
         price = view.findViewById(R.id.tenant_edit_car_price);
 
         // init buttons for window
-        ImageView doneBtn = view.findViewById(R.id.tenant_edit_car_done);
+        doneBtn = view.findViewById(R.id.tenant_edit_car_done);
+        carImage = view.findViewById(R.id.tenant_edit_car_image); // the image itself
+        editPicBtn = view.findViewById(R.id.tenant__edit_car_change_car);
 
         // hold all make and model values in one array
         ArrayAdapter<String> adapterMake = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,fuels);
@@ -123,6 +144,25 @@ public class TenantEditCarFragment extends Fragment {
 
         ArrayAdapter<String> adapterModel = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,gearboxs);
         gearbox.setAdapter(adapterModel);
+
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == Activity.RESULT_OK){
+                Intent data = result.getData();
+                Uri uri = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    carImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        editPicBtn.setOnClickListener(v ->{
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            activityResultLauncher.launch(intent);
+        });
 
         // data on car from fs
         tf.getSpecificCar(carDocId, this);
@@ -145,7 +185,7 @@ public class TenantEditCarFragment extends Fragment {
                     Integer.parseInt(price.getText().toString()),
                     uid);
 
-            tf.uploadMyCarData(carDocId, new_car, this);
+            tf.uploadMyCarData(carDocId, new_car, bitmap, this);
         });
     }
 
@@ -165,6 +205,8 @@ public class TenantEditCarFragment extends Fragment {
         start_date.setText(currCar.getStartDate());
         end_date.setText(currCar.getEndDate());
         price.setText(currCar.getPrice().toString());
+        tf.setCarImage(imageLoader, carImage, currCar, getActivity());
+
 
     }
 
@@ -174,6 +216,14 @@ public class TenantEditCarFragment extends Fragment {
     public void uploadSucceed() {
         FragmentManager fm = getParentFragmentManager();
         fm.beginTransaction().replace(R.id.main_fragment, TenantCarViewFragment.class, null).commit();
+    }
+
+    /**
+     * user tried to add car without image
+     * we wont allow that
+     */
+    public void wontPushWithoutImage() {
+        Toast.makeText(getActivity(),"cannot edit car without an Image", Toast.LENGTH_LONG).show();
     }
 }
 

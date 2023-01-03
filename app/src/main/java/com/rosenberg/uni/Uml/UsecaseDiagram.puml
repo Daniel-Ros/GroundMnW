@@ -1,0 +1,72 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:Renter: as renter
+:Tenant: as tenant
+
+User --> (Login)
+note "<<exclude>>" as exc
+(Login) --> renter
+(Login) --> tenant
+(Login) -- exc
+exc --> (Register)
+(Register) ..> (Login)
+
+note "bounded by 5 accepted requests" as NboundR
+renter --> (my accepted cars requests)
+
+(my accepted cars requests) -- NboundR
+NboundR --> (search cars)
+
+renter --> (view profile)
+tenant --> (view profile)
+(view profile) ..> (my accepted cars requests)
+(view profile) ..> (tenant my cars)
+
+note "<<exclude>>" as exc1
+(view profile) -- exc1
+exc1 --> (edit profile)
+
+
+note "user cannot change his role after registartion" as noteM
+(edit profile) ..> (view profile)
+noteM .. (edit profile)
+
+note "filter via time / rating" as Nrate1
+Nrate1 .. (search cars)
+
+note "with tenant rating" as Nrate2
+(search cars) --> (car and tenant details)
+
+note "<<include>>" as inc
+(filter cars) <-- inc
+inc -- (search cars)
+(filter cars) ..> (search cars)
+Nrate2 .. (car and tenant details)
+
+(car and tenant details) --> (request car)
+(request car) ..> (my accepted cars requests)
+
+note "at end of renting phase" as  NrateRtoT
+(my accepted cars requests) -- NrateRtoT
+NrateRtoT --> (rate tenant)
+(rate tenant) ..> (my accepted cars requests)
+
+tenant --> (tenant my cars)
+note "cannot have more than 5 different cars" as NboundT
+(tenant my cars) -- NboundT
+NboundT --> (add car)
+(add car) ..> (tenant my cars)
+(tenant my cars) --> (view specific car detials)
+(view specific car detials) --> (edit car details)
+(edit car details) ..> (tenant my cars)
+(view specific car detials) --> (accept/reject renters)
+(accept/reject renters) ..> (tenant my cars)
+
+note "at end of renting phase" as  NrateTtoR
+(view specific car detials) -- NrateTtoR
+NrateTtoR --> (rate renter)
+(rate renter) ..> (tenant my cars)
+
+
+@enduml

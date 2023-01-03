@@ -1,9 +1,20 @@
 package com.rosenberg.uni.Models;
 
-import android.graphics.Bitmap;
-import android.util.Log;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -11,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,11 +33,13 @@ import com.rosenberg.uni.Entities.Car;
 import com.rosenberg.uni.Entities.History;
 import com.rosenberg.uni.Entities.Review;
 import com.rosenberg.uni.Entities.User;
+import com.rosenberg.uni.R;
 import com.rosenberg.uni.Tenant.TenantAddCarFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewDetailsFragment;
 import com.rosenberg.uni.Tenant.TenantCarViewFragment;
 import com.rosenberg.uni.Tenant.TenantEditCarFragment;
 import com.rosenberg.uni.Tenant.TenantViewRequestedRenterFragment;
+import com.rosenberg.uni.utils.CustomVolleyRequestQueue;
 import com.rosenberg.uni.utils.DataPart;
 import com.rosenberg.uni.utils.VolleyMultipartRequest;
 
@@ -32,11 +47,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TenantFunctions {
 
@@ -90,12 +107,59 @@ public class TenantFunctions {
      * @param tenantFragment obj     * @param new_car
      * @param new_car obj to upload
      */
-    public void uploadMyCarData(String carDocId, Car new_car, TenantEditCarFragment tenantFragment) {
-        _fs.collection("cars").document(carDocId).set(new_car).addOnCompleteListener(task -> {
-            tenantFragment.uploadSucceed();
-        }).addOnFailureListener( fail -> {
-            Log.d("RenterCarViewDetails","problme loading car info" + carDocId);
-        });;
+    public void uploadMyCarData(String carDocId, Car new_car, Bitmap bitmap, TenantEditCarFragment tenantFragment) {
+        if(bitmap != null){
+            // dhisa of image
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            byte [] bytes = byteArrayOutputStream.toByteArray();
+            String base64Image;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                base64Image = Base64.getEncoder().encodeToString(bytes);
+            }else{
+                return;
+            }
+
+            RequestQueue queue = Volley.newRequestQueue(tenantFragment.getActivity().getApplicationContext());
+            String url = "http://10.0.2.2:3000/add";
+
+            VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                    new Response.Listener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse response) {
+                            try {
+                                JSONObject obj = new JSONObject(new String(response.data));
+                                String carid = obj.getString("message");
+                                new_car.setPicid(carid);
+                                _fs.collection("cars").document(carDocId).set(new_car).addOnCompleteListener(task -> {
+                                    tenantFragment.uploadSucceed();
+                                }).addOnFailureListener( fail -> {
+                                    Log.d("RenterCarViewDetails","problme loading car info" + carDocId);
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("GotError",""+error.getMessage());
+                        }
+                    }){
+                @Override
+                protected Map<String, DataPart> getByteData() {
+                    Map<String, DataPart> params = new HashMap<>();
+                    long imagename = System.currentTimeMillis();
+                    params.put("image", new DataPart(imagename + ".png", bytes));
+                    return params;
+                }
+            };
+            queue.add(volleyMultipartRequest);
+        }
+        else{
+            tenantFragment.wontPushWithoutImage();
+        }
     }
 
     /**
@@ -133,6 +197,7 @@ public class TenantFunctions {
      */
     public void pushCar(Car car, Bitmap bitmap, TenantAddCarFragment tenantFragment) {
         if(bitmap != null){
+            // dhisa of image
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
             byte [] bytes = byteArrayOutputStream.toByteArray();
@@ -142,6 +207,7 @@ public class TenantFunctions {
             }else{
                 return;
             }
+
 
             RequestQueue queue = Volley.newRequestQueue(tenantFragment.getActivity().getApplicationContext());
             String url = "http://10.0.2.2:3000/add";
@@ -179,9 +245,7 @@ public class TenantFunctions {
             queue.add(volleyMultipartRequest);
         }
         else{
-            _fs.collection("cars").add(car).addOnSuccessListener(anything -> {
-                tenantFragment.carPushSucceed();
-            });
+            tenantFragment.wontPushWithoutImage();
         }
     }
 
@@ -276,5 +340,28 @@ public class TenantFunctions {
 
             cr.update("previousRentersID",histories);
         });
+    }
+
+    /**
+     * gets the image from the server of currCar and set it on carImage
+     * @param imageLoader - from the fragment UI
+     * @param carImage - from the fragment UI
+     * @param currCar - car obj
+     * @param activity - getActivity()
+     */
+    public void setCarImage(ImageLoader imageLoader, NetworkImageView carImage, Car currCar, FragmentActivity activity) {
+        if(!(currCar.getPicid() == null || Objects.equals(currCar.getPicid(), ""))){
+            try {
+                imageLoader = CustomVolleyRequestQueue.getInstance(activity.getApplicationContext())
+                        .getImageLoader();
+                String url = "http://10.0.2.2:3000/pic/" + currCar.getPicid();
+                imageLoader.get(url, ImageLoader.getImageListener(carImage,
+                        R.mipmap.ic_launcher, android.R.drawable
+                                .ic_dialog_alert));
+                carImage.setImageUrl(url, imageLoader);
+            }catch (Exception e) {
+                Log.e("IMAGE", e.getLocalizedMessage());
+            }
+        }
     }
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import com.rosenberg.uni.R;
 import com.rosenberg.uni.utils.CustomVolleyRequestQueue;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * this class represents window for specific car for the tenant
@@ -40,7 +40,6 @@ public class TenantCarViewDetailsFragment extends Fragment {
     private String carDocId;  // gets it as input from constructing
 
     TenantFunctions tf;
-    ImageLoader imageLoader;
 
     TextView make;
     TextView model;
@@ -52,7 +51,9 @@ public class TenantCarViewDetailsFragment extends Fragment {
     TextView endDate;
     ListView carView;
     ListView historyView;
-    NetworkImageView imageView;
+
+    ImageLoader imageLoader;
+    NetworkImageView carImage;
 
 
     public TenantCarViewDetailsFragment() {
@@ -117,7 +118,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
         endDate = view.findViewById(R.id.tenant_car_view_details_end_date);
         carView = view.findViewById(R.id.tenant_car_view_details_users_list_view);
         historyView = view.findViewById(R.id.tenant_car_view_details_history_list_view);
-        imageView = view.findViewById(R.id.tenant_car_view_details_image);
+        carImage = view.findViewById(R.id.tenant_car_view_details_image);
 
         // init buttons
         ImageView editBtn = view.findViewById(R.id.tenant_car_view_details_edit);
@@ -167,6 +168,7 @@ public class TenantCarViewDetailsFragment extends Fragment {
             historyView.setAdapter(arrayAdapter);
         }
 
+        // get data on reviews - init that reviews will be clickable
         historyView.setOnItemClickListener((adapterView, view, i, l) -> {
             if (!histories.get(i).getReviewed()) {
                 FragmentManager fm = getParentFragmentManager();
@@ -178,20 +180,9 @@ public class TenantCarViewDetailsFragment extends Fragment {
                 tf.setHistReviewed(carDocId,histories.get(i).getRenterID());
             }
         });
-        if(!currentCar.getPicid().isEmpty()){
-            try {
-                imageLoader = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext())
-                        .getImageLoader();
-                String url = "http://10.0.2.2:3000/pic/" + currentCar.getPicid();
-                imageLoader.get(url, ImageLoader.getImageListener(imageView,
-                        R.mipmap.ic_launcher, android.R.drawable
-                                .ic_dialog_alert));
-                imageView.setImageUrl(url, imageLoader);
-            }catch (Exception e) {
-                Log.e("IMAGE", e.getLocalizedMessage());
-            }
-        }
 
+        // init image
+        tf.setCarImage(imageLoader, carImage, currentCar, getActivity());
     }
 
     /**
