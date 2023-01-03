@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+/**
+ * link where we took it from internet
+ */
 public class VolleyMultipartRequest  extends Request<NetworkResponse> {
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";

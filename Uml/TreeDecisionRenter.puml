@@ -20,24 +20,36 @@ float stars
 String feedback
 }
 
-object RenterMyRequests
-object RenterSpecificRequestDetails
-object RenterSearchCars
+object RenterMyAcceptedCars{
+List<Car> cars
+}
+
+object RenterSpecificCarDetails{
+user profile details
+image car
+List<Reviews> tenant
+}
+
+object RenterSearchCars{
+List<Car> allCars
+filtering method
+}
 object RenterAskForCar{
-profile details
+user profile details
+image car
 List<Reviews> tenant
 }
 
 User --> LoginFragment
 LoginFragment --> RegisterFragment
-LoginFragment --> RenterMyRequests
+LoginFragment --> RenterMyAcceptedCars
 
-RenterMyRequests --> RenterSearchCars
+RenterMyAcceptedCars --> RenterSearchCars
 RenterSearchCars --> RenterAskForCar
 
-RenterMyRequests --> RenterSpecificRequestDetails
-RenterSpecificRequestDetails --> RateTenant
+RenterMyAcceptedCars --> RenterSpecificCarDetails
+RenterSpecificCarDetails --> RateTenant
 
-RenterMyRequests --> ViewProfile
+RenterMyAcceptedCars --> ViewProfile
 ViewProfile --> EditProfile
 @enduml

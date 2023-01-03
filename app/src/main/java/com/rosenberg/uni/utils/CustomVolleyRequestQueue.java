@@ -13,6 +13,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 
 /**
+ * link where we took it from internet
  * Custom implementation of Volley Request Queue
  */
 public class CustomVolleyRequestQueue {

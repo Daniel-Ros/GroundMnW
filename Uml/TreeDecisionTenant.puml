@@ -26,8 +26,13 @@ String feedback
 
 object TenantMyCars
 
-object TenantCarDetails
+object TenantCarDetails{
+car details
+List<User> renters
+}
+
 object TenantAddCar
+
 object TenantAcceptRenter{
 profile details
 List<Reviews> renter
