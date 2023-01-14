@@ -4,6 +4,7 @@
 ## Abstract
 Our main goal of this project was to build a platform where people can share their vehicles 
 somewhat like AirBNB.
+[click here](https://youtu.be/fG6w6lNMLB0) for short video of the application
 
 ## Project structure
 |folder|description |
@@ -24,7 +25,6 @@ In this project we created an app, with Firebase Auth as an authentication provi
 - Pick a car from a selection of cars
 - Edit your profile
 
- > More details can be viewd in the powerpoint presentation
-
+ > More details can be viewd in the powerpoint [presentation](https://github.com/Daniel-Ros/GroundMnW/blob/master/%D7%94%D7%A6%D7%92%D7%AA%20%D7%A1%D7%95%D7%A3%20%D7%94%D7%A0%D7%93%D7%A1%D7%AA%20%D7%AA%D7%95%D7%9B%D7%A0%D7%94.ppt) 
 
  
