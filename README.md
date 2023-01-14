@@ -1,4 +1,4 @@
-# Ground And Wheel
+# Ground Wheel and Motor
  done as an assignment on software engineering  course 2022-2023
  
 ## Abstract
